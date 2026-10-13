@@ -164,6 +164,12 @@ test("binary views are normalized; shared buffers and conventional artifacts are
   assert.equal(sha(parseELF(original).code), sha(original.slice(256, 264)));
 });
 
+test("undefined, common and unsupported reserved symbol sections remain forbidden", () => {
+  for (const section of [0, 0xfff2, 0xffff]) {
+    const bytes = elf(); word(bytes, 300, ((section << 16) | 0x12) >>> 0); invalid(() => parseELF(bytes));
+  }
+});
+
 test("UTF-8 symbol names preserve BOM rather than aliasing a required wrapper", () => {
   const bytes = elf(), table = bytes.slice(320, 384), view = new DataView(bytes.buffer);
   bytes.fill(0, 320, 384);

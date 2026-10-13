@@ -1,6 +1,7 @@
 import { Worker } from "node:worker_threads";
 import { readFileSync } from "node:fs";
 import { CompilerController } from "../runtime/controller.js";
+import { PackagingController } from "../runtime/packaging-controller.js";
 
 /** Local developer adapter; web consumers use the portable controller's module-worker default. */
 export function createNodeCompiler() {
@@ -13,6 +14,18 @@ export function createNodeCompiler() {
         return () => { worker.off("message", message); worker.off("error", error); worker.off("messageerror", error); worker.off("exit", exit); };
       },
     };
+  } });
+}
+
+/** Isolated service-free developer ELF packager; consumer wrappers provide a web worker instead. */
+export function createNodePackager() {
+  return new PackagingController({ workerFactory: () => {
+    const worker = new Worker(new URL("./node-preparation-worker.mjs", import.meta.url));
+    return { postMessage: message => worker.postMessage(message), terminate: () => worker.terminate(),
+      listen(message, error, exit) {
+        worker.on("message", message); worker.on("error", error); worker.on("messageerror", error); worker.on("exit", exit);
+        return () => { worker.off("message", message); worker.off("error", error); worker.off("messageerror", error); worker.off("exit", exit); };
+      } };
   } });
 }
 

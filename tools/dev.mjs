@@ -2,12 +2,12 @@ import { readFileSync, readdirSync, mkdirSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { resolve, join } from "node:path";
-import { parseBuildRequest, parseContractJSON, requestIdentity, LIMITS, prepareSketch, packageELF } from "../src/index.js";
+import { parseBuildRequest, parseDeclaredPackagingRequest, parseContractJSON, requestIdentity, LIMITS, prepareSketch, packageELF } from "../src/index.js";
 import { verifyFixtures } from "./verify-fixtures.mjs";
 import { verifyRecipe } from "./verify-recipe.mjs";
 import { fuzz } from "./fuzz.mjs";
 import { fuzzELF } from "./fuzz-elf.mjs";
-import { createNodeCompiler, localResources } from "./node-runtime.mjs";
+import { createNodeCompiler, createNodePackager, localResources } from "./node-runtime.mjs";
 import { verifyVendor } from "./verify-vendor.mjs";
 import { readBounded } from "./bounded-file.mjs";
 export { readBounded } from "./bounded-file.mjs";
@@ -49,6 +49,7 @@ async function main() {
       + "  export-web <new-output-directory>\n"
       + "  bound-service <pinned-original.wasm> <new-development-directory>\n"
       + "  test-memory [pinned-original.wasm] (explicit skip when absent)\n"
+      + "  package-declared request.json module.elf output-directory\n"
       + "  serve-web [pinned-service.wasm]\n  test-web [pinned-service.wasm] [--browser chromium-path]\n"
       + "No device access. WASM build requires an explicitly provisioned pinned local service; none is bundled.\n"
       + `Pinned development Node: ${pin}; no external dependencies or installation required.`);
@@ -139,6 +140,16 @@ async function main() {
       "receipt.json": JSON.stringify(artifact.receipt, null, 2) + "\n" },
     { status: "packaged_independent_elf", buildID: request.buildID, capsuleSHA256: artifact.sha256,
       capsuleBytes: artifact.bytes.length, provenanceStatus: "declared" });
+    return;
+  }
+  if (command === "package-declared") {
+    if (argumentsList.length !== 3) throw new Error("Select declared request JSON, supplied ELF and a new output directory");
+    const request = parseDeclaredPackagingRequest(decode(readBounded(resolve(argumentsList[0]), LIMITS.jsonBytes)));
+    const artifact = await createNodePackager().package(new Uint8Array(readBounded(resolve(argumentsList[1]), 2 * 1024 * 1024)), request);
+    writeOutput(resolve(argumentsList[2]), { [artifact.filename]: artifact.bytes, "report.json": artifact.reportJSON + "\n",
+      "receipt.json": JSON.stringify(artifact.receipt, null, 2) + "\n" },
+      { status: "packaged_declared_independent_elf", buildID: request.buildID, capsuleSHA256: artifact.sha256,
+        capsuleBytes: artifact.bytes.length, provenanceStatus: "declared" });
     return;
   }
   if (argumentsList.length !== 0) throw new Error("Unexpected development command arguments");

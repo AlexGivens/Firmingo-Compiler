@@ -1,5 +1,5 @@
-import { validateBuildRequest, requestIdentity } from "./contract.js";
-import { sha256 } from "./hash.js";
+import { validateBuildRequest, validateDeclaredPackagingRequest } from "./contract.js";
+import { sha256, dataIdentity } from "./hash.js";
 import { PipelineError, checkCancellation } from "./pipeline-error.js";
 import { LIMITS } from "./limits.js";
 
@@ -75,6 +75,16 @@ function diagnostic(request, line, column, code, message, bomBytes) {
 export async function prepareSketch(input, { signal } = {}) {
   checkCancellation(signal, "preprocessing");
   const request = validateBuildRequest(input);
+  return prepareValidatedSketch(request, signal);
+}
+
+/** Same source policy for a separately validated packaging declaration; never a compiler execution request. */
+export async function preparePackagingSketch(input, { signal } = {}) {
+  checkCancellation(signal, "preprocessing");
+  return prepareValidatedSketch(validateDeclaredPackagingRequest(input), signal);
+}
+
+async function prepareValidatedSketch(request, signal) {
   const original = request.source.text;
   const bomBytes = original.startsWith("\ufeff") ? 3 : 0;
   const normalized = original.replace(/\r\n?/g, "\n").replace(/^\ufeff/, "");
@@ -104,7 +114,7 @@ export async function prepareSketch(input, { signal } = {}) {
   if (!translationUnit.endsWith("\n")) translationUnit += "\n";
   checkCancellation(signal, "preprocessing");
   const [sourceSHA256, translationUnitSHA256, requestSHA256] = await Promise.all([
-    sha256(encoder.encode(original)), sha256(encoder.encode(translationUnit)), requestIdentity(request),
+    sha256(encoder.encode(original)), sha256(encoder.encode(translationUnit)), dataIdentity(request),
   ]);
   checkCancellation(signal, "preprocessing");
   return Object.freeze({ request, sourceSHA256, translationUnit, translationUnitSHA256, requestSHA256,

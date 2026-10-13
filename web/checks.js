@@ -1,4 +1,4 @@
-import { PreparationController, CompilerController, parseBuildRequest, prepareSketch, validateCapsule, validateRuntimeEvent, serializeRuntimeEvent, parseRuntimeEvent } from "/src/index.js";
+import { PreparationController, PackagingController, CompilerController, parseBuildRequest, prepareSketch, validateCapsule, validateRuntimeEvent, serializeRuntimeEvent, parseRuntimeEvent } from "/src/index.js";
 import { canonicalJSON, sha256 } from "/src/hash.js";
 import { SERVICE } from "/runtime/pins.js";
 import { fetchBytes, loadRecipe } from "./harness.js";
@@ -40,7 +40,7 @@ export async function runWebChecks({ serviceAvailable, onCase = () => {} } = {})
       linkedELFSHA256: artifact.receipt.linkedELFSHA256, memoryBytes: artifact.memoryBytes });
     return artifact;
   };
-  await run("secure context and isolated service-free module-worker preparation", async () => {
+  await run("secure context and isolated service-free preparation/declared-packaging workers", async () => {
     assert(isSecureContext && crypto.subtle && typeof Worker === "function", "Missing secure-context web worker primitives");
     const preparation = new PreparationController();
     const prepared = await preparation.prepare(request("web-prepare"));
@@ -52,6 +52,23 @@ export async function runWebChecks({ serviceAvailable, onCase = () => {} } = {})
     cancellation.abort(); await rejects(() => pending, "cancelled");
     await rejects(() => preparation.prepare({ ...request("web-prepare-deadline"), options: { deadlineMilliseconds: 1 } }), "timed_out");
     assert(await preparation.prepare(request("web-prepare-fresh")), "Preparation did not recover after termination");
+    const packaging = new PackagingController();
+    const declared = { compiler: "non-executable independent parser fixture", recipeIdentifier: "independent-test-v1",
+      recipeSHA256: "4".repeat(64), toolchainSHA256: "5".repeat(64) };
+    const input = { ...request("web-package"), kind: "package_elf", provenance: declared,
+      target: { ...baseline.target, recipeIdentifier: declared.recipeIdentifier, recipeSHA256: declared.recipeSHA256,
+        firmwareBuild: { ...baseline.target.firmwareBuild, recipeIdentifier: declared.recipeIdentifier, recipeSHA256: declared.recipeSHA256 } } };
+    const hex = new TextDecoder().decode(await fetchBytes("/fixture-elf.hex", 4096));
+    const elf = Uint8Array.from(hex.trim().split(/\s+/), pair => parseInt(pair, 16));
+    const packaged = await packaging.package(elf, input);
+    assert(packaged.sha256 === "ef8bff817d9b80026f6eaeac33d1c40fac2f41b046865de967d3c0cf2539d52a", "Independent firmware capsule differs");
+    assert(packaged.receipt.receiptSchema === "firmingo-compiler-declared-packaging-v1" && packaged.receipt.provenanceStatus === "declared", "Declared provenance was replaced");
+    assert(packaged.receipt.provenance.recipeIdentifier === declared.recipeIdentifier, "Declared recipe was replaced");
+    await rejects(() => packaging.package(new Uint8Array(712), input), "invalid_elf");
+    const abort = new AbortController(), pendingPackage = packaging.package(elf, input, { signal: abort.signal });
+    await rejects(() => packaging.package(elf, input), "busy"); abort.abort(); await rejects(() => pendingPackage, "cancelled");
+    await rejects(() => packaging.package(elf, { ...input, options: { deadlineMilliseconds: 1 } }), "timed_out");
+    assert((await packaging.package(elf, input)).sha256 === packaged.sha256, "Packaging did not recover after termination");
   });
   await run("actual default module worker rejects an unpinned service before compiler execution", async () => {
     const events = [];

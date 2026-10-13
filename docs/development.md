@@ -178,6 +178,12 @@ explicit 3-pass/6-skip service absence behavior and nine-case real-service evide
 These developer operations need permission to launch a browser/bind/connect loopback
 when a sandbox restricts them; the ordinary fast suite requires neither.
 
+## Declared ELF packaging
+
+Service-free supplied-ELF conversion uses `node tools/dev.mjs package-declared
+request.json module.elf new-output-directory`; see [declared packaging](declared-elf-packaging.md)
+for the request and independent receipt. Existing `package-elf` remains compatible.
+
 ## Original-service memory maintenance
 
 Compiler-owned development adaptation now uses explicit inputs and a new output

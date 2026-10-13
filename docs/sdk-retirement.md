@@ -1,5 +1,7 @@
 # SDK standalone compiler retirement — 2026-10-12
 
+Current supplied-ELF conversion and package identities: [declared ELF packaging](declared-elf-packaging.md). Earlier implementation records below remain historical evidence.
+
 FirmingoKit now retires its old Node/WASI runtime/worker, recipe/vendor copies,
 JavaScript tests and original SDK service/recipe-maintenance tools after shared
 compiler and SDK replacement gates passed. The inactive ELF-only native bridge

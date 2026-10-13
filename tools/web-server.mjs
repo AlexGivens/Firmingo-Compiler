@@ -37,6 +37,7 @@ export async function harnessResources(servicePath) {
   for (const path of ["manifest.json", "Recipe/Arduino.h", "Recipe/Entry.cpp", "Recipe/Module.ld", "Sources/ManagedRecipe.js"])
     add("/" + recipe + path, recipe + path, path.endsWith(".js") ? "text/javascript; charset=utf-8" : "application/octet-stream");
   add("/fixture-request.json", "tests/fixtures/synthetic-packaging-request.json", "application/json; charset=utf-8");
+  add("/fixture-elf.hex", "tests/fixtures/stateless.elf.hex", "text/plain; charset=utf-8", 4096);
   if (servicePath) {
     const bytes = readBounded(servicePath, SERVICE.bytes);
     if (bytes.length !== SERVICE.bytes || await sha256(bytes) !== SERVICE.sha256) throw new Error("Explicit compiler service does not match pinned size/digest");

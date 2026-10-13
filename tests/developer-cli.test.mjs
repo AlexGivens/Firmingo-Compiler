@@ -73,3 +73,25 @@ test("developer preparation and independent packaging create explicit new output
     assert.equal(existsSync(args[4]), false);
   } finally { rmSync(directory, { recursive: true, force: true }); }
 });
+
+test("declared ELF CLI uses the isolated production packager, preserves goldens and fails without output", () => {
+  const directory = mkdtempSync(join(tmpdir(), "firmingo-declared-cli-"));
+  try {
+    const expected = JSON.parse(readFileSync(join(root, "tests/fixtures/declared-packaging-reference.json")));
+    const request = join(directory, "request.json"), elf = join(directory, "supplied.elf"), output = join(directory, "package");
+    writeFileSync(request, JSON.stringify(expected.request));
+    writeFileSync(elf, Buffer.from(readFileSync(join(root, "tests/fixtures/stateless.elf.hex"), "utf8").trim().split(/\s+/).map(pair => parseInt(pair, 16))));
+    const args = ["package-declared", request, elf, output];
+    const result = run(args); assert.equal(result.status, 0, result.stderr);
+    assert.equal(JSON.parse(result.stdout).status, "packaged_declared_independent_elf");
+    assert.deepEqual(JSON.parse(readFileSync(join(output, "receipt.json"))), expected.receipt);
+    assert.deepEqual(JSON.parse(readFileSync(join(output, "report.json"))), expected.report);
+    assert.equal(run(args).status, 1); assert.equal(readFileSync(join(output, "Sketch.fms")).length, 264);
+    args[3] = join(directory, "deadline"); expected.request.options.deadlineMilliseconds = 1;
+    writeFileSync(request, JSON.stringify(expected.request));
+    const timed = run(args); assert.equal(timed.status, 1); assert.match(timed.stderr, /timed_out/); assert(!existsSync(args[3]));
+    args[3] = join(directory, "invalid"); expected.request.options.deadlineMilliseconds = 60000;
+    writeFileSync(request, JSON.stringify(expected.request)); writeFileSync(elf, Buffer.alloc(100));
+    assert.equal(run(args).status, 1); assert(!existsSync(args[3]));
+  } finally { rmSync(directory, { recursive: true, force: true }); }
+});

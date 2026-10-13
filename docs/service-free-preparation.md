@@ -1,5 +1,7 @@
 # Service-free preparation hosting — 2026-10-12
 
+Current supplied-ELF conversion and package identities: [declared ELF packaging](declared-elf-packaging.md). Earlier implementation records below remain historical evidence.
+
 `PreparationController.prepare(request,{signal})` now isolates existing portable
 `prepareSketch` in a fresh standard module worker. It requires no service bytes,
 WASI execution, resource loader, device, Swift or Node in the consumer path. A

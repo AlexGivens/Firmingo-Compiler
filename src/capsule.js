@@ -1,5 +1,5 @@
-import { validateBuildRequest, validateFirmwareBuildDescriptor, firmwareBuildIdentity, residentBindingIdentity, staticTarget, validateStaticTarget } from "./contract.js";
-import { prepareSketch } from "./preprocess.js";
+import { validateBuildRequest, validateDeclaredPackagingRequest, staticTarget, validateStaticTarget } from "./contract.js";
+import { prepareSketch, preparePackagingSketch } from "./preprocess.js";
 import { parseELF, CODE_ADDRESS, MAXIMUM_ELF_BYTES } from "./elf.js";
 import { canonicalJSON, dataIdentity, sha256 } from "./hash.js";
 import { PipelineError, checkCancellation, snapshotBytes } from "./pipeline-error.js";
@@ -25,6 +25,10 @@ const address = value => "0x" + value.toString(16).padStart(8, "0");
 export async function validateCapsule(input, descriptorInput, { signal } = {}) {
   checkCancellation(signal, "validating");
   const descriptor = validateStaticTarget(descriptorInput);
+  return validateBoundCapsule(input, descriptor, signal);
+}
+
+async function validateBoundCapsule(input, descriptor, signal) {
   const bytes = snapshotBytes(input, 257, descriptor.maximumCapsuleBytes, "validating", "invalid_capsule");
   const view = new DataView(bytes.buffer);
   const u16 = offset => view.getUint16(offset, true), u32 = offset => view.getUint32(offset, true);
@@ -46,14 +50,24 @@ export async function validateCapsule(input, descriptorInput, { signal } = {}) {
 export async function packageELF(input, requestInput, provenanceInput, { signal } = {}) {
   checkCancellation(signal, "packaging");
   const request = validateBuildRequest(requestInput);
+  return packageValidatedELF(input, request, provenanceSnapshot(provenanceInput, request.target), signal, false);
+}
+
+/** Packages supplied ELF with declared recipe provenance; no service, source-to-code proof or execution receipt. */
+export async function packageDeclaredELF(input, requestInput, { signal } = {}) {
+  checkCancellation(signal, "packaging");
+  const request = validateDeclaredPackagingRequest(requestInput);
+  return packageValidatedELF(input, request, request.provenance, signal, true);
+}
+
+async function packageValidatedELF(input, request, provenance, signal, declared) {
   const binding = staticTarget(request);
-  const provenance = provenanceSnapshot(provenanceInput, request.target);
   const elfBytes = snapshotBytes(input, 52, MAXIMUM_ELF_BYTES, "validating", "invalid_elf");
   const image = parseELF(elfBytes, { signal });
-  const prepared = await prepareSketch(request, { signal });
+  const prepared = await (declared ? preparePackagingSketch : prepareSketch)(request, { signal });
   const code = image.code;
   const [codeSHA256, linkedELFSHA256, firmwareBuildID] = await Promise.all([
-    sha256(code), sha256(elfBytes), request.target.firmwareBuild ? firmwareBuildIdentity(binding) : residentBindingIdentity(binding),
+    sha256(code), sha256(elfBytes), dataIdentity(binding),
   ]);
   checkCancellation(signal, "packaging");
   const bytes = new Uint8Array(256 + code.length), view = new DataView(bytes.buffer);
@@ -63,7 +77,7 @@ export async function packageELF(input, requestInput, provenanceInput, { signal 
     [20, code.length], [24, image.setupAddress], [28, image.loopAddress]]) view.setUint32(offset, value, true);
   bytes.set(Uint8Array.from(codeSHA256.match(/../g), pair => parseInt(pair, 16)), 32);
   bytes.set(code, 256);
-  const checked = await validateCapsule(bytes, binding, { signal });
+  const checked = await validateBoundCapsule(bytes, binding, signal);
   const report = Object.freeze({
     status: "structurally validated packaging; compiler/source association is host supplied; no hardware proof",
     board: request.target.board, image_format: request.target.profile,
@@ -77,7 +91,7 @@ export async function packageELF(input, requestInput, provenanceInput, { signal 
     compiler: provenance.compiler, recipe_id: provenance.recipeIdentifier, linked_elf_sha256: linkedELFSHA256,
   });
   const receiptInputs = Object.freeze({
-    receiptSchema: "firmingo-compiler-packaging-v1", operation: "independent_elf_packaging", provenanceStatus: "declared",
+    receiptSchema: declared ? "firmingo-compiler-declared-packaging-v1" : "firmingo-compiler-packaging-v1", operation: "independent_elf_packaging", provenanceStatus: "declared",
     requestSHA256: prepared.requestSHA256, buildID: request.buildID, sourceRevision: request.source.revision,
     sourceFilename: request.source.filename, sourceSHA256: prepared.sourceSHA256,
     translationUnitSHA256: prepared.translationUnitSHA256, ...(request.target.firmwareBuild ? { firmwareBuildID } : { residentBindingID: firmwareBuildID }),

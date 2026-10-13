@@ -1,0 +1,96 @@
+{
+  "status": "SYNTHETIC NON-EXECUTABLE PARSER FIXTURE; NEVER DEPLOY",
+  "method": "Independent Python hashlib and compact sorted JSON; original pinned firmware bytes/report with declared recipe fields changed; no compiler ran",
+  "request": {
+    "buildID": "packaging-test-1",
+    "interfaceVersion": 1,
+    "kind": "package_elf",
+    "options": {
+      "deadlineMilliseconds": 60000
+    },
+    "source": {
+      "filename": "Sketch.ino",
+      "revision": "document-1:revision-7",
+      "text": "void setup() {}\nvoid loop() {}"
+    },
+    "target": {
+      "board": "nano_rp2040_connect",
+      "firmwareBuild": {
+        "apiAddress": 268571980,
+        "backend": "application",
+        "board": "nano_rp2040_connect",
+        "buildReportSHA256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "firmwareCommit": "f17fdf0301256ba48270230cbf213126e70aa8d0",
+        "firmwareImageSHA256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "firmwareVersion": "0.1.0-m9exp1",
+        "maximumCapsuleBytes": 4096,
+        "profile": "nano-managed-v1",
+        "qualification": "experimental",
+        "recipeIdentifier": "nano-test-v1",
+        "recipeSHA256": "4444444444444444444444444444444444444444444444444444444444444444",
+        "residentABI": 1,
+        "residentELFSHA256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "schema": 1,
+        "targetID": 1
+      },
+      "profile": "nano-managed-v1",
+      "recipeIdentifier": "nano-test-v1",
+      "recipeSHA256": "4444444444444444444444444444444444444444444444444444444444444444"
+    },
+    "provenance": {
+      "compiler": "parser fixture, no compiler execution",
+      "recipeIdentifier": "nano-test-v1",
+      "recipeSHA256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "toolchainSHA256": "5555555555555555555555555555555555555555555555555555555555555555"
+    }
+  },
+  "report": {
+    "api_address": "0x1002154c",
+    "board": "nano_rp2040_connect",
+    "capsule_bytes": 264,
+    "capsule_sha256": "ef8bff817d9b80026f6eaeac33d1c40fac2f41b046865de967d3c0cf2539d52a",
+    "code_bytes": 8,
+    "code_sha256": "3e8372f5bf99f4055c849308df883e66ddd26f169fe766903bca2412c4075527",
+    "compiler": "parser fixture, no compiler execution",
+    "image_format": "nano-managed-v1",
+    "linked_elf_sha256": "bda1e92d1cd5eaa6acaee2e8495072a716d3937bc4b4e7d7bd72304e5045fa52",
+    "loop_address": "0x10200105",
+    "max_install_bytes": 4096,
+    "recipe_id": "nano-test-v1",
+    "resident_elf_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "setup_address": "0x10200101",
+    "source_sha256": {
+      "generated/Sketch.cpp": "9a298b76d01802f89c360908c473933a9ff814b794ec40a07f49fdabe0e386f4",
+      "recipe/manifest.json": "4444444444444444444444444444444444444444444444444444444444444444",
+      "sketch/Sketch.ino": "0c780126909b7263933e016c526cd183bb3c8e642be9544b0159aa3381a0ab74",
+      "toolchain/manifest.json": "5555555555555555555555555555555555555555555555555555555555555555"
+    },
+    "status": "structurally validated packaging; compiler/source association is host supplied; no hardware proof",
+    "target_id": 1
+  },
+  "receipt": {
+    "receiptSchema": "firmingo-compiler-declared-packaging-v1",
+    "operation": "independent_elf_packaging",
+    "provenanceStatus": "declared",
+    "requestSHA256": "024ad1905079f6c80945e758ae6704dbf52b5bd624579857cd9b321cf77c7965",
+    "buildID": "packaging-test-1",
+    "sourceRevision": "document-1:revision-7",
+    "sourceFilename": "Sketch.ino",
+    "sourceSHA256": "0c780126909b7263933e016c526cd183bb3c8e642be9544b0159aa3381a0ab74",
+    "translationUnitSHA256": "9a298b76d01802f89c360908c473933a9ff814b794ec40a07f49fdabe0e386f4",
+    "firmwareBuildID": "9979f3e0969353e1298769d94fff9e660fb60d8291acd7891458f7ac76ce2643",
+    "board": "nano_rp2040_connect",
+    "profile": "nano-managed-v1",
+    "provenance": {
+      "compiler": "parser fixture, no compiler execution",
+      "recipeIdentifier": "nano-test-v1",
+      "recipeSHA256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "toolchainSHA256": "5555555555555555555555555555555555555555555555555555555555555555"
+    },
+    "buildInputSHA256": "54d1458bdd8c6213201c9dd13b5afec89bee4dddca27bfdb785bb24ec9e4583a",
+    "linkedELFSHA256": "bda1e92d1cd5eaa6acaee2e8495072a716d3937bc4b4e7d7bd72304e5045fa52",
+    "capsuleSHA256": "ef8bff817d9b80026f6eaeac33d1c40fac2f41b046865de967d3c0cf2539d52a",
+    "capsuleBytes": 264
+  },
+  "SDKLegacyBuildInputSHA256": "cf9d3b07f04a8566ca5c63481225681df707e752bbf8eac06bd4ededc65d668a"
+}

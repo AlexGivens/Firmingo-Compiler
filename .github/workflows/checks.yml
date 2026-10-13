@@ -24,7 +24,7 @@ jobs:
           mkdir -p .build/logs
           node tools/dev.mjs doctor 2>&1 | tee .build/logs/doctor.log
           node tools/dev.mjs check 2>&1 | tee .build/logs/check.log
-      - name: Production contracts, pipeline, worker/browser lifecycle and reproducible source-package regressions
+      - name: Production contracts, declared packaging, worker/browser lifecycle and reproducible source-package regressions
         run: node tools/dev.mjs test 2>&1 | tee .build/logs/test.log
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0; same pin as firmware
         if: always()

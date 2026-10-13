@@ -1,0 +1,324 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Declared independent ELF packaging input; never an execution request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "interfaceVersion",
+    "kind",
+    "buildID",
+    "source",
+    "target",
+    "options",
+    "provenance"
+  ],
+  "properties": {
+    "interfaceVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "package_elf"
+    },
+    "buildID": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "filename",
+        "revision",
+        "text"
+      ],
+      "properties": {
+        "filename": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 96,
+          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_. -]*\\.ino$",
+          "not": {
+            "pattern": "\\.\\."
+          }
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 262144,
+          "pattern": "^[^\\u0000]*$",
+          "x-maximumUtf8Bytes": 262144,
+          "x-requireUnicodeScalars": true
+        }
+      }
+    },
+    "target": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "board",
+            "profile",
+            "recipeIdentifier",
+            "recipeSHA256",
+            "firmwareBuild"
+          ],
+          "properties": {
+            "board": {
+              "const": "nano_rp2040_connect"
+            },
+            "profile": {
+              "const": "nano-managed-v1"
+            },
+            "recipeIdentifier": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 96,
+              "pattern": "^[A-Za-z0-9._:-]+$"
+            },
+            "recipeSHA256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "firmwareBuild": {
+              "$ref": "#/$defs/firmwareBuild"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "board",
+            "profile",
+            "recipeIdentifier",
+            "recipeSHA256",
+            "residentBinding"
+          ],
+          "properties": {
+            "board": {
+              "const": "nano_rp2040_connect"
+            },
+            "profile": {
+              "const": "nano-managed-v1"
+            },
+            "recipeIdentifier": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 96,
+              "pattern": "^[A-Za-z0-9._:-]+$"
+            },
+            "recipeSHA256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "residentBinding": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "schema",
+                "board",
+                "profile",
+                "residentELFSHA256",
+                "firmwareImageSHA256",
+                "apiAddress",
+                "residentABI",
+                "targetID",
+                "maximumCapsuleBytes"
+              ],
+              "properties": {
+                "schema": {
+                  "const": 1
+                },
+                "board": {
+                  "const": "nano_rp2040_connect"
+                },
+                "profile": {
+                  "const": "nano-managed-v1"
+                },
+                "residentELFSHA256": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "firmwareImageSHA256": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "apiAddress": {
+                  "type": "integer",
+                  "minimum": 268435456,
+                  "maximum": 270532604,
+                  "multipleOf": 4
+                },
+                "residentABI": {
+                  "const": 1
+                },
+                "targetID": {
+                  "const": 1
+                },
+                "maximumCapsuleBytes": {
+                  "const": 4096
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deadlineMilliseconds"
+      ],
+      "properties": {
+        "deadlineMilliseconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "compiler",
+        "recipeIdentifier",
+        "recipeSHA256",
+        "toolchainSHA256"
+      ],
+      "properties": {
+        "compiler": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "x-maximumUtf8Bytes": 256
+        },
+        "recipeIdentifier": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 96,
+          "pattern": "^[A-Za-z0-9._:-]+$"
+        },
+        "recipeSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "toolchainSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "firmwareBuild": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "board",
+        "profile",
+        "recipeIdentifier",
+        "recipeSHA256",
+        "residentABI",
+        "targetID",
+        "maximumCapsuleBytes",
+        "schema",
+        "backend",
+        "qualification",
+        "firmwareVersion",
+        "firmwareCommit",
+        "residentELFSHA256",
+        "firmwareImageSHA256",
+        "buildReportSHA256",
+        "apiAddress"
+      ],
+      "properties": {
+        "board": {
+          "const": "nano_rp2040_connect"
+        },
+        "profile": {
+          "const": "nano-managed-v1"
+        },
+        "recipeIdentifier": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 96,
+          "pattern": "^[A-Za-z0-9._:-]+$"
+        },
+        "recipeSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "residentABI": {
+          "const": 1
+        },
+        "targetID": {
+          "const": 1
+        },
+        "maximumCapsuleBytes": {
+          "const": 4096
+        },
+        "schema": {
+          "const": 1
+        },
+        "backend": {
+          "const": "application"
+        },
+        "qualification": {
+          "const": "experimental"
+        },
+        "firmwareVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9._-]+$"
+        },
+        "firmwareCommit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "residentELFSHA256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "firmwareImageSHA256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "buildReportSHA256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "apiAddress": {
+          "type": "integer",
+          "minimum": 268435456,
+          "maximum": 270532604,
+          "multipleOf": 4
+        }
+      }
+    }
+  },
+  "description": "Runtime also enforces UTF-8 byte limits, scalar text, API alignment, target/descriptor/provenance recipe equality. ELF is a separate 52-byte to 2-MiB ordinary Uint8Array."
+}

@@ -60,7 +60,7 @@ and a separate SwiftPM consumer; see `docs/sdk-adapter.md`. Physical iOS/iPadOS,
 browsers/wrappers, approved distribution and hardware remain unqualified. Missing-service web CI explicitly skips six compilation
 cases; see `docs/web-harness.md` and `docs/evidence/web-host.md`.
 See `docs/runtime.md` and `docs/evidence/wasm-runtime.md`. Ordinary tests need no
-service or sibling checkout. The old SDK standalone runtime/recipe/vendor stack and inactive ELF-only bridge are now retired after adapter gates; both public Swift preparation APIs now use the shared service-free worker; supplied-ELF conversion compatibility and independent deployment validation remain. See `docs/sdk-retirement.md`. Explicit original-service memory adaptation lives in `tools/bound-service.mjs`; distribution remains unresolved.
+service or sibling checkout. The old SDK standalone runtime/recipe/vendor stack and inactive ELF-only bridge are retired after adapter gates. Both public Swift preparation and supplied-ELF conversion APIs now use the shared service-free worker; native ELF parsing/capsule production are retired while independent deployment validation remains. See `docs/declared-elf-packaging.md` and `docs/sdk-retirement.md`. Explicit original-service memory adaptation lives in `tools/bound-service.mjs`; distribution remains unresolved.
 
 Start with the **Arduino Nano RP2040 Connect** and the existing constrained
 Firmingo managed-sketch experiment. Structure recipes so other boards, broader

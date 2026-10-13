@@ -73,7 +73,7 @@ browser cases pass and six compilation cases skip. All six GitHub jobs at
 remains explicitly skipped there. The inspected results are tracked in
 `docs/evidence/browser-cleanup.md`. M6 now connects both SDK build APIs through
 a pinned source package, with nine real macOS WebKit tests and a separate consumer.
-The old SDK standalone runtime/recipe/vendor stack and inactive bridge are retired with an exact 36-file source inventory. Explicit service-memory maintenance now lives here. Both public SDK preparation APIs now use the shared service-free worker and their Swift lexical scanner is removed. Next: migrate supplied-ELF conversion with an explicit declared-provenance contract and qualify signed/physical wrapper hosts. Service
+The old SDK standalone runtime/recipe/vendor stack and inactive bridge are retired with an exact 36-file source inventory. Both public SDK preparation and supplied-ELF conversion APIs now use the shared service-free worker; Swift lexical scanning, ELF parsing and capsule production are removed with compatibility/receipt checks. See `docs/declared-elf-packaging.md`. Next: resolve reproducible service provenance/assets and trusted firmware exports, then qualify signed/physical wrapper hosts. Service
 redistribution, production firmware exports and hardware qualification remain open.
 See `docs/runtime.md`, `docs/evidence/wasm-runtime.md`, and the support/interface docs.
 
@@ -223,7 +223,7 @@ Evidence: actual CLI new-directory/receipt/no-overwrite tests pass; fast/mutatio
 
 ### M6 — Integrate FirmingoKit as a wrapper and retire duplicate ownership
 
-Status: in progress. Both build APIs now consume a pinned source-only package through the macOS Swift/WebKit adapter; compatibility-path retirement and platform qualification remain.
+Status: integration and compiler-ownership retirement are complete for the local macOS adapter scope. Both build, preparation and supplied-ELF conversion APIs consume the shared source package with retained Swift receipts/deployment checks. Signed/physical host qualification remains M8 work.
 
 - [x] Implement the Swift/web-host adapter for the portable request/event/result
   contract without moving device models or Apple dependencies into this repository.
@@ -236,7 +236,7 @@ Status: in progress. Both build APIs now consume a pinned source-only package th
   not depend on developer sibling paths or generate compiler assets from them.
 - [x] Port regression coverage and run actual wrapper compile/link/package,
   cancellation/deadline/reentry, and metadata/artifact compatibility checks.
-- [ ] Update relevant FirmingoKit and Firmingo guidance, TODOs, resource-maintenance
+- [x] Update relevant FirmingoKit and Firmingo guidance, TODOs, resource-maintenance
   tools, and integration documentation to reflect actual changes. Remove duplicate
   compiler ownership only after replacement behavior is tested.
 - [x] Record a separate consumer example demonstrating offline compilation without
@@ -246,6 +246,8 @@ Acceptance: FirmingoKit uses the shared compiler through a narrow adapter; devic
 operations remain in the SDK, compatibility effects are documented, and a consumer
 does not require sibling checkouts. No hardware qualification is implied.
 Evidence: `docs/sdk-adapter.md`: nine real WebKit cases, separate packaged consumer, retained receipt schemas/device gates, deterministic source export and independent receipt/hash rejection; iOS builds/DocC pass. Signed/physical Apple-host and hardware execution are not established.
+The later `docs/declared-elf-packaging.md` records service-free conversion, removal of
+the two native producer/parser files, unchanged receipt goldens and current package identities.
 
 ### M7 — Produce reproducible, distributable compiler assets
 

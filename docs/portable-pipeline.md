@@ -1,5 +1,9 @@
 # Portable Nano preparation and independent ELF packaging
 
+The later [declared ELF packaging contract](declared-elf-packaging.md) backs both
+Swift conversion APIs and permits bounded legacy recipe declarations. The original
+pinned-request `packageELF` API and its goldens below remain unchanged.
+
 These production modules run without Swift, Node, a native compiler or device
 access. They use the pinned experimental Nano contract and Web Crypto SHA-256.
 They prepare source and package **independently supplied ELF**, but do not execute

@@ -43,12 +43,17 @@ function text(value, maximum, path, pattern) {
 
 /** Validates static declarations without authenticating a build or associating a physical device. */
 export function validateFirmwareBuildDescriptor(value) {
+  return firmwareDescriptor(value, false);
+}
+
+function firmwareDescriptor(value, declared) {
   const path = "$.target.firmwareBuild";
   object(value, descriptorFields, path);
   equal(value.schema, 1, `${path}.schema`, "unsupported_version");
-  for (const key of ["board", "profile", "recipeIdentifier", "recipeSHA256", "residentABI", "targetID", "maximumCapsuleBytes"]) {
+  for (const key of ["board", "profile", "residentABI", "targetID", "maximumCapsuleBytes"]) {
     equal(value[key], NANO_BASELINE[key], `${path}.${key}`, "unsupported_target");
   }
+  recipeDeclaration(value, path, declared);
   equal(value.backend, "application", `${path}.backend`, "unsupported_target");
   equal(value.qualification, "experimental", `${path}.qualification`, "unsupported_target");
   text(value.firmwareVersion, 64, `${path}.firmwareVersion`, /^[A-Za-z0-9._-]+$/);
@@ -61,6 +66,24 @@ export function validateFirmwareBuildDescriptor(value) {
   return Object.freeze(Object.fromEntries(descriptorFields.map(key => [key, value[key]])));
 }
 
+function recipeDeclaration(value, path, declared) {
+  if (declared) {
+    text(value.recipeIdentifier, 96, `${path}.recipeIdentifier`, /^[A-Za-z0-9._:-]+$/);
+    text(value.recipeSHA256, 64, `${path}.recipeSHA256`, /^[0-9a-f]{64}$/);
+  } else {
+    for (const key of ["recipeIdentifier", "recipeSHA256"]) equal(value[key], NANO_BASELINE[key], `${path}.${key}`, "unsupported_target");
+  }
+}
+
+function sourceSnapshot(source) {
+  object(source, ["filename", "revision", "text"], "$.source");
+  text(source.filename, LIMITS.filenameBytes, "$.source.filename", /^[A-Za-z0-9_][A-Za-z0-9_. -]*\.ino$/);
+  if (source.filename.includes("..")) reject("invalid_input", "$.source.filename", "Unsafe source leaf name");
+  text(source.revision, LIMITS.identifierBytes, "$.source.revision", /^[A-Za-z0-9][A-Za-z0-9._:-]*$/);
+  text(source.text, LIMITS.sourceBytes, "$.source.text");
+  return Object.freeze({ filename: source.filename, revision: source.revision, text: source.text });
+}
+
 function envelope(value, kind, fields) {
   object(value, fields, "$");
   equal(value.interfaceVersion, 1, "$.interfaceVersion", "unsupported_version");
@@ -71,12 +94,7 @@ function envelope(value, kind, fields) {
 /** Snapshots and validates one unprepared single-file build request; it does not compile or deploy. */
 export function validateBuildRequest(value) {
   envelope(value, "build", ["interfaceVersion", "kind", "buildID", "source", "target", "options"]);
-  object(value.source, ["filename", "revision", "text"], "$.source");
-  const source = value.source;
-  text(source.filename, LIMITS.filenameBytes, "$.source.filename", /^[A-Za-z0-9_][A-Za-z0-9_. -]*\.ino$/);
-  if (source.filename.includes("..")) reject("invalid_input", "$.source.filename", "Unsafe source leaf name");
-  text(source.revision, LIMITS.identifierBytes, "$.source.revision", /^[A-Za-z0-9][A-Za-z0-9._:-]*$/);
-  text(source.text, LIMITS.sourceBytes, "$.source.text");
+  const source = sourceSnapshot(value.source);
   const bindingKey = value.target && typeof value.target === "object" && Object.hasOwn(value.target, "residentBinding") ? "residentBinding" : "firmwareBuild";
   object(value.target, ["board", "profile", "recipeIdentifier", "recipeSHA256", bindingKey], "$.target");
   for (const key of ["board", "profile", "recipeIdentifier", "recipeSHA256"]) {
@@ -90,6 +108,35 @@ export function validateBuildRequest(value) {
     target: Object.freeze({ ...nanoTarget(), [bindingKey]: binding }),
     options: Object.freeze({ deadlineMilliseconds: value.options.deadlineMilliseconds }) });
 }
+
+/** Separate independent-packaging declaration; never admitted by the pinned build/execution contract. */
+export function validateDeclaredPackagingRequest(value) {
+  envelope(value, "package_elf", ["interfaceVersion", "kind", "buildID", "source", "target", "provenance", "options"]);
+  const source = sourceSnapshot(value.source);
+  const bindingKey = value.target && typeof value.target === "object" && Object.hasOwn(value.target, "residentBinding") ? "residentBinding" : "firmwareBuild";
+  object(value.target, ["board", "profile", "recipeIdentifier", "recipeSHA256", bindingKey], "$.target");
+  for (const key of ["board", "profile"]) equal(value.target[key], NANO_BASELINE[key], `$.target.${key}`, "unsupported_target");
+  recipeDeclaration(value.target, "$.target", true);
+  const binding = bindingKey === "firmwareBuild" ? firmwareDescriptor(value.target.firmwareBuild, true) : validateResidentBinding(value.target.residentBinding);
+  if (bindingKey === "firmwareBuild") for (const key of ["recipeIdentifier", "recipeSHA256"]) equal(value.target[key], binding[key], `$.target.${key}`, "invalid_provenance");
+  const fields = ["compiler", "recipeIdentifier", "recipeSHA256", "toolchainSHA256"];
+  object(value.provenance, fields, "$.provenance");
+  text(value.provenance.compiler, 256, "$.provenance.compiler");
+  for (const key of ["recipeIdentifier", "recipeSHA256"]) equal(value.provenance[key], value.target[key], `$.provenance.${key}`, "invalid_provenance");
+  text(value.provenance.toolchainSHA256, 64, "$.provenance.toolchainSHA256", /^[0-9a-f]{64}$/);
+  object(value.options, ["deadlineMilliseconds"], "$.options");
+  integer(value.options.deadlineMilliseconds, 1, LIMITS.deadlineMilliseconds, "$.options.deadlineMilliseconds");
+  return Object.freeze({ interfaceVersion: 1, kind: "package_elf", buildID: value.buildID, source,
+    target: Object.freeze({ board: value.target.board, profile: value.target.profile, recipeIdentifier: value.target.recipeIdentifier,
+      recipeSHA256: value.target.recipeSHA256, [bindingKey]: binding }),
+    provenance: Object.freeze(Object.fromEntries(fields.map(key => [key, value.provenance[key]]))),
+    options: Object.freeze({ deadlineMilliseconds: value.options.deadlineMilliseconds }) });
+}
+
+/** Bounded strict JSON for declared ELF packaging, distinct from parseBuildRequest. */
+export function parseDeclaredPackagingRequest(json) { return validateDeclaredPackagingRequest(parseContractJSON(json)); }
+/** Exact validated packaging input identity, independent of linked ELF and capsule output hashes. */
+export function declaredPackagingIdentity(request) { return dataIdentity(validateDeclaredPackagingRequest(request)); }
 
 function nanoTarget() {
   const { board, profile, recipeIdentifier, recipeSHA256 } = NANO_BASELINE;

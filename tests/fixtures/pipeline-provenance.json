@@ -42,6 +42,10 @@
     "golden-packaging-receipt.json": {
       "bytes": 1191,
       "sha256": "c951417d6e72dc9f0bb8699b8b0809990f8b99b663e77f8c309a4449819f8992"
+    },
+    "declared-packaging-reference.json": {
+      "bytes": 4658,
+      "sha256": "5faaa180fe3ebc684eca75cefec0ba1f3eacb45471bceceb821c60856431170f"
     }
   }
 }

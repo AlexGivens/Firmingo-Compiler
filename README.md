@@ -15,7 +15,7 @@ owns portable compilation, recipes, packaging, diagnostics and static metadata.
 FirmingoKit owns Swift hosting, device associations, communication and deployment.
 FirmingoKit now delegates its build APIs to this package through a tested macOS WebKit adapter;
 both public preparation APIs also use the shared service-free worker;
-public supplied-ELF conversion remains a compatibility implementation.
+both public supplied-ELF conversion APIs now use shared declared-provenance packaging.
 
 Use pinned Node **22.12.0** for development; no external packages are required:
 
@@ -53,3 +53,6 @@ maintenance uses explicit inputs and new development output directories.
 
 [Service-free preparation hosting](docs/service-free-preparation.md) now covers the
 public Swift preparation adapters and standard module-worker path without a WASM binary.
+
+[Declared ELF packaging](docs/declared-elf-packaging.md) preserves legacy recipe
+declarations and Swift receipts while keeping actual compilation pins strict.

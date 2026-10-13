@@ -35,6 +35,8 @@ Chrome environment and [SDK adapter](sdk-adapter.md) for macOS WebKit; other bro
 | `CompilerController` | One active build; default web worker or explicit trusted host worker adapter |
 | `validateRuntimeEvent` | Synchronous bounded public event structure check; not cryptographic trust or ordering |
 | `serializeRuntimeEvent`, `parseRuntimeEvent` | Bounded JSON event encoding with canonical base64 capsule bytes |
+| `validateDeclaredPackagingRequest`, `parseDeclaredPackagingRequest`, `declaredPackagingIdentity` | Separate supplied-ELF declarations; never an executable build selection |
+| `packageDeclaredELF`, `PackagingController` | Shared ELF/FMS1 packaging with declared provenance and isolated cancellation/deadlines |
 
 Object calls accept plain data objects (including null-prototype objects), never
 arrays, class instances, accessors, symbols, or ignored additive fields. A local
@@ -44,6 +46,9 @@ fields before validation. Validation snapshots caller data before asynchronous
 hashing so later source edits cannot alter its identity.
 
 ## Build input
+
+Supplied-ELF conversion uses the separate [declared-packaging contract](declared-elf-packaging.md).
+The actual-build pins below remain strict.
 
 `schemas/build-request.schema.json` describes the closed shape. Every field is
 required; there is no automatic target/latest selection, library discovery,

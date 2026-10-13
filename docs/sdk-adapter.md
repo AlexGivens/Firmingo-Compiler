@@ -1,5 +1,7 @@
 # FirmingoKit adapter and source package
 
+Current supplied-ELF conversion and package identities: [declared ELF packaging](declared-elf-packaging.md). Earlier implementation records below remain historical evidence.
+
 Implemented locally on 2026-10-12. FirmingoKit's two `ManagedSketchCompiler.build`
 overloads now delegate raw captured source to this compiler for preprocessing,
 WASM compilation/linking, ELF validation and FMS1 packaging. Swift retains resource
