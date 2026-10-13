@@ -62,3 +62,7 @@ and patch state while preserving unresolved distribution gaps.
 [Experimental resident import](docs/resident-import.md) consumes verified firmware
 exports into explicit metadata outputs; two actual WASM capsules pass the independent
 firmware validator. No default catalogue or hardware qualification changes.
+
+[Owned service maintenance](docs/service-build.md) captures explicit source,
+sysroot/resource and native bootstrap inputs, builds in new owned directories,
+and verifies repeat-build bytes. No compiler binary is added to consumer resources.

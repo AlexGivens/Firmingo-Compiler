@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "component": "wasi-libc",
+  "version": "wasi-sdk-32",
+  "sourceArchive": {
+    "url": "https://github.com/WebAssembly/wasi-libc/archive/refs/tags/wasi-sdk-32.tar.gz",
+    "bytes": 1637111,
+    "sha256": "ea9827495c0f35bca3b3d0a953e854cac112c43bea3196b5a4f7f8fc4704b9a4"
+  },
+  "files": [
+    {
+      "path": "LICENSE",
+      "sourcePath": "wasi-libc-wasi-sdk-32/LICENSE",
+      "bytes": 910,
+      "sha256": "2711a8b5a5cdfef0e639f96c1aca12ae23d7d64a02d0507f1bdf14d2b27bbc3a"
+    },
+    {
+      "path": "LICENSE-APACHE",
+      "sourcePath": "wasi-libc-wasi-sdk-32/LICENSE-APACHE",
+      "bytes": 10847,
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+    },
+    {
+      "path": "LICENSE-APACHE-LLVM",
+      "sourcePath": "wasi-libc-wasi-sdk-32/LICENSE-APACHE-LLVM",
+      "bytes": 12243,
+      "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5"
+    },
+    {
+      "path": "LICENSE-MIT",
+      "sourcePath": "wasi-libc-wasi-sdk-32/LICENSE-MIT",
+      "bytes": 1023,
+      "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+    },
+    {
+      "path": "fts/musl-fts/COPYING",
+      "sourcePath": "wasi-libc-wasi-sdk-32/fts/musl-fts/COPYING",
+      "bytes": 1514,
+      "sha256": "55af87e4017668f54467a3380e7ebbac5e672d8c763bfe95e6fc882a6fdc4046"
+    },
+    {
+      "path": "libc-bottom-half/cloudlibc/LICENSE",
+      "sourcePath": "wasi-libc-wasi-sdk-32/libc-bottom-half/cloudlibc/LICENSE",
+      "bytes": 1292,
+      "sha256": "c8b789cf5a746611e6300a0cc7750dbf92b61912a709d04e639245f7290656d0"
+    },
+    {
+      "path": "libc-top-half/musl/COPYRIGHT",
+      "sourcePath": "wasi-libc-wasi-sdk-32/libc-top-half/musl/COPYRIGHT",
+      "bytes": 6204,
+      "sha256": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af"
+    },
+    {
+      "path": "tools/wasi-headers/LICENSE",
+      "sourcePath": "wasi-libc-wasi-sdk-32/tools/wasi-headers/LICENSE",
+      "bytes": 12243,
+      "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5"
+    }
+  ],
+  "allocatorReferences": [
+    {
+      "sourcePath": "wasi-libc-wasi-sdk-32/dlmalloc/src/malloc.c",
+      "bytes": 224221,
+      "sha256": "9e7ce51d813331ae87ef235f6ca2d5ce2167692e30bb51a173513e3754a67f8f",
+      "noticeReview": "allocator file-specific notices remain in pinned source archive; not represented by top-level notices alone"
+    },
+    {
+      "sourcePath": "wasi-libc-wasi-sdk-32/emmalloc/emmalloc.c",
+      "bytes": 58653,
+      "sha256": "c5b52c424c9101ba9b2d1338997e1758c9fdf369ab0450d9b72e9544fe482166",
+      "noticeReview": "allocator file-specific notices remain in pinned source archive; not represented by top-level notices alone"
+    }
+  ],
+  "distributionStatus": "unresolved",
+  "scope": "unchanged selected upstream license/copyright files; not full component/source reproduction or redistribution approval",
+  "sourceExcerpts": [
+    {
+      "path": "dlmalloc-NOTICE.txt",
+      "sourcePath": "wasi-libc-wasi-sdk-32/dlmalloc/src/malloc.c",
+      "firstLine": 1,
+      "lineCount": 6,
+      "sourceFileSHA256": "9e7ce51d813331ae87ef235f6ca2d5ce2167692e30bb51a173513e3754a67f8f",
+      "bytes": 269,
+      "sha256": "80cd40e7a6955355308ece79af9e8dcb3646af20e79c75ac6f3f9bf02536e929",
+      "scope": "unchanged allocator attribution/public-domain declaration excerpt, no source implementation"
+    }
+  ],
+  "installedAllocatorObservation": {
+    "archiveRole": "sysroot lib/wasm32-wasip1/libc.a",
+    "member": "dlmalloc.c.obj",
+    "scope": "observed member name only; source reconstruction and full notice review remain open"
+  }
+}

@@ -1,0 +1,3821 @@
+{
+  "schema": 1,
+  "date": "2026-10-13",
+  "operation": "owned_service_source_build_validation",
+  "recipeIdentifier": "llvm-22.1.8-wasip1-service-v1-development",
+  "inputManifestSHA256": "0c68ee049a09fbf4db92eee10f1dd5babff925ffb6593389b0b1e9d8e6f65ee3",
+  "producerImplementation": {
+    "bytes": 35542,
+    "path": "tools/service_build.py",
+    "sha256": "d21cd02e7ddc80416b4158cce15a75f018ad5003002743cbbb92c5c935c7da06"
+  },
+  "producerNote": "full source builds use the captured implementation; later read-only Git guard and receipt-comparison checks change maintenance identity without changing native recipe/compile/link flags",
+  "inputCounts": {
+    "llvmSources": 113508,
+    "serviceInputs": 23,
+    "sysroot": 9697,
+    "resources": 308,
+    "cmakeModules": 4133,
+    "pythonStandardLibrary": 960,
+    "componentRecords": 27
+  },
+  "bootstrap": {
+    "files": [
+      {
+        "bytes": 142264,
+        "name": "clang-22",
+        "sha256": "17a39d366aa6782d85adfe546c9ee1b799a01a38448188b0f818b104fa8e2bdd"
+      },
+      {
+        "bytes": 2490848,
+        "name": "clang-tblgen",
+        "sha256": "453fcd3dc08a59d4392ea8e510061f080d91b94a95a170dc076c5762b4ea3c16"
+      },
+      {
+        "bytes": 14832520,
+        "name": "cmake",
+        "sha256": "e26096151c98e03f635d56ff15b1ab2724c342f5f5e7ec87018e492c49f5fdc4"
+      },
+      {
+        "bytes": 156850400,
+        "name": "libLLVM.dylib",
+        "sha256": "c2ded6d607d4175cb3246be1be8ce41d6e4af217774ae5859e9bff453e418893"
+      },
+      {
+        "bytes": 64779136,
+        "name": "libclang-cpp.dylib",
+        "sha256": "ea13b7f21aafe1edafef784c8210dbeda2fba471c87dc0a1cbf3442e3d031379"
+      },
+      {
+        "bytes": 1225136,
+        "name": "liblldCOFF.dylib",
+        "sha256": "e36707f4744c69070883c6baa73c0e09a14f58930b8174001510c44f0fce1e45"
+      },
+      {
+        "bytes": 139568,
+        "name": "liblldCommon.dylib",
+        "sha256": "d85c1711212346c0984f03f7bca08297d95902d916dd317a19d5b78a4969af13"
+      },
+      {
+        "bytes": 2978816,
+        "name": "liblldELF.dylib",
+        "sha256": "3c09643a99eef0536a55a2004a337cf8d749d3a7040589de3bc94d9294c1220e"
+      },
+      {
+        "bytes": 1045152,
+        "name": "liblldMachO.dylib",
+        "sha256": "eb1ab492f0d4912d8921ac4664485494a16813d2b25f4775323bf960eca79786"
+      },
+      {
+        "bytes": 63488,
+        "name": "liblldMinGW.dylib",
+        "sha256": "6ee15e14f23354fcf5f10550c898eedcb8d590769a96ebb81a92f78a24cbf45f"
+      },
+      {
+        "bytes": 484128,
+        "name": "liblldWasm.dylib",
+        "sha256": "e416eacc59a1937db349e4fc0bb0c3b9f325b0dd66c6c8eb560f46cccc11f711"
+      },
+      {
+        "bytes": 15715760,
+        "name": "libz3.4.16.0.0.dylib",
+        "sha256": "c7265db9f8cbf35c447763b36676057685055fae29a9c19abef244875610dba4"
+      },
+      {
+        "bytes": 736080,
+        "name": "libzstd.1.5.7.dylib",
+        "sha256": "71e7cda9f26bcf70c5fc8914231466972b32c0dcb3ff2030071a57a360a0ae84"
+      },
+      {
+        "bytes": 30080,
+        "name": "lld",
+        "sha256": "e7591d9155fb03ccfa5f09159af9c9eb4b8e978aad412bfb2ee33f3843759f85"
+      },
+      {
+        "bytes": 88744,
+        "name": "llvm-ar",
+        "sha256": "cd6bb1b9e79d2612696ee6981e1f4e955339d68e3ec0b315fdd1cc51f5a15bd7"
+      },
+      {
+        "bytes": 4782656,
+        "name": "llvm-tblgen",
+        "sha256": "85ebdf0106ac1e75fee77ccacfa895ca8c02eb3f7ab7984882efdfb46cd8920d"
+      },
+      {
+        "bytes": 355496,
+        "name": "ninja",
+        "sha256": "60c7c47ab82bb108e9b6a84d2716409c81e0e83cac640ecf072fa91113ec88ed"
+      },
+      {
+        "bytes": 248392592,
+        "name": "node",
+        "sha256": "9c40e9b16cacab464b63e45731ffd020830144a14c50d440b59b90e22709fe80"
+      },
+      {
+        "bytes": 18058560,
+        "name": "python3.12",
+        "sha256": "39bf33dd80ffd5e8c087cbd52164cbe0d8485f73b44687d0d466b0f49e197129"
+      }
+    ],
+    "os": "macOS-27.0-arm64-arm-64bit",
+    "scope": "non-system Darwin loader file closure; OS shared-cache bytes/source reproduction outside this proof",
+    "systemLibraries": [
+      "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+      "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+      "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+      "/usr/lib/libSystem.B.dylib",
+      "/usr/lib/libbz2.1.0.dylib",
+      "/usr/lib/libc++.1.dylib",
+      "/usr/lib/libcharset.1.dylib",
+      "/usr/lib/libcurl.4.dylib",
+      "/usr/lib/libedit.3.dylib",
+      "/usr/lib/libffi.dylib",
+      "/usr/lib/libiconv.2.dylib",
+      "/usr/lib/libncurses.5.4.dylib",
+      "/usr/lib/libpanel.5.4.dylib",
+      "/usr/lib/libxml2.2.dylib",
+      "/usr/lib/libz.1.dylib"
+    ]
+  },
+  "nativeTools": {
+    "ar": {
+      "bytes": 88744,
+      "sha256": "cd6bb1b9e79d2612696ee6981e1f4e955339d68e3ec0b315fdd1cc51f5a15bd7",
+      "version": "22.1.8"
+    },
+    "clang": {
+      "bytes": 142264,
+      "sha256": "17a39d366aa6782d85adfe546c9ee1b799a01a38448188b0f818b104fa8e2bdd",
+      "version": "22.1.8"
+    },
+    "clangTablegen": {
+      "bytes": 2490848,
+      "sha256": "453fcd3dc08a59d4392ea8e510061f080d91b94a95a170dc076c5762b4ea3c16",
+      "version": "22.1.8"
+    },
+    "clangxx": {
+      "bytes": 142264,
+      "sha256": "17a39d366aa6782d85adfe546c9ee1b799a01a38448188b0f818b104fa8e2bdd",
+      "version": "22.1.8"
+    },
+    "cmake": {
+      "bytes": 14832520,
+      "sha256": "e26096151c98e03f635d56ff15b1ab2724c342f5f5e7ec87018e492c49f5fdc4",
+      "version": "4.4.0"
+    },
+    "linker": {
+      "bytes": 30080,
+      "sha256": "e7591d9155fb03ccfa5f09159af9c9eb4b8e978aad412bfb2ee33f3843759f85",
+      "version": "22.1.8"
+    },
+    "llvmTablegen": {
+      "bytes": 4782656,
+      "sha256": "85ebdf0106ac1e75fee77ccacfa895ca8c02eb3f7ab7984882efdfb46cd8920d",
+      "version": "22.1.8"
+    },
+    "ninja": {
+      "bytes": 355496,
+      "sha256": "60c7c47ab82bb108e9b6a84d2716409c81e0e83cac640ecf072fa91113ec88ed",
+      "version": "1.13.2"
+    },
+    "node": {
+      "bytes": 248392592,
+      "sha256": "9c40e9b16cacab464b63e45731ffd020830144a14c50d440b59b90e22709fe80",
+      "version": "22.12.0"
+    },
+    "ranlib": {
+      "bytes": 88744,
+      "sha256": "cd6bb1b9e79d2612696ee6981e1f4e955339d68e3ec0b315fdd1cc51f5a15bd7",
+      "version": "22.1.8"
+    }
+  },
+  "maintenancePython": {
+    "bytes": 18058560,
+    "sha256": "39bf33dd80ffd5e8c087cbd52164cbe0d8485f73b44687d0d466b0f49e197129",
+    "version": "3.12.14"
+  },
+  "firstBuild": {
+    "distributionStatus": "unresolved",
+    "inputManifestSHA256": "0c68ee049a09fbf4db92eee10f1dd5babff925ffb6593389b0b1e9d8e6f65ee3",
+    "linkedArchiveCount": 96,
+    "module": {
+      "bytes": 101194613,
+      "path": "compiler.wasm",
+      "sha256": "58a06c969b4848b7e22ce45f1a92fe887e76883131696205707046f8fda1462f"
+    },
+    "recipeIdentifier": "llvm-22.1.8-wasip1-service-v1-development",
+    "schema": 1,
+    "status": "built_owned_development_service",
+    "upstreamRuntimeSourceReproduction": "not established by installed-component capture"
+  },
+  "moduleInspection": {
+    "bytes": 101194613,
+    "declaredServiceABI": 2,
+    "distributionStatus": "unresolved",
+    "exports": [
+      {
+        "kind": "function",
+        "name": "_initialize"
+      },
+      {
+        "kind": "function",
+        "name": "arduino_compiler_service_abi_version"
+      },
+      {
+        "kind": "function",
+        "name": "arduino_compiler_service_build"
+      },
+      {
+        "kind": "function",
+        "name": "arduino_compiler_service_can_run_again"
+      },
+      {
+        "kind": "function",
+        "name": "arduino_compiler_service_compile"
+      },
+      {
+        "kind": "function",
+        "name": "arduino_compiler_service_last_diagnostics"
+      },
+      {
+        "kind": "function",
+        "name": "arduino_compiler_service_last_diagnostics_size"
+      },
+      {
+        "kind": "function",
+        "name": "arduino_compiler_service_link"
+      },
+      {
+        "kind": "function",
+        "name": "free"
+      },
+      {
+        "kind": "function",
+        "name": "malloc"
+      },
+      {
+        "kind": "memory",
+        "name": "memory"
+      }
+    ],
+    "imports": [
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "clock_time_get"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "environ_get"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "environ_sizes_get"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "fd_close"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "fd_fdstat_get"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "fd_fdstat_set_flags"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "fd_filestat_get"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "fd_filestat_set_size"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "fd_pread"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "fd_prestat_dir_name"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "fd_prestat_get"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "fd_read"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "fd_readdir"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "fd_seek"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "fd_write"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "path_create_directory"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "path_filestat_get"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "path_open"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "path_readlink"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "path_remove_directory"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "path_rename"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "path_symlink"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "path_unlink_file"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "poll_oneoff"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "proc_exit"
+      },
+      {
+        "kind": "function",
+        "module": "wasi_snapshot_preview1",
+        "name": "random_get"
+      }
+    ],
+    "instantiated": false,
+    "memory": {
+      "maximumPages": 4096,
+      "minimumPages": 384
+    },
+    "schema": 1,
+    "sha256": "58a06c969b4848b7e22ce45f1a92fe887e76883131696205707046f8fda1462f",
+    "status": "statically_validated_owned_service"
+  },
+  "sourceObjectsInventory": {
+    "bytes": 28977168,
+    "sha256": "885ddb55054227432e23c7088c06d3a67023cb2acd6b29298a42ffc658b82f77"
+  },
+  "patchedSources": [
+    {
+      "bytes": 2703,
+      "path": "clang/include/clang/Support/Compiler.h",
+      "sha256": "b5852b9836d0758411a87f6d9614da820ba41ccc795b1b488323e8c42b971b69"
+    },
+    {
+      "bytes": 292185,
+      "path": "clang/lib/Driver/Driver.cpp",
+      "sha256": "1d6bbecf75d4eeaf619b0c78b3af52e29924325fc7cefabc673d272c2326fe3d"
+    },
+    {
+      "bytes": 67744,
+      "path": "llvm/cmake/modules/HandleLLVMOptions.cmake",
+      "sha256": "ab4ba53472dd74e0e153788154a3577fa7e7f8a2f0cbc07fabd164b00b7199bd"
+    },
+    {
+      "bytes": 12545,
+      "path": "llvm/include/llvm/ADT/bit.h",
+      "sha256": "b5041a1266ccb0503c7019838deeef2d54d4220d490afc4d20856faddb143dad"
+    },
+    {
+      "bytes": 18194,
+      "path": "llvm/lib/Support/CrashRecoveryContext.cpp",
+      "sha256": "43a376344952786a16cf8bebdbbd258e5dd530b103056f7cd02129533eed26ee"
+    },
+    {
+      "bytes": 8865,
+      "path": "llvm/lib/Support/Jobserver.cpp",
+      "sha256": "1c577943f304b6bcbecbcecf5e060ec28b2afc0a6ff164b6d1215b1a71eb666a"
+    },
+    {
+      "bytes": 10026,
+      "path": "llvm/lib/Support/LockFileManager.cpp",
+      "sha256": "692da8789364ce362507cd13a714a3f299f9e9dcf5e1a021985c8ddf8c8624b5"
+    },
+    {
+      "bytes": 1631,
+      "path": "llvm/lib/Support/Memory.cpp",
+      "sha256": "e5fc7d3ff780c721949b2db581de8e907d8ac91132871395ed5acbb4c4058a73"
+    },
+    {
+      "bytes": 4222,
+      "path": "llvm/lib/Support/ProgramStack.cpp",
+      "sha256": "c9ccb6e009d835d72d79df6ff9f22686c33c70bc6e37e267deed212490b4d784"
+    },
+    {
+      "bytes": 3408,
+      "path": "llvm/lib/Support/RandomNumberGenerator.cpp",
+      "sha256": "8c58ffb5582c1a6b41ac1b0d566f66002ecbec0e55190411eb84f84120b1990a"
+    },
+    {
+      "bytes": 15605,
+      "path": "llvm/lib/Support/Signals.cpp",
+      "sha256": "ac2b4db701def9f764c5857d294517a9c4f0454e18f015bef728b6000dc3c88e"
+    },
+    {
+      "bytes": 3915,
+      "path": "llvm/lib/Support/Unix/DynamicLibrary.inc",
+      "sha256": "c7535666541a2534cf9cf5ddad9d155d5d4acbbf767dfafb78b57918ad617ed7"
+    },
+    {
+      "bytes": 50369,
+      "path": "llvm/lib/Support/Unix/Path.inc",
+      "sha256": "77083eb233519c64f226cf721f0ca72370725b667be22cff4dd63246a2b68c8d"
+    },
+    {
+      "bytes": 13773,
+      "path": "llvm/lib/Support/Unix/Process.inc",
+      "sha256": "02e2ee7ee99eb7dfc2f5be5de518c27e2c0f656ed0e9ce43e23d70c7f86e04e7"
+    },
+    {
+      "bytes": 18731,
+      "path": "llvm/lib/Support/Unix/Program.inc",
+      "sha256": "0354fe9fb5e304af4369825d1561df6aff845867e537c40e16b43e0ed6512173"
+    },
+    {
+      "bytes": 3140,
+      "path": "llvm/lib/Support/Unix/Unix.h",
+      "sha256": "2b0d29da55bad2a59fb8f651d201d2287c2f43569225668b55719fbe86cf357e"
+    },
+    {
+      "bytes": 953,
+      "path": "llvm/lib/Support/Unix/Watchdog.inc",
+      "sha256": "b00762f249fadd9cab00a1bcf075579ec2a5877c19a63fb72e975ea3138d862c"
+    },
+    {
+      "bytes": 1982,
+      "path": "llvm/lib/Support/WASI/Memory.inc",
+      "sha256": "58b09d9979cc6c7e6ea48ac7cdfb3cb11d7f046d934eb4016b73c5bf0e502e59"
+    },
+    {
+      "bytes": 14112,
+      "path": "llvm/lib/Support/raw_socket_stream.cpp",
+      "sha256": "a117cdf3789d3e1e6e98599f0d28ffd149860e66de91fcadc4ccbbaecd70de05"
+    }
+  ],
+  "linkInputs": {
+    "clangHeaders": [
+      {
+        "bytes": 41072,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AbstractBasicReader.inc",
+        "path": "clang/AST/AbstractBasicReader.inc",
+        "sha256": "7ede36cf6bc7796c3840a2853798812389bc9722c298922cab52276c3faa3892"
+      },
+      {
+        "bytes": 25,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AbstractBasicReader.inc.d",
+        "path": "clang/AST/AbstractBasicReader.inc.d",
+        "sha256": "844fa9ef892330af14d092a7e6c31778a411944b755986dbec9d3e48432706ac"
+      },
+      {
+        "bytes": 46977,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AbstractBasicWriter.inc",
+        "path": "clang/AST/AbstractBasicWriter.inc",
+        "sha256": "d28a3a62564d15fc7dd0a4c075166828b3ad9833b87f91d14ddffab2221db41d"
+      },
+      {
+        "bytes": 25,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AbstractBasicWriter.inc.d",
+        "path": "clang/AST/AbstractBasicWriter.inc.d",
+        "sha256": "dc062966e7c79f9975124058996fc08bbb79df2c5e6ed038f0c2a8294d5a3c51"
+      },
+      {
+        "bytes": 33576,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AbstractTypeReader.inc",
+        "path": "clang/AST/AbstractTypeReader.inc",
+        "sha256": "5302a47e8cb791fbd152c96a84180a6e9c38853a4d7526240ebd637e1e0111ec"
+      },
+      {
+        "bytes": 403,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AbstractTypeReader.inc.d",
+        "path": "clang/AST/AbstractTypeReader.inc.d",
+        "sha256": "a8570abdfbb58bdfbe6873fa3dfde12cc3dc6294a2bf339aae56a729351683f9"
+      },
+      {
+        "bytes": 34803,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AbstractTypeWriter.inc",
+        "path": "clang/AST/AbstractTypeWriter.inc",
+        "sha256": "84504a93a82e2a69e03cb747b32d7bc217542648f554d086ee6c8b851b7ffac3"
+      },
+      {
+        "bytes": 403,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AbstractTypeWriter.inc.d",
+        "path": "clang/AST/AbstractTypeWriter.inc.d",
+        "sha256": "4babe6f76f5944ff4964ffe04614a6c00ea18b2f695a7e7054b4ba283c745688"
+      },
+      {
+        "bytes": 2034194,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AttrImpl.inc",
+        "path": "clang/AST/AttrImpl.inc",
+        "sha256": "c6205e6ac92fc24360681a410292d8734f84b6ca345b1f7127fd0b725468411c"
+      },
+      {
+        "bytes": 515,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AttrImpl.inc.d",
+        "path": "clang/AST/AttrImpl.inc.d",
+        "sha256": "c717d3b9e1f1bfc0fb756889d7771242b36e0c727a9caefc88e50e990733a6ac"
+      },
+      {
+        "bytes": 11434,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AttrNodeTraverse.inc",
+        "path": "clang/AST/AttrNodeTraverse.inc",
+        "sha256": "72f021f329d546010105de94f6f45b29f195d6e9fb98bdbe0fc98f38d1a22e11"
+      },
+      {
+        "bytes": 523,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AttrNodeTraverse.inc.d",
+        "path": "clang/AST/AttrNodeTraverse.inc.d",
+        "sha256": "d64221ac307e3fd61bf6c8b881ce31a0c3718153a360c90d6f3080ae8741677b"
+      },
+      {
+        "bytes": 53323,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AttrTextNodeDump.inc",
+        "path": "clang/AST/AttrTextNodeDump.inc",
+        "sha256": "a8d086bed120100c6a8dc5ece54cf123fbaad5e028fc52dabc0fd75b71d20eeb"
+      },
+      {
+        "bytes": 523,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AttrTextNodeDump.inc.d",
+        "path": "clang/AST/AttrTextNodeDump.inc.d",
+        "sha256": "bd3538e38cd994214a1a67eed022bfcce6b7a904060260a7a13d150e638b8fb6"
+      },
+      {
+        "bytes": 232171,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AttrVisitor.inc",
+        "path": "clang/AST/AttrVisitor.inc",
+        "sha256": "1c802a4b1c3fa0dcf9eac42cff7a47c6d3193a2feb88c75bee73931542e2aa1e"
+      },
+      {
+        "bytes": 518,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/AttrVisitor.inc.d",
+        "path": "clang/AST/AttrVisitor.inc.d",
+        "sha256": "d243f572784716a1ce0c92839c2f2652451dd35d290a1b08cc3c34c0adf4751b"
+      },
+      {
+        "bytes": 622624,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/Attrs.inc",
+        "path": "clang/AST/Attrs.inc",
+        "sha256": "5e8164926f940744ae1750b643a473623b13569384dfb78caf1656bbd9e718db"
+      },
+      {
+        "bytes": 512,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/Attrs.inc.d",
+        "path": "clang/AST/Attrs.inc.d",
+        "sha256": "8904f40751c8f6ea923b63cd39f430175c671eb1f8b2a6335408686eb8d89293"
+      },
+      {
+        "bytes": 55496,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/CommentCommandInfo.inc",
+        "path": "clang/AST/CommentCommandInfo.inc",
+        "sha256": "12cd1d4a6b95831b82949f110b0384e33c915ab97a17e362ead619e1f12578e0"
+      },
+      {
+        "bytes": 24,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/CommentCommandInfo.inc.d",
+        "path": "clang/AST/CommentCommandInfo.inc.d",
+        "sha256": "f12c0b8ab4f91229617796e1c09203105b7cfc6b049cc0754c0788af28771ed2"
+      },
+      {
+        "bytes": 5779,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/CommentCommandList.inc",
+        "path": "clang/AST/CommentCommandList.inc",
+        "sha256": "94953f726c0f489c7d52ed141ad259a182049688082f710d11b6e816e47a9c95"
+      },
+      {
+        "bytes": 24,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/CommentCommandList.inc.d",
+        "path": "clang/AST/CommentCommandList.inc.d",
+        "sha256": "f650ebbed87175b2a4410bc799f4ff53c508db87d27c00edcec3458915fd5d19"
+      },
+      {
+        "bytes": 25747,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/CommentHTMLNamedCharacterReferences.inc",
+        "path": "clang/AST/CommentHTMLNamedCharacterReferences.inc",
+        "sha256": "894684de78996af205f50e300ae680662f639a974cca072901b95f2d0a1f5eb9"
+      },
+      {
+        "bytes": 41,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/CommentHTMLNamedCharacterReferences.inc.d",
+        "path": "clang/AST/CommentHTMLNamedCharacterReferences.inc.d",
+        "sha256": "d1f53968a020968c4d326b5fa65b185644733fc80973516dc5f3fee9c39b59cf"
+      },
+      {
+        "bytes": 7762,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/CommentHTMLTags.inc",
+        "path": "clang/AST/CommentHTMLTags.inc",
+        "sha256": "ad029887ed4db8c4197f5ec7a0ef9de5128c5556ff8cd47f801d4e6a2e5fa682"
+      },
+      {
+        "bytes": 21,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/CommentHTMLTags.inc.d",
+        "path": "clang/AST/CommentHTMLTags.inc.d",
+        "sha256": "e08127663ec648d77288eaa9c630a6bd937d7500b52b90f4bdfc5625c378f087"
+      },
+      {
+        "bytes": 3031,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/CommentHTMLTagsProperties.inc",
+        "path": "clang/AST/CommentHTMLTagsProperties.inc",
+        "sha256": "bd6ec7642b5529f8fdc09576a83d0dab6635e655dc331e6cde970eaf67294d43"
+      },
+      {
+        "bytes": 31,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/CommentHTMLTagsProperties.inc.d",
+        "path": "clang/AST/CommentHTMLTagsProperties.inc.d",
+        "sha256": "1307b1067fcb24549f389b8dd8a072327df1ebf5e4b095734a8460812f720a32"
+      },
+      {
+        "bytes": 4207,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/CommentNodes.inc",
+        "path": "clang/AST/CommentNodes.inc",
+        "sha256": "f0d4cccf6fff98f02737958bde1c0bd5d694e2fa78cf73bda80af872ee9d80c0"
+      },
+      {
+        "bytes": 142,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/CommentNodes.inc.d",
+        "path": "clang/AST/CommentNodes.inc.d",
+        "sha256": "f8dd731a84bde4cc58fdf41565bdc2c30321e1b8ca222252e062933184fe4840"
+      },
+      {
+        "bytes": 19171,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/DeclNodes.inc",
+        "path": "clang/AST/DeclNodes.inc",
+        "sha256": "3cda6f9e8d9491dfcd011b22d3b00ce1e4792d2326cbe3116e3286c479606cc8"
+      },
+      {
+        "bytes": 139,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/DeclNodes.inc.d",
+        "path": "clang/AST/DeclNodes.inc.d",
+        "sha256": "ba6ccdca0151893545474ddb34301087de3122320e8fdeac7c0a31cc6a537b1a"
+      },
+      {
+        "bytes": 4607,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/StmtDataCollectors.inc",
+        "path": "clang/AST/StmtDataCollectors.inc",
+        "sha256": "82ee3832ffa296c9733967c38a1030a218a6dd46fa4322a169362c4cfb3d6e78"
+      },
+      {
+        "bytes": 24,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/StmtDataCollectors.inc.d",
+        "path": "clang/AST/StmtDataCollectors.inc.d",
+        "sha256": "6ab8c1d4caa4d4f4f360b9b45f0db6139a9c4ae0ed3c2365ebea78004a1779c2"
+      },
+      {
+        "bytes": 53595,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/StmtNodes.inc",
+        "path": "clang/AST/StmtNodes.inc",
+        "sha256": "5c803db91f8e866f7a188fa94ef9580264ed0859cd394293fc054d6ba4be09b7"
+      },
+      {
+        "bytes": 139,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/StmtNodes.inc.d",
+        "path": "clang/AST/StmtNodes.inc.d",
+        "sha256": "f635137a50fab88378a432061d74e6bec5f9fb46ee0484a23754ef0a31d62a8f"
+      },
+      {
+        "bytes": 3799,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/TypeNodes.inc",
+        "path": "clang/AST/TypeNodes.inc",
+        "sha256": "848bc3ef0e7bdc19db453013c383f222f25a04c9f04c930ac32338e44d85410f"
+      },
+      {
+        "bytes": 139,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/TypeNodes.inc.d",
+        "path": "clang/AST/TypeNodes.inc.d",
+        "sha256": "4de3666f318fd090bbfb97f504aebc3e16cbde0120f6ca40c955b3cfa5b9af78"
+      },
+      {
+        "bytes": 1630,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/AST/cmake_install.cmake",
+        "path": "clang/AST/cmake_install.cmake",
+        "sha256": "2278b125dfb6839c4993a4dea53e1af37e96dbac7e6241b50beb18695fe9a267"
+      },
+      {
+        "bytes": 57055,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/AttrHasAttributeImpl.inc",
+        "path": "clang/Basic/AttrHasAttributeImpl.inc",
+        "sha256": "f1469e0922f4d65636d2d52826d96ac3661d8b2437a0714c3e90bdc3c132ca75"
+      },
+      {
+        "bytes": 599,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/AttrHasAttributeImpl.inc.d",
+        "path": "clang/Basic/AttrHasAttributeImpl.inc.d",
+        "sha256": "46a9e2233d224458f795130c50db7e88cf4e104d7bf5add428a2b560df08c4ce"
+      },
+      {
+        "bytes": 16871,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/AttrList.inc",
+        "path": "clang/Basic/AttrList.inc",
+        "sha256": "045f7f54d0b4eec45117414b8c5bd8b3b77e1a77723a5afeac204624d8863f0c"
+      },
+      {
+        "bytes": 587,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/AttrList.inc.d",
+        "path": "clang/Basic/AttrList.inc.d",
+        "sha256": "fb04443d3c22264c202c9a6461ff5a019b34ceca15944012e591e712c9198dfc"
+      },
+      {
+        "bytes": 12527,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/AttrParsedAttrList.inc",
+        "path": "clang/Basic/AttrParsedAttrList.inc",
+        "sha256": "214904fc698e6687ed3b065eb957a2218eabf2e9a9f452c3d62c6723b014c0fc"
+      },
+      {
+        "bytes": 597,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/AttrParsedAttrList.inc.d",
+        "path": "clang/Basic/AttrParsedAttrList.inc.d",
+        "sha256": "a93b94143e3ffd66ec289181a75bbf4f765db3e16f83108e0460f2c2dfe18f13"
+      },
+      {
+        "bytes": 3049,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/AttrSubMatchRulesList.inc",
+        "path": "clang/Basic/AttrSubMatchRulesList.inc",
+        "sha256": "a31187551c239c7819ef3535b7eeefbde045e5cedad8c153d4481840759a3317"
+      },
+      {
+        "bytes": 600,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/AttrSubMatchRulesList.inc.d",
+        "path": "clang/Basic/AttrSubMatchRulesList.inc.d",
+        "sha256": "478dbb9db3f060860260f66336c4900cb52190b951f3b726a923d4b409afcb68"
+      },
+      {
+        "bytes": 15443,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/AttributeSpellingList.inc",
+        "path": "clang/Basic/AttributeSpellingList.inc",
+        "sha256": "3ade5c1d08352644b109089b9e1c423bac561a98d80319e6756bad273d8c07fe"
+      },
+      {
+        "bytes": 600,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/AttributeSpellingList.inc.d",
+        "path": "clang/Basic/AttributeSpellingList.inc.d",
+        "sha256": "8f02e8d985f33758a4307b41cfc60f26556b9b40a170978663fd42a6eae3b854"
+      },
+      {
+        "bytes": 5507,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinTemplates.inc",
+        "path": "clang/Basic/BuiltinTemplates.inc",
+        "sha256": "292ad3bb38bfc97d40690ad223d349a97a8026631355c65cfda4403d2e40f84b"
+      },
+      {
+        "bytes": 22,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinTemplates.inc.d",
+        "path": "clang/Basic/BuiltinTemplates.inc.d",
+        "sha256": "8dfcc17e469b889f6f4f17b4991d5a19f55df18da4dcf37d748a3cf929e5b68c"
+      },
+      {
+        "bytes": 316955,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/Builtins.inc",
+        "path": "clang/Basic/Builtins.inc",
+        "sha256": "cb7c9d25335ad3b944a9053957e136f872b5d7ab857f1c47ff665d329c7861a2"
+      },
+      {
+        "bytes": 143,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/Builtins.inc.d",
+        "path": "clang/Basic/Builtins.inc.d",
+        "sha256": "77b24f3978978620b131fa46e11408285cb226fed1d4bb9abdd6e11bdcf88e14"
+      },
+      {
+        "bytes": 2133,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsBPF.inc",
+        "path": "clang/Basic/BuiltinsBPF.inc",
+        "sha256": "2d043004475c46b2ae30a8226e1f516bd74054d394a2992c09a4c81e3f263eb8"
+      },
+      {
+        "bytes": 146,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsBPF.inc.d",
+        "path": "clang/Basic/BuiltinsBPF.inc.d",
+        "sha256": "45ce17e0ae43ceee356082b50a3562e65b2e78cfc568e1da53c465fa8e127b6b"
+      },
+      {
+        "bytes": 1416,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsDirectX.inc",
+        "path": "clang/Basic/BuiltinsDirectX.inc",
+        "sha256": "ce86e24e3952881834030115c718e468a8d24655ee30458bc2740a333123b8ec"
+      },
+      {
+        "bytes": 150,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsDirectX.inc.d",
+        "path": "clang/Basic/BuiltinsDirectX.inc.d",
+        "sha256": "54f80a12972ac96fc9b03853abcd32266cdbf9a107364649112546b48fc1a2d9"
+      },
+      {
+        "bytes": 570178,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsHexagon.inc",
+        "path": "clang/Basic/BuiltinsHexagon.inc",
+        "sha256": "33091c34d35b4c8a2deb634dde80ae5e1450c395c67373c05175200c9a7a9b38"
+      },
+      {
+        "bytes": 150,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsHexagon.inc.d",
+        "path": "clang/Basic/BuiltinsHexagon.inc.d",
+        "sha256": "00890eef60339e0dce1931b2cd3109ba99e1de42867fc052663b63d515c2a406"
+      },
+      {
+        "bytes": 287487,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsNVPTX.inc",
+        "path": "clang/Basic/BuiltinsNVPTX.inc",
+        "sha256": "2f0703d4b93e91165b2f3b1c3fd46ac368b34e25c96b2ba4171db99085bc763a"
+      },
+      {
+        "bytes": 148,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsNVPTX.inc.d",
+        "path": "clang/Basic/BuiltinsNVPTX.inc.d",
+        "sha256": "1c477f3d65e20bd3030b4af6534a17e55d49704e15f6971926a2ecf9f7fe6a1b"
+      },
+      {
+        "bytes": 21515,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsRISCV.inc",
+        "path": "clang/Basic/BuiltinsRISCV.inc",
+        "sha256": "94a5c1217b35f4769ccf0183a1d5840359b098b82e31f39701bf6c36906d4226"
+      },
+      {
+        "bytes": 552,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsRISCV.inc.d",
+        "path": "clang/Basic/BuiltinsRISCV.inc.d",
+        "sha256": "3eaced8ce8c67009ad42578169b8087c2d8a39bb4bc62b3f149e294c21792dae"
+      },
+      {
+        "bytes": 2205,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsSPIRVCL.inc",
+        "path": "clang/Basic/BuiltinsSPIRVCL.inc",
+        "sha256": "096e1e6d9015c80c87aa58f29cad59bc32c658033a38fd21efb4d85b575532d7"
+      },
+      {
+        "bytes": 284,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsSPIRVCL.inc.d",
+        "path": "clang/Basic/BuiltinsSPIRVCL.inc.d",
+        "sha256": "af028e0c0d0429b9d76177e2bb555e40a74c45375771bcaab1e0b81c06f2cc2a"
+      },
+      {
+        "bytes": 4751,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsSPIRVCommon.inc",
+        "path": "clang/Basic/BuiltinsSPIRVCommon.inc",
+        "sha256": "77328bef74ad230c6c2943a8075f236082d85fd86a9b2862e9f94bebfd9c8290"
+      },
+      {
+        "bytes": 288,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsSPIRVCommon.inc.d",
+        "path": "clang/Basic/BuiltinsSPIRVCommon.inc.d",
+        "sha256": "b91b62081d40188098810e1650f23cac174616612224ab8168c8eecef2f9f6a1"
+      },
+      {
+        "bytes": 2464,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsSPIRVVK.inc",
+        "path": "clang/Basic/BuiltinsSPIRVVK.inc",
+        "sha256": "47f519ac1a26004eeeef95dec509076b3e0729c3a8a54ae6c1d0ca4b69f5ed2f"
+      },
+      {
+        "bytes": 284,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsSPIRVVK.inc.d",
+        "path": "clang/Basic/BuiltinsSPIRVVK.inc.d",
+        "sha256": "47a40c44a00a4cf06ad9963a21fb4f02c4a5d1639052d6223d49d7ef183a2ff0"
+      },
+      {
+        "bytes": 464881,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsX86.inc",
+        "path": "clang/Basic/BuiltinsX86.inc",
+        "sha256": "9d8ee1d14b5c65735486386ec5efd243009e0969104047d9d4285bc8367f0682"
+      },
+      {
+        "bytes": 278,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsX86.inc.d",
+        "path": "clang/Basic/BuiltinsX86.inc.d",
+        "sha256": "3330a2e5a1915cc6e4748e6e11f803c1841c3cfdf5dfb239012749a0513815c4"
+      },
+      {
+        "bytes": 39835,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsX86_64.inc",
+        "path": "clang/Basic/BuiltinsX86_64.inc",
+        "sha256": "54771a6fd9c87263ae6aa0c294aeb6393e1662c6d1c4176a800fb0ae2f05a544"
+      },
+      {
+        "bytes": 281,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/BuiltinsX86_64.inc.d",
+        "path": "clang/Basic/BuiltinsX86_64.inc.d",
+        "sha256": "1e0b8d9b20af0d2386ed467b6302e12cf1229e80a80d488eb28cc24bf24b6d59"
+      },
+      {
+        "bytes": 682,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/CXX11AttributeInfo.inc",
+        "path": "clang/Basic/CXX11AttributeInfo.inc",
+        "sha256": "86e4b5359289eed3498f5804cb910fe1498d4c5859ff25c1e3c892b2499978a4"
+      },
+      {
+        "bytes": 597,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/CXX11AttributeInfo.inc.d",
+        "path": "clang/Basic/CXX11AttributeInfo.inc.d",
+        "sha256": "276d880eff8f37686de7b7d24b3ddc06e382435898d9d12aa7d36587377ad4df"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticASTCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticASTCompatIDs.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2232,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticASTCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticASTCompatIDs.inc.d",
+        "sha256": "bfc91a5e0a99792f6b2ca4bab7ee84a8d00135e3b36780c170f595297b773180"
+      },
+      {
+        "bytes": 185,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticASTEnums.inc",
+        "path": "clang/Basic/DiagnosticASTEnums.inc",
+        "sha256": "d2c9008b0aba3f1e11e6125e93a7400f99e271fb9694c8e425dddc6301b2524a"
+      },
+      {
+        "bytes": 2228,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticASTEnums.inc.d",
+        "path": "clang/Basic/DiagnosticASTEnums.inc.d",
+        "sha256": "cd170cc9d771a567a930888308ded479cdf381122e72643adbc94190750ed5c5"
+      },
+      {
+        "bytes": 1381,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticASTInterface.inc",
+        "path": "clang/Basic/DiagnosticASTInterface.inc",
+        "sha256": "082ecd80ace96e08ed47a62ab6cfb6039a652fde08035f0cee3f0a3488197123"
+      },
+      {
+        "bytes": 2232,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticASTInterface.inc.d",
+        "path": "clang/Basic/DiagnosticASTInterface.inc.d",
+        "sha256": "5d36a6e2ae37cf6f1c45baeca035cca8fcfcc9f4966c7b6f47e91c97365a3954"
+      },
+      {
+        "bytes": 73080,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticASTKinds.inc",
+        "path": "clang/Basic/DiagnosticASTKinds.inc",
+        "sha256": "734944dbefdebbd1bd64c4f11e9b1ebcb23311bfa8dd5781b97ef229d228d4ad"
+      },
+      {
+        "bytes": 2228,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticASTKinds.inc.d",
+        "path": "clang/Basic/DiagnosticASTKinds.inc.d",
+        "sha256": "5518ad65aac96ad3bf8c1e5375a4583400f976e34572cc46534f459c42fde53d"
+      },
+      {
+        "bytes": 3245,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticAllCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticAllCompatIDs.inc",
+        "sha256": "f0183fe070937326ee6e8edd2ad3569ba0084f8ffb05f66eff036081f69aa536"
+      },
+      {
+        "bytes": 2232,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticAllCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticAllCompatIDs.inc.d",
+        "sha256": "476862ac5ec14c1e9abc59a9725ffd25df04455f77a4dea47526eb683c54d87e"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticAnalysisCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticAnalysisCompatIDs.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2237,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticAnalysisCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticAnalysisCompatIDs.inc.d",
+        "sha256": "29f3142d0c571c698958f47d48bcb676b0c561275456dc5a863606a2ca96aeb0"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticAnalysisEnums.inc",
+        "path": "clang/Basic/DiagnosticAnalysisEnums.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2233,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticAnalysisEnums.inc.d",
+        "path": "clang/Basic/DiagnosticAnalysisEnums.inc.d",
+        "sha256": "67eab41c8ad6639bd51135c8668a943597288e0715e051db8b17d256024c88db"
+      },
+      {
+        "bytes": 1406,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticAnalysisInterface.inc",
+        "path": "clang/Basic/DiagnosticAnalysisInterface.inc",
+        "sha256": "5acd3c0bffb19cc9254808b466b8c709faec9dff812ce9588a109ba14969618c"
+      },
+      {
+        "bytes": 2237,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticAnalysisInterface.inc.d",
+        "path": "clang/Basic/DiagnosticAnalysisInterface.inc.d",
+        "sha256": "eeb0c35149b0d7db068e3e115b563cd5771518c8dfeeaff5085e7029d70f31b6"
+      },
+      {
+        "bytes": 89,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticAnalysisKinds.inc",
+        "path": "clang/Basic/DiagnosticAnalysisKinds.inc",
+        "sha256": "e8d33c0fcc37e4b0011a3622310c651dc5688a0443e714785c40327d2ecdb2fc"
+      },
+      {
+        "bytes": 2233,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticAnalysisKinds.inc.d",
+        "path": "clang/Basic/DiagnosticAnalysisKinds.inc.d",
+        "sha256": "7ac36d97897a916125c319bc68e65190417542e1a7458a39a7b40149fd416e08"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommentCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticCommentCompatIDs.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2236,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommentCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticCommentCompatIDs.inc.d",
+        "sha256": "9e6d87c9cbcab8223db9579182bd68e470bc5eb5418d6d4d2164f83056398394"
+      },
+      {
+        "bytes": 541,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommentEnums.inc",
+        "path": "clang/Basic/DiagnosticCommentEnums.inc",
+        "sha256": "bfa04c5a45b10499d262ace6cbe0a806c40436db121b7c74df13f01d1488555e"
+      },
+      {
+        "bytes": 2232,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommentEnums.inc.d",
+        "path": "clang/Basic/DiagnosticCommentEnums.inc.d",
+        "sha256": "a9d026dbf75445cadd79608cf7d3876d32aec7fca730c3e9868b661dad81c786"
+      },
+      {
+        "bytes": 1401,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommentInterface.inc",
+        "path": "clang/Basic/DiagnosticCommentInterface.inc",
+        "sha256": "a54ff6df9504ead1d7e67720c697a55b9c96ec1c4c32683db431059dd35d3be6"
+      },
+      {
+        "bytes": 2236,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommentInterface.inc.d",
+        "path": "clang/Basic/DiagnosticCommentInterface.inc.d",
+        "sha256": "69d4c9105f814583d81a106d294c371b07122cf82d48dd6ddee3436a0d31d7c8"
+      },
+      {
+        "bytes": 7516,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommentKinds.inc",
+        "path": "clang/Basic/DiagnosticCommentKinds.inc",
+        "sha256": "680533e998ab977c0d3e950b1041ff8a66a653b6a7b1864449d111841892954c"
+      },
+      {
+        "bytes": 2232,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommentKinds.inc.d",
+        "path": "clang/Basic/DiagnosticCommentKinds.inc.d",
+        "sha256": "e4a6b59a563b1b769c17d4b8ed54711c7dc5e38b3c69a15a542724900aabea28"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommonCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticCommonCompatIDs.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2235,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommonCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticCommonCompatIDs.inc.d",
+        "sha256": "dffd0628c3a02029f4249eafee1c01b18bc2f226d9d20dc44076d0fa9645deca"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommonEnums.inc",
+        "path": "clang/Basic/DiagnosticCommonEnums.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2231,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommonEnums.inc.d",
+        "path": "clang/Basic/DiagnosticCommonEnums.inc.d",
+        "sha256": "26b52ca1a354ab6b44f2b391d7ee14055ddab8e229624846775fd4b41f2808c3"
+      },
+      {
+        "bytes": 1396,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommonInterface.inc",
+        "path": "clang/Basic/DiagnosticCommonInterface.inc",
+        "sha256": "20eb0e48ec11b2813c1b71fc28d47594033f340283c70ad916132896c8a18e1c"
+      },
+      {
+        "bytes": 2235,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommonInterface.inc.d",
+        "path": "clang/Basic/DiagnosticCommonInterface.inc.d",
+        "sha256": "196710a9356df85298a07cd098f063dd1c10493f4311984656a1a8865a2ce9c4"
+      },
+      {
+        "bytes": 32216,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommonKinds.inc",
+        "path": "clang/Basic/DiagnosticCommonKinds.inc",
+        "sha256": "9175d06dc7c871e1a1dae91459b7501bb38864c4c4b29c1ea45d3595cb08a0db"
+      },
+      {
+        "bytes": 2231,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCommonKinds.inc.d",
+        "path": "clang/Basic/DiagnosticCommonKinds.inc.d",
+        "sha256": "2be0167f96c14c57feb979554bd46a96b33fe9148b8e3aa898436cc8795aec87"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCrossTUCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticCrossTUCompatIDs.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2236,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCrossTUCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticCrossTUCompatIDs.inc.d",
+        "sha256": "18fe24c0f6f6c1225156feca6b96a111341b4d25f00afa0bb9d523591dfc0312"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCrossTUEnums.inc",
+        "path": "clang/Basic/DiagnosticCrossTUEnums.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2232,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCrossTUEnums.inc.d",
+        "path": "clang/Basic/DiagnosticCrossTUEnums.inc.d",
+        "sha256": "24b1de65e0a3571b7ade7b4ec5f69d59e5cbba9a239d5081afe7fba916aa3287"
+      },
+      {
+        "bytes": 1401,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCrossTUInterface.inc",
+        "path": "clang/Basic/DiagnosticCrossTUInterface.inc",
+        "sha256": "c71680967eea2d8fb3a29d20c7ff3926a0b83d60b8466ea52c55b447ea7991b1"
+      },
+      {
+        "bytes": 2236,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCrossTUInterface.inc.d",
+        "path": "clang/Basic/DiagnosticCrossTUInterface.inc.d",
+        "sha256": "51efcd7a7a3ac10d25e5f760ecab362fee16c8f41ac16ff8c826900eabc716e6"
+      },
+      {
+        "bytes": 930,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCrossTUKinds.inc",
+        "path": "clang/Basic/DiagnosticCrossTUKinds.inc",
+        "sha256": "4d40964fa0e4b0e1b20c71a65285f1b052c7fdb084f4e653f501a615aabdf38b"
+      },
+      {
+        "bytes": 2232,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticCrossTUKinds.inc.d",
+        "path": "clang/Basic/DiagnosticCrossTUKinds.inc.d",
+        "sha256": "f31d34f02e6a5f2ed611aec230383301b6dd6bf592d8dfdf33e5058fe3dc90b6"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticDriverCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticDriverCompatIDs.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2235,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticDriverCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticDriverCompatIDs.inc.d",
+        "sha256": "83c1c4f1286b0ad402556681564bced2adb6762f5d10fee7c525c21b3363f598"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticDriverEnums.inc",
+        "path": "clang/Basic/DiagnosticDriverEnums.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2231,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticDriverEnums.inc.d",
+        "path": "clang/Basic/DiagnosticDriverEnums.inc.d",
+        "sha256": "3afa0f3ef2e8be6dcec88812360822b9e7541430c9822b37e3a141a10008c325"
+      },
+      {
+        "bytes": 1396,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticDriverInterface.inc",
+        "path": "clang/Basic/DiagnosticDriverInterface.inc",
+        "sha256": "a0adda2e54594741233ebff96540bb9b736455061c8d1c1612721479b3ad2626"
+      },
+      {
+        "bytes": 2235,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticDriverInterface.inc.d",
+        "path": "clang/Basic/DiagnosticDriverInterface.inc.d",
+        "sha256": "3b4def0624b4d01b6e057470b60023760e71bb7a2cc699ecc0f14d0206a02b51"
+      },
+      {
+        "bytes": 74377,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticDriverKinds.inc",
+        "path": "clang/Basic/DiagnosticDriverKinds.inc",
+        "sha256": "2cd62d97b508e3f451e455451c49058189ae20258f677d2b1e2078fdc92760d6"
+      },
+      {
+        "bytes": 2231,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticDriverKinds.inc.d",
+        "path": "clang/Basic/DiagnosticDriverKinds.inc.d",
+        "sha256": "e1fae853f2c00c638874d81f0083d9a18a6bef1763c43da520ce9d2e0c8b868c"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticFrontendCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticFrontendCompatIDs.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2237,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticFrontendCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticFrontendCompatIDs.inc.d",
+        "sha256": "e0b974be193f16d377340bff60550143372dac079ed49c707eb9f08226525414"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticFrontendEnums.inc",
+        "path": "clang/Basic/DiagnosticFrontendEnums.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2233,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticFrontendEnums.inc.d",
+        "path": "clang/Basic/DiagnosticFrontendEnums.inc.d",
+        "sha256": "4099ba1d921ddd9cd29e331f08521502edabae8832b8b7b0364a030c69c79655"
+      },
+      {
+        "bytes": 1406,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticFrontendInterface.inc",
+        "path": "clang/Basic/DiagnosticFrontendInterface.inc",
+        "sha256": "27e7397bb19e96a276e461535ad8e21e85b31e2928754320366a62a4d801fce1"
+      },
+      {
+        "bytes": 2237,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticFrontendInterface.inc.d",
+        "path": "clang/Basic/DiagnosticFrontendInterface.inc.d",
+        "sha256": "8188ab6fd4839dbf7b85033257e1e30b964587ee6290ab95ea6abbe9b64d716f"
+      },
+      {
+        "bytes": 35142,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticFrontendKinds.inc",
+        "path": "clang/Basic/DiagnosticFrontendKinds.inc",
+        "sha256": "60e158d448eb76ae2894dddc22f774ec782b4c20091a7a9f52179c57a540c1df"
+      },
+      {
+        "bytes": 2233,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticFrontendKinds.inc.d",
+        "path": "clang/Basic/DiagnosticFrontendKinds.inc.d",
+        "sha256": "fd673411f104f061dabc7b4a1096ceae7d7339dbb81e0a6900a0c761078cf702"
+      },
+      {
+        "bytes": 279742,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticGroups.inc",
+        "path": "clang/Basic/DiagnosticGroups.inc",
+        "sha256": "aba58a84ce220fbe364c64d163375db78f23c669aaa02d461d72608e4277a8d2"
+      },
+      {
+        "bytes": 2226,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticGroups.inc.d",
+        "path": "clang/Basic/DiagnosticGroups.inc.d",
+        "sha256": "4789a48228e21d92f23163724c53748f184fed632f267b9f865311695727e173"
+      },
+      {
+        "bytes": 354270,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticIndexName.inc",
+        "path": "clang/Basic/DiagnosticIndexName.inc",
+        "sha256": "d00e1e3fa0623aa0682b8ed345b85699a467320f6f21c08941c73eef9cb57147"
+      },
+      {
+        "bytes": 2229,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticIndexName.inc.d",
+        "path": "clang/Basic/DiagnosticIndexName.inc.d",
+        "sha256": "4964277ab8dbf5a647d137a16edb584976e29ce7453031ea5ff6eeab39325e0a"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticInstallAPICompatIDs.inc",
+        "path": "clang/Basic/DiagnosticInstallAPICompatIDs.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2239,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticInstallAPICompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticInstallAPICompatIDs.inc.d",
+        "sha256": "584c118c4c39217d1cf6caf547656079bf4637deb4e1f197d5c556e00a074bc7"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticInstallAPIEnums.inc",
+        "path": "clang/Basic/DiagnosticInstallAPIEnums.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2235,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticInstallAPIEnums.inc.d",
+        "path": "clang/Basic/DiagnosticInstallAPIEnums.inc.d",
+        "sha256": "6372cd45b83c22c73a79ecb3a1480e4e8f424d78bddd38e5d2fd1bcca4fe7c9c"
+      },
+      {
+        "bytes": 1416,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticInstallAPIInterface.inc",
+        "path": "clang/Basic/DiagnosticInstallAPIInterface.inc",
+        "sha256": "ed4e66f2dbf0ef2fe0af6368c9cbd1de861ed7cf19cfcc6151fb9e186e8dadb9"
+      },
+      {
+        "bytes": 2239,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticInstallAPIInterface.inc.d",
+        "path": "clang/Basic/DiagnosticInstallAPIInterface.inc.d",
+        "sha256": "48ff3cf47dd08dafc42e5d27d1e93d19d6d2253c6d94e17d9dcc53319307723f"
+      },
+      {
+        "bytes": 9865,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticInstallAPIKinds.inc",
+        "path": "clang/Basic/DiagnosticInstallAPIKinds.inc",
+        "sha256": "7785e78072a36f98aeae2d3f6b688f7b5048e1dd92a5bd94ac174f717c13491a"
+      },
+      {
+        "bytes": 2235,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticInstallAPIKinds.inc.d",
+        "path": "clang/Basic/DiagnosticInstallAPIKinds.inc.d",
+        "sha256": "3cef8a5784486ee42bdc340ef3a2de92f1de7bfe67db1c1663e82921e9c5d229"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticLexCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticLexCompatIDs.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2232,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticLexCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticLexCompatIDs.inc.d",
+        "sha256": "3fc08ad8c3cecd365f78b4e70b187dca793b0df6ebe4fef2bd40b238177b8ded"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticLexEnums.inc",
+        "path": "clang/Basic/DiagnosticLexEnums.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2228,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticLexEnums.inc.d",
+        "path": "clang/Basic/DiagnosticLexEnums.inc.d",
+        "sha256": "565093cd8e036f8db05316e93974c8deca3f4bf2848d418bb1fe0cd64815d169"
+      },
+      {
+        "bytes": 1381,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticLexInterface.inc",
+        "path": "clang/Basic/DiagnosticLexInterface.inc",
+        "sha256": "cdebaceea42ab80ddd0a2f7eac240ec5f13852f246af8fabd06a1e4d1af1d02f"
+      },
+      {
+        "bytes": 2232,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticLexInterface.inc.d",
+        "path": "clang/Basic/DiagnosticLexInterface.inc.d",
+        "sha256": "bc96032e771889a1f612f32cdfcac609b292101ad3870687ef8eff2a550aaaf6"
+      },
+      {
+        "bytes": 80085,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticLexKinds.inc",
+        "path": "clang/Basic/DiagnosticLexKinds.inc",
+        "sha256": "b22fa46bd9e8f3cf779d8fc78210e0a34c2506466d5a2d5a0ce570f6f7b57fb7"
+      },
+      {
+        "bytes": 2228,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticLexKinds.inc.d",
+        "path": "clang/Basic/DiagnosticLexKinds.inc.d",
+        "sha256": "0753cf463406e4841b8681ea80ec8de7405ac3b625f70c5ff6848add85367162"
+      },
+      {
+        "bytes": 178,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticParseCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticParseCompatIDs.inc",
+        "sha256": "f37ff820c267d25fedd1171feff1574e15fce2ee4f4652048140e2c33a30f5ce"
+      },
+      {
+        "bytes": 2234,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticParseCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticParseCompatIDs.inc.d",
+        "sha256": "31a12c5e174f653d233bdbaecc63cbd2a300a8f3ff82ba65eb13df2ca4c87977"
+      },
+      {
+        "bytes": 95,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticParseEnums.inc",
+        "path": "clang/Basic/DiagnosticParseEnums.inc",
+        "sha256": "b26c1a51c3ad8c56b75b3170438ef506fa953ce3bedd2b88125b44f441d5b651"
+      },
+      {
+        "bytes": 2230,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticParseEnums.inc.d",
+        "path": "clang/Basic/DiagnosticParseEnums.inc.d",
+        "sha256": "d8857ec8ef65a3e78a012fb0930452e013e59345f44de6fbcb56edb4f224d80b"
+      },
+      {
+        "bytes": 1391,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticParseInterface.inc",
+        "path": "clang/Basic/DiagnosticParseInterface.inc",
+        "sha256": "a88a5739ed9eb19a2b04e58c4d861ab95c2594b7fc5540ee35929735c0450403"
+      },
+      {
+        "bytes": 2234,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticParseInterface.inc.d",
+        "path": "clang/Basic/DiagnosticParseInterface.inc.d",
+        "sha256": "c1953e57da7d5055046dbcdd47d7ed762bc4351d798555a0779e70f08d87e9b5"
+      },
+      {
+        "bytes": 148010,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticParseKinds.inc",
+        "path": "clang/Basic/DiagnosticParseKinds.inc",
+        "sha256": "436787b703c5990ea3d22fe949a0a48d711fb22c4cc04871fa1b5c3662c41ba7"
+      },
+      {
+        "bytes": 2230,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticParseKinds.inc.d",
+        "path": "clang/Basic/DiagnosticParseKinds.inc.d",
+        "sha256": "6e584197739a1e29ecf19df4355c80c96d0662540e33f625c8cf7be3dd1697c6"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticRefactoringCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticRefactoringCompatIDs.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2240,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticRefactoringCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticRefactoringCompatIDs.inc.d",
+        "sha256": "21938af68083b4f7dc0e2fe6bc7b8a9352d95af28aba5c3722b93823612bd576"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticRefactoringEnums.inc",
+        "path": "clang/Basic/DiagnosticRefactoringEnums.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2236,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticRefactoringEnums.inc.d",
+        "path": "clang/Basic/DiagnosticRefactoringEnums.inc.d",
+        "sha256": "a3633f55c83c9a5f86bf2c28c9588a605d4c9515547e49cd5999615fb20ceda7"
+      },
+      {
+        "bytes": 1421,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticRefactoringInterface.inc",
+        "path": "clang/Basic/DiagnosticRefactoringInterface.inc",
+        "sha256": "40bbafb5f169aee290106565b4526c1f5edb95cc365578198fa81875d7c922f7"
+      },
+      {
+        "bytes": 2240,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticRefactoringInterface.inc.d",
+        "path": "clang/Basic/DiagnosticRefactoringInterface.inc.d",
+        "sha256": "1552e090bb0db3b96cbbc85641c7e9115dd6aad1ca4ce3ecec600b078c621708"
+      },
+      {
+        "bytes": 1339,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticRefactoringKinds.inc",
+        "path": "clang/Basic/DiagnosticRefactoringKinds.inc",
+        "sha256": "6bcf9cd22a05468c103c4cf921384863d3971744061f463d742bb1bbb8db202e"
+      },
+      {
+        "bytes": 2236,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticRefactoringKinds.inc.d",
+        "path": "clang/Basic/DiagnosticRefactoringKinds.inc.d",
+        "sha256": "2751d4ffca39977c3942c264b6f810328e52bc50e70bb651a1517f3d6692d756"
+      },
+      {
+        "bytes": 3067,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSemaCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticSemaCompatIDs.inc",
+        "sha256": "99b2c31dddac693738b47f3bd7f9ff126f9bf11983cd6a563c2d3e4021a1114d"
+      },
+      {
+        "bytes": 2233,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSemaCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticSemaCompatIDs.inc.d",
+        "sha256": "367639e1baa9a1380211edd87bd1854c8dda8810f43042ead59f2565ed1e5caa"
+      },
+      {
+        "bytes": 4028,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSemaEnums.inc",
+        "path": "clang/Basic/DiagnosticSemaEnums.inc",
+        "sha256": "8d2f161157cc3128f3c40f4447fcb32ea10280fd97a924224b47c2a85cddb142"
+      },
+      {
+        "bytes": 2229,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSemaEnums.inc.d",
+        "path": "clang/Basic/DiagnosticSemaEnums.inc.d",
+        "sha256": "9ca49a508dd658ca4bb5f669d57ee1d2f97940a3aea67470a5dab8afb02ec128"
+      },
+      {
+        "bytes": 1386,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSemaInterface.inc",
+        "path": "clang/Basic/DiagnosticSemaInterface.inc",
+        "sha256": "75911d69112d2a81218e3f0f20b13375f744e9ddd4ee606df52cfb61e0882a9d"
+      },
+      {
+        "bytes": 2233,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSemaInterface.inc.d",
+        "path": "clang/Basic/DiagnosticSemaInterface.inc.d",
+        "sha256": "5c9d09fa4eb87554f420500daca2060e722f8e7c9b2ee3e4514e8dbe877ebffa"
+      },
+      {
+        "bytes": 1111529,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSemaKinds.inc",
+        "path": "clang/Basic/DiagnosticSemaKinds.inc",
+        "sha256": "87861c619a4bc9a1a4dff39fb8939e674a849b16f6e6e7e4a0dece2fd447eddc"
+      },
+      {
+        "bytes": 2229,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSemaKinds.inc.d",
+        "path": "clang/Basic/DiagnosticSemaKinds.inc.d",
+        "sha256": "eb9d0bb6a4a778d34be56ab41b3ca712f3f6651e230877da486591abc2a93f46"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSerializationCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticSerializationCompatIDs.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2242,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSerializationCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticSerializationCompatIDs.inc.d",
+        "sha256": "8529fc7e86873442e7d731bc0121ddc6fe78b3dd1c2fa449e26685475b484128"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSerializationEnums.inc",
+        "path": "clang/Basic/DiagnosticSerializationEnums.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2238,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSerializationEnums.inc.d",
+        "path": "clang/Basic/DiagnosticSerializationEnums.inc.d",
+        "sha256": "4901b7f5e5a33ab027fbbbfd8aea6df7b3012657a8c0c17b1733432dc9e0dda2"
+      },
+      {
+        "bytes": 1431,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSerializationInterface.inc",
+        "path": "clang/Basic/DiagnosticSerializationInterface.inc",
+        "sha256": "2d56695817c292d788999425809ef9541be90a92b51aa4936a2a452c4f3848a0"
+      },
+      {
+        "bytes": 2242,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSerializationInterface.inc.d",
+        "path": "clang/Basic/DiagnosticSerializationInterface.inc.d",
+        "sha256": "9a40866130a5618fe75132b226de4ff51cba7c8d266a25bb9b6156073607d1e6"
+      },
+      {
+        "bytes": 12720,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSerializationKinds.inc",
+        "path": "clang/Basic/DiagnosticSerializationKinds.inc",
+        "sha256": "10c81f41a9484be94034c133fe361fa1185a24573d4b0e2564cef1f616a63399"
+      },
+      {
+        "bytes": 2238,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticSerializationKinds.inc.d",
+        "path": "clang/Basic/DiagnosticSerializationKinds.inc.d",
+        "sha256": "7f1e94bc2a4e7947bbc51f53598436df851d0a507ca14677e62c263a0c49350f"
+      },
+      {
+        "bytes": 0,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticTrapCompatIDs.inc",
+        "path": "clang/Basic/DiagnosticTrapCompatIDs.inc",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 2233,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticTrapCompatIDs.inc.d",
+        "path": "clang/Basic/DiagnosticTrapCompatIDs.inc.d",
+        "sha256": "f00b615a111997b4ac5809da05f464de73c7b31ca3e875aa15dc406d51470826"
+      },
+      {
+        "bytes": 111,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticTrapEnums.inc",
+        "path": "clang/Basic/DiagnosticTrapEnums.inc",
+        "sha256": "928953226982c5a7aae408ba15efd8e38f8eca0af7a9aa6c584e21440b123de1"
+      },
+      {
+        "bytes": 2229,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticTrapEnums.inc.d",
+        "path": "clang/Basic/DiagnosticTrapEnums.inc.d",
+        "sha256": "23deca5bfdd047cabd80f637ce226be10ae26449a1c958a5f10d31d2476f2e0c"
+      },
+      {
+        "bytes": 1386,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticTrapInterface.inc",
+        "path": "clang/Basic/DiagnosticTrapInterface.inc",
+        "sha256": "93a8ddf3027ca66106347d704623b45a85641a38edadc58355c606d0f9faa4fd"
+      },
+      {
+        "bytes": 2233,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticTrapInterface.inc.d",
+        "path": "clang/Basic/DiagnosticTrapInterface.inc.d",
+        "sha256": "1ffc5d41108c8cd6974f6fc91a84afd3d0eaa9ffb54ac452a327614c31bd4e82"
+      },
+      {
+        "bytes": 299,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticTrapKinds.inc",
+        "path": "clang/Basic/DiagnosticTrapKinds.inc",
+        "sha256": "87440ac32584f9bbdfe3f8f97d3d9b35eaebbd1d941914689a3175e0ebe85e89"
+      },
+      {
+        "bytes": 2229,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/DiagnosticTrapKinds.inc.d",
+        "path": "clang/Basic/DiagnosticTrapKinds.inc.d",
+        "sha256": "fbf4415227312a3819cb7c363405f523e4c6bad5b336d7d1671d1c4e44e6377a"
+      },
+      {
+        "bytes": 1059,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/RegularKeywordAttrInfo.inc",
+        "path": "clang/Basic/RegularKeywordAttrInfo.inc",
+        "sha256": "9ef2b9ee114304445700f222ecbbbf6eed7ef6fea7b125ac8e9f2b932dc887f4"
+      },
+      {
+        "bytes": 601,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/RegularKeywordAttrInfo.inc.d",
+        "path": "clang/Basic/RegularKeywordAttrInfo.inc.d",
+        "sha256": "e90872c37934e9e2e6c89a48be812b633880d103734e9e1b8569458adf522062"
+      },
+      {
+        "bytes": 243,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/Version.inc",
+        "path": "clang/Basic/Version.inc",
+        "sha256": "14b842d2344ed30fbdcbee818e8dd1cbb6f562bbce5b9021ac902ecff4912222"
+      },
+      {
+        "bytes": 11787,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_cde_builtin_aliases.inc",
+        "path": "clang/Basic/arm_cde_builtin_aliases.inc",
+        "sha256": "0df685afa43fac7274d581d39b07b3b35c0e59ab9c32bf8029c813fdb8f6c952"
+      },
+      {
+        "bytes": 158,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_cde_builtin_aliases.inc.d",
+        "path": "clang/Basic/arm_cde_builtin_aliases.inc.d",
+        "sha256": "a59d4308620f839af49b30bdf549f9403da5bec60be26a7c14b3c69db9342663"
+      },
+      {
+        "bytes": 54316,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_cde_builtin_cg.inc",
+        "path": "clang/Basic/arm_cde_builtin_cg.inc",
+        "sha256": "62669302ea8e8c2cf5de21ea2143276e65dc14ee931f0543308d309a5208c6d5"
+      },
+      {
+        "bytes": 153,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_cde_builtin_cg.inc.d",
+        "path": "clang/Basic/arm_cde_builtin_cg.inc.d",
+        "sha256": "ef9ca69f1ac89a23fa08c4b77a4aba05773805a6f2940e02de1f6617a3cbcb23"
+      },
+      {
+        "bytes": 9277,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_cde_builtin_sema.inc",
+        "path": "clang/Basic/arm_cde_builtin_sema.inc",
+        "sha256": "f2a76845a2951e96bd66092e47bf4b44c2189208b6fb4de29de1ef31179295bb"
+      },
+      {
+        "bytes": 155,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_cde_builtin_sema.inc.d",
+        "path": "clang/Basic/arm_cde_builtin_sema.inc.d",
+        "sha256": "6b1526aff7decba35efcbae427d192fed14f0c154f7a42af9b2be600280528db"
+      },
+      {
+        "bytes": 22838,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_cde_builtins.inc",
+        "path": "clang/Basic/arm_cde_builtins.inc",
+        "sha256": "fd66c8de00223264a7aab65674dabec76fe3d9ebaea7b38d0de10f7542cb0f64"
+      },
+      {
+        "bytes": 151,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_cde_builtins.inc.d",
+        "path": "clang/Basic/arm_cde_builtins.inc.d",
+        "sha256": "578d3eadc28e16377720cc01584697f29bf8efc8e714491ebb6518538dcc58ab"
+      },
+      {
+        "bytes": 27445,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_fp16.inc",
+        "path": "clang/Basic/arm_fp16.inc",
+        "sha256": "ad8b7511b90bf6105d313675ed8e66abfd8a90312899745e2b2eb38f387ad5b3"
+      },
+      {
+        "bytes": 278,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_fp16.inc.d",
+        "path": "clang/Basic/arm_fp16.inc.d",
+        "sha256": "d12402228715702a5554b7137e574e7a445dca0cbbdb5cc08e6d20f90eb77be4"
+      },
+      {
+        "bytes": 679,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_immcheck_types.inc",
+        "path": "clang/Basic/arm_immcheck_types.inc",
+        "sha256": "1f7417f1cce097d821df5640b2f302e59b1bf25337bae293f61eefdda00899d1"
+      },
+      {
+        "bytes": 291,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_immcheck_types.inc.d",
+        "path": "clang/Basic/arm_immcheck_types.inc.d",
+        "sha256": "5f3407452c48c67899d63c2ce444da506aa53d807d9ced7ee76c8c56a98f32f9"
+      },
+      {
+        "bytes": 202680,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_mve_builtin_aliases.inc",
+        "path": "clang/Basic/arm_mve_builtin_aliases.inc",
+        "sha256": "0f793c97594fb116041400d60f3e0b8c983567d05ef6bf022dc272e703743650"
+      },
+      {
+        "bytes": 158,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_mve_builtin_aliases.inc.d",
+        "path": "clang/Basic/arm_mve_builtin_aliases.inc.d",
+        "sha256": "ab99f6bf285de987298cd3bfb9e7f41c07584b9f08f13d22aa17b1196c6cfa67"
+      },
+      {
+        "bytes": 875791,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_mve_builtin_cg.inc",
+        "path": "clang/Basic/arm_mve_builtin_cg.inc",
+        "sha256": "acec7b1326e2c1a7636df859ad6cb58f6dd4001e0c10a1591dca46bf04397247"
+      },
+      {
+        "bytes": 153,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_mve_builtin_cg.inc.d",
+        "path": "clang/Basic/arm_mve_builtin_cg.inc.d",
+        "sha256": "a5e26512f493cd7ee68de749eaf7133f53b3ef25e7ee2fff27fded8592cfae69"
+      },
+      {
+        "bytes": 20915,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_mve_builtin_sema.inc",
+        "path": "clang/Basic/arm_mve_builtin_sema.inc",
+        "sha256": "8001640d3ddfcf1e335d822d23118ce931392249a016b699e3d0038f575efac1"
+      },
+      {
+        "bytes": 155,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_mve_builtin_sema.inc.d",
+        "path": "clang/Basic/arm_mve_builtin_sema.inc.d",
+        "sha256": "bddff457ea5272c851eea3dd0c2a7f5a02c6009866d1d4f3c46fa6ed01baa34e"
+      },
+      {
+        "bytes": 434858,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_mve_builtins.inc",
+        "path": "clang/Basic/arm_mve_builtins.inc",
+        "sha256": "fc459eb4f3fb4424822a1e93553c5e449a87bf9b1f4cc1dec187c96f460b5c73"
+      },
+      {
+        "bytes": 151,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_mve_builtins.inc.d",
+        "path": "clang/Basic/arm_mve_builtins.inc.d",
+        "sha256": "583c32310ed8e851672f468b58bd23862dc74e197ef6099c138d54d8d25269ea"
+      },
+      {
+        "bytes": 416802,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_neon.inc",
+        "path": "clang/Basic/arm_neon.inc",
+        "sha256": "d25925115be338e06ea7745e99af561efd4ea703f7e5c45c8b604c08c3266b8b"
+      },
+      {
+        "bytes": 278,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_neon.inc.d",
+        "path": "clang/Basic/arm_neon.inc.d",
+        "sha256": "ae3a12a35c949442e0890f9eb25b6672d8c4eb06c2e2a3d9467a96789be903fa"
+      },
+      {
+        "bytes": 84044,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sme_builtin_cg.inc",
+        "path": "clang/Basic/arm_sme_builtin_cg.inc",
+        "sha256": "d14e0c0cc3b3a63255a494c84136923c638b89f1f380276e2bef9f0e86ea706f"
+      },
+      {
+        "bytes": 291,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sme_builtin_cg.inc.d",
+        "path": "clang/Basic/arm_sme_builtin_cg.inc.d",
+        "sha256": "e20cec438c47d873bb4a56f3d3eab65d19acd813fbfc3e5be9d456ab54f57f88"
+      },
+      {
+        "bytes": 282632,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sme_builtins.inc",
+        "path": "clang/Basic/arm_sme_builtins.inc",
+        "sha256": "aef2f33ccd8f4821a2131feb210ccd5a90ada7607c5051d81b31772141e818d8"
+      },
+      {
+        "bytes": 289,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sme_builtins.inc.d",
+        "path": "clang/Basic/arm_sme_builtins.inc.d",
+        "sha256": "a332b645ccc683ae379913c71bf5edd389907169de610f0b31f0b7752bb34466"
+      },
+      {
+        "bytes": 310293,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sme_builtins.json",
+        "path": "clang/Basic/arm_sme_builtins.json",
+        "sha256": "55ca4c8b9a8a08346938514fe68dcca2200c35ecc2b95ccbf8bd50871c8589e9"
+      },
+      {
+        "bytes": 290,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sme_builtins.json.d",
+        "path": "clang/Basic/arm_sme_builtins.json.d",
+        "sha256": "96b6791fb9a9f07b159f446aa72e86706f4b61d679104a3ed940de93e299b9df"
+      },
+      {
+        "bytes": 54730,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sme_builtins_za_state.inc",
+        "path": "clang/Basic/arm_sme_builtins_za_state.inc",
+        "sha256": "8ac5984304580a4c98243ea11b7ea20c35dac80add3842a6cec00eebd3d5eff0"
+      },
+      {
+        "bytes": 298,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sme_builtins_za_state.inc.d",
+        "path": "clang/Basic/arm_sme_builtins_za_state.inc.d",
+        "sha256": "c32d247cd5489fe2ffa77abe7511dc83b5c2f97f490485119b1ed5d8925997b8"
+      },
+      {
+        "bytes": 83876,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sme_sema_rangechecks.inc",
+        "path": "clang/Basic/arm_sme_sema_rangechecks.inc",
+        "sha256": "1ba1f7b33f083a7f36b718647e2546f6f900c4048df03df34b409ed8a90ce382"
+      },
+      {
+        "bytes": 297,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sme_sema_rangechecks.inc.d",
+        "path": "clang/Basic/arm_sme_sema_rangechecks.inc.d",
+        "sha256": "de4e05c86a957250a61cfbda255cdde2f9de112a2f6cbaa485d2b692d5cbfafd"
+      },
+      {
+        "bytes": 54888,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sme_streaming_attrs.inc",
+        "path": "clang/Basic/arm_sme_streaming_attrs.inc",
+        "sha256": "ec6189fe00b6df8b1d2f2ae2a7264b131e98efede45899c3823df2190ad59ac8"
+      },
+      {
+        "bytes": 296,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sme_streaming_attrs.inc.d",
+        "path": "clang/Basic/arm_sme_streaming_attrs.inc.d",
+        "sha256": "d25fad10352be14dc72822c1634d8aafffe45627b40672fadbca1574301ec7ce"
+      },
+      {
+        "bytes": 455596,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sve_builtin_cg.inc",
+        "path": "clang/Basic/arm_sve_builtin_cg.inc",
+        "sha256": "2260968a52eda54168d3693e38a4452cd1e7baeb5d085030e0c062187e89fbf8"
+      },
+      {
+        "bytes": 291,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sve_builtin_cg.inc.d",
+        "path": "clang/Basic/arm_sve_builtin_cg.inc.d",
+        "sha256": "48c49f2dfe8ffb187f494f5e02d6a1e5cb72ca4feedee1872da1d10df3026303"
+      },
+      {
+        "bytes": 1966276,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sve_builtins.inc",
+        "path": "clang/Basic/arm_sve_builtins.inc",
+        "sha256": "c9bf827a9ffe57345386d8df1708c42e1e3f5cfeefb58db7c11b3207965f5c09"
+      },
+      {
+        "bytes": 289,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sve_builtins.inc.d",
+        "path": "clang/Basic/arm_sve_builtins.inc.d",
+        "sha256": "d5120beda688cb7ac845132dea7da808bc1ab912949ff47e9cb962e0acd7d555"
+      },
+      {
+        "bytes": 2161076,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sve_builtins.json",
+        "path": "clang/Basic/arm_sve_builtins.json",
+        "sha256": "53ad30e90b7bd69db428915135a265b946e6f973558158374f571da23329d5ae"
+      },
+      {
+        "bytes": 290,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sve_builtins.json.d",
+        "path": "clang/Basic/arm_sve_builtins.json.d",
+        "sha256": "269c87d476769e377844f308bccb8c3d7b8a1bb167a844c78730fe2179c57588"
+      },
+      {
+        "bytes": 59398,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sve_sema_rangechecks.inc",
+        "path": "clang/Basic/arm_sve_sema_rangechecks.inc",
+        "sha256": "aa3cd10a592bb19b5ce62ce16d3322da65559aaa875a44a2e76a76621b598857"
+      },
+      {
+        "bytes": 297,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sve_sema_rangechecks.inc.d",
+        "path": "clang/Basic/arm_sve_sema_rangechecks.inc.d",
+        "sha256": "4353ef22f50ad257b1caff540c807af7ec5dad5e20cc92f93add0b23faea51ca"
+      },
+      {
+        "bytes": 320766,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sve_streaming_attrs.inc",
+        "path": "clang/Basic/arm_sve_streaming_attrs.inc",
+        "sha256": "1eef76b8d7a7bf1392e0ed5725a6032ed99349bb69021cd82afabf2352e2359a"
+      },
+      {
+        "bytes": 296,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sve_streaming_attrs.inc.d",
+        "path": "clang/Basic/arm_sve_streaming_attrs.inc.d",
+        "sha256": "5d6ee6a305abf373ea7264bd5339f9f7fbc5c23fa97939e1108e029c7a8589ee"
+      },
+      {
+        "bytes": 2595,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sve_typeflags.inc",
+        "path": "clang/Basic/arm_sve_typeflags.inc",
+        "sha256": "0c470831fbc8dc176f82a4b8217c56eaf5bba0317fc5e4ecd6db16e0212bff4b"
+      },
+      {
+        "bytes": 290,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/arm_sve_typeflags.inc.d",
+        "path": "clang/Basic/arm_sve_typeflags.inc.d",
+        "sha256": "684988e447e1142f011b18913f26625f57a75333304efc2599ec59fc9200d2fb"
+      },
+      {
+        "bytes": 1634,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/cmake_install.cmake",
+        "path": "clang/Basic/cmake_install.cmake",
+        "sha256": "eb31f72ad8524a8088bac17eed3723920a27258de58cb1eb9b2b83544ac217f1"
+      },
+      {
+        "bytes": 33514,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_andes_vector_builtin_cg.inc",
+        "path": "clang/Basic/riscv_andes_vector_builtin_cg.inc",
+        "sha256": "5465569fc5634e11f44c88bbc3912ad209a538b3ee62c6d30e8be48dee3d3486"
+      },
+      {
+        "bytes": 171,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_andes_vector_builtin_cg.inc.d",
+        "path": "clang/Basic/riscv_andes_vector_builtin_cg.inc.d",
+        "sha256": "0f303db32903227ecad2578f6afbcbfeb29cf4bd4b620f967285f8cacc5c6036"
+      },
+      {
+        "bytes": 9246,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_andes_vector_builtin_sema.inc",
+        "path": "clang/Basic/riscv_andes_vector_builtin_sema.inc",
+        "sha256": "1185cee61cb6a3425554805fb8c4436827612c3a3781592019609c9b7a7c6fa9"
+      },
+      {
+        "bytes": 173,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_andes_vector_builtin_sema.inc.d",
+        "path": "clang/Basic/riscv_andes_vector_builtin_sema.inc.d",
+        "sha256": "8408fabff1f2777e79cb055dbce47a873663b368cbfb4cdab9443c6a134c6f3a"
+      },
+      {
+        "bytes": 12894,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_andes_vector_builtins.inc",
+        "path": "clang/Basic/riscv_andes_vector_builtins.inc",
+        "sha256": "d974d3939b9519900d9b941a155271f741fa8fb217cc061e6df4fc9d9d114ee5"
+      },
+      {
+        "bytes": 169,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_andes_vector_builtins.inc.d",
+        "path": "clang/Basic/riscv_andes_vector_builtins.inc.d",
+        "sha256": "605cdcd1ddf0a9aac5047b19dcf63c294ee19cfd37b7bda0b6137bbfaba08baf"
+      },
+      {
+        "bytes": 45469,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_sifive_vector_builtin_cg.inc",
+        "path": "clang/Basic/riscv_sifive_vector_builtin_cg.inc",
+        "sha256": "5d6ef542242586aac87db9f85d5cfff394c6b6d1a9ed77ff9c04fd4fb46564b3"
+      },
+      {
+        "bytes": 172,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_sifive_vector_builtin_cg.inc.d",
+        "path": "clang/Basic/riscv_sifive_vector_builtin_cg.inc.d",
+        "sha256": "14db0da4bd73156fd4ec1ad925eb7704a13d8e4005fbe653e3112a90df487712"
+      },
+      {
+        "bytes": 89112,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_sifive_vector_builtin_sema.inc",
+        "path": "clang/Basic/riscv_sifive_vector_builtin_sema.inc",
+        "sha256": "b08b6e1ff3fdf93c94a51c11a1b88939770c5a5c69a496bfe594168b7be61988"
+      },
+      {
+        "bytes": 174,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_sifive_vector_builtin_sema.inc.d",
+        "path": "clang/Basic/riscv_sifive_vector_builtin_sema.inc.d",
+        "sha256": "1391179f28fadbba6e960fb06b3ab5d2761aa3ef1528f7a0bfdfc39b54874280"
+      },
+      {
+        "bytes": 24805,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_sifive_vector_builtins.inc",
+        "path": "clang/Basic/riscv_sifive_vector_builtins.inc",
+        "sha256": "d1f8c32a1099b0cfe7a447563ae986c7f6ad8cf0fc5c5b015fe615529bebd499"
+      },
+      {
+        "bytes": 170,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_sifive_vector_builtins.inc.d",
+        "path": "clang/Basic/riscv_sifive_vector_builtins.inc.d",
+        "sha256": "5ee4524d3286db2fdb870dcbeaf82b016143d32e56e463d815721a8ca228ae30"
+      },
+      {
+        "bytes": 845597,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_vector_builtin_cg.inc",
+        "path": "clang/Basic/riscv_vector_builtin_cg.inc",
+        "sha256": "3b39427c16ef29a1b56335e1da7851158c46ea45161dafe4307e1ec0c4f5bb60"
+      },
+      {
+        "bytes": 165,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_vector_builtin_cg.inc.d",
+        "path": "clang/Basic/riscv_vector_builtin_cg.inc.d",
+        "sha256": "5b02a590e5ec92fdbf321441bd7e4b2bb8f113c078aad92784781a4e6eac6eef"
+      },
+      {
+        "bytes": 1574816,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_vector_builtin_sema.inc",
+        "path": "clang/Basic/riscv_vector_builtin_sema.inc",
+        "sha256": "f5554becead4ba3644443906a0eccc46ccce364070c09f254a72c0d5ce15973e"
+      },
+      {
+        "bytes": 167,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_vector_builtin_sema.inc.d",
+        "path": "clang/Basic/riscv_vector_builtin_sema.inc.d",
+        "sha256": "d0a7075b17fe229ebda15c9446405ff44c55fff1defe1a7500bdac3c0098279b"
+      },
+      {
+        "bytes": 663938,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_vector_builtins.inc",
+        "path": "clang/Basic/riscv_vector_builtins.inc",
+        "sha256": "c6a4e2ad634daacc355f420ca41c1b229ed1def0594565f9b0ae6e834d795820"
+      },
+      {
+        "bytes": 163,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Basic/riscv_vector_builtins.inc.d",
+        "path": "clang/Basic/riscv_vector_builtins.inc.d",
+        "sha256": "0badf444dfa1b01bd38fc59d610765171d3c360c782aba0caa82a62310d945e5"
+      },
+      {
+        "bytes": 2358,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Config/config.h",
+        "path": "clang/Config/config.h",
+        "sha256": "7c72e07f9dd73ef83d7b8d76c88d08af4d9a7a92ff71c94c0262eec27f172fb9"
+      },
+      {
+        "bytes": 1873001,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Options/Options.inc",
+        "path": "clang/Options/Options.inc",
+        "sha256": "4cee96814c78f4044b705d0d5c753c73f776184d33b957149c0ef35d1a470bc3"
+      },
+      {
+        "bytes": 138,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Options/Options.inc.d",
+        "path": "clang/Options/Options.inc.d",
+        "sha256": "b771a256dc88380b6f18543114b350bd840bb47a2ca29d0c7b830f27c41606ae"
+      },
+      {
+        "bytes": 1638,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Options/cmake_install.cmake",
+        "path": "clang/Options/cmake_install.cmake",
+        "sha256": "1644ea4ecb246305d72b144b1badaffe80a8342cc18656bcb7c7a1257b59c7ed"
+      },
+      {
+        "bytes": 12135,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Parse/AttrParserStringSwitches.inc",
+        "path": "clang/Parse/AttrParserStringSwitches.inc",
+        "sha256": "f5248f673094c061a9d4291926c9e825acd8d5b968c335bcf1c674a2caebc974"
+      },
+      {
+        "bytes": 603,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Parse/AttrParserStringSwitches.inc.d",
+        "path": "clang/Parse/AttrParserStringSwitches.inc.d",
+        "sha256": "f68a5fe7b7f2d0e2411ebac3a25f9a200c659e95d08b0f063a07486cd90b2e99"
+      },
+      {
+        "bytes": 5201,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Parse/AttrSubMatchRulesParserStringSwitches.inc",
+        "path": "clang/Parse/AttrSubMatchRulesParserStringSwitches.inc",
+        "sha256": "65868fb354b130e3283a4e9f65142fc0b00f7ded22095b47f6029f3aa719eb0a"
+      },
+      {
+        "bytes": 616,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Parse/AttrSubMatchRulesParserStringSwitches.inc.d",
+        "path": "clang/Parse/AttrSubMatchRulesParserStringSwitches.inc.d",
+        "sha256": "dadef9a6e7ba1f77ed1590eeaff31f1ef7901c2becc848c410dcb5d7dc2caf62"
+      },
+      {
+        "bytes": 1634,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Parse/cmake_install.cmake",
+        "path": "clang/Parse/cmake_install.cmake",
+        "sha256": "b6ddb3524fb8a0a31134117a95201c74d03222bd9d3435d0bca405fa9725d678"
+      },
+      {
+        "bytes": 820,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Sema/AttrIsTypeDependent.inc",
+        "path": "clang/Sema/AttrIsTypeDependent.inc",
+        "sha256": "091aa546920124664dea4131d7fb41578e7ea02bb260fab2f6c7a9f7473712ca"
+      },
+      {
+        "bytes": 594,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Sema/AttrIsTypeDependent.inc.d",
+        "path": "clang/Sema/AttrIsTypeDependent.inc.d",
+        "sha256": "63458bf5b556c19d1f69826cab49458fabd877345deb9435036898140d6258d8"
+      },
+      {
+        "bytes": 801790,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Sema/AttrParsedAttrImpl.inc",
+        "path": "clang/Sema/AttrParsedAttrImpl.inc",
+        "sha256": "2c69d30e98498205535f7ed9ec84e516ea3c8dc4609d8d5412c7a1af40c6b4f7"
+      },
+      {
+        "bytes": 593,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Sema/AttrParsedAttrImpl.inc.d",
+        "path": "clang/Sema/AttrParsedAttrImpl.inc.d",
+        "sha256": "11f2247d09300790611ac2bbcf616e4103de9d8751c87b01898991c706328c52"
+      },
+      {
+        "bytes": 291900,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Sema/AttrParsedAttrKinds.inc",
+        "path": "clang/Sema/AttrParsedAttrKinds.inc",
+        "sha256": "8b28f1279d56b60d8332f77db732be05b07c842b7a38a10671cfc0b6116aea01"
+      },
+      {
+        "bytes": 594,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Sema/AttrParsedAttrKinds.inc.d",
+        "path": "clang/Sema/AttrParsedAttrKinds.inc.d",
+        "sha256": "a20892857c44f08201e334a7b7d6341e7dab3af3a8886baf32b357fb3f5bf11b"
+      },
+      {
+        "bytes": 157577,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Sema/AttrSpellingListIndex.inc",
+        "path": "clang/Sema/AttrSpellingListIndex.inc",
+        "sha256": "0a3fbd764c0e66b87731b6c8768bea41d27a6262e7dfc033c7e520746031e5f3"
+      },
+      {
+        "bytes": 596,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Sema/AttrSpellingListIndex.inc.d",
+        "path": "clang/Sema/AttrSpellingListIndex.inc.d",
+        "sha256": "af87ef5e20126baa963abecfc47257b0112f870e7764e574cb2af30c550d0542"
+      },
+      {
+        "bytes": 90436,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Sema/AttrTemplateInstantiate.inc",
+        "path": "clang/Sema/AttrTemplateInstantiate.inc",
+        "sha256": "7ae207cab47b8455dab0090b5060c7acdb654572c8e21227af56857ab4a5fce4"
+      },
+      {
+        "bytes": 598,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Sema/AttrTemplateInstantiate.inc.d",
+        "path": "clang/Sema/AttrTemplateInstantiate.inc.d",
+        "sha256": "d8e629ce211dfdf34d506a005ddda9f7adc604c20e14d35c68c052a0b8de10ee"
+      },
+      {
+        "bytes": 1632,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Sema/cmake_install.cmake",
+        "path": "clang/Sema/cmake_install.cmake",
+        "sha256": "06f129aca9c04af49afa82521bc1c304efad3cea44e44c25b4ae1238212a0fd0"
+      },
+      {
+        "bytes": 192199,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Serialization/AttrPCHRead.inc",
+        "path": "clang/Serialization/AttrPCHRead.inc",
+        "sha256": "c3796e75d6a9a6dd5f3bdc4697b677cd0bd6e7943b56c3af2e0c6c1266f9289b"
+      },
+      {
+        "bytes": 622,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Serialization/AttrPCHRead.inc.d",
+        "path": "clang/Serialization/AttrPCHRead.inc.d",
+        "sha256": "a267534065c271b0ff1067bb17ccd6e0e9aa82517823deadde04eebcd97abf37"
+      },
+      {
+        "bytes": 111789,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Serialization/AttrPCHWrite.inc",
+        "path": "clang/Serialization/AttrPCHWrite.inc",
+        "sha256": "dae1f15c63287c6cb1271e1b9e548d1a3c6be77100ef36bf06e6c04f94b6645c"
+      },
+      {
+        "bytes": 623,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Serialization/AttrPCHWrite.inc.d",
+        "path": "clang/Serialization/AttrPCHWrite.inc.d",
+        "sha256": "e63c8178ef6659d570c79291d1738d4ce41baee5fee1d614df114d9b3c5e01cb"
+      },
+      {
+        "bytes": 1650,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Serialization/cmake_install.cmake",
+        "path": "clang/Serialization/cmake_install.cmake",
+        "sha256": "01e9307549bb70bcf678f3108004f323e2e39b09494c3f4401ffb9f1573a9100"
+      },
+      {
+        "bytes": 54327,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/StaticAnalyzer/Checkers/Checkers.inc",
+        "path": "clang/StaticAnalyzer/Checkers/Checkers.inc",
+        "sha256": "2bbbc6ed58aba8cdefd6af3f368519866d20cfb8dca08c97a7fce50b0db37567"
+      },
+      {
+        "bytes": 160,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/StaticAnalyzer/Checkers/Checkers.inc.d",
+        "path": "clang/StaticAnalyzer/Checkers/Checkers.inc.d",
+        "sha256": "9701062ce26979b172e2226b0ac734701e89a38d3753cbf97ff075b8921a5643"
+      },
+      {
+        "bytes": 1670,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/StaticAnalyzer/Checkers/cmake_install.cmake",
+        "path": "clang/StaticAnalyzer/Checkers/cmake_install.cmake",
+        "sha256": "4d353a2d1113f4f523318b89ad6dd07363acc27747501f8da74116cbe0c52f1b"
+      },
+      {
+        "bytes": 15634,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Tooling/Syntax/NodeClasses.inc",
+        "path": "clang/Tooling/Syntax/NodeClasses.inc",
+        "sha256": "20bd4440cc790dc83bf4d9a6e49a4dfa9e4ae970a5cf7789a761ba561e73ae1a"
+      },
+      {
+        "bytes": 149,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Tooling/Syntax/NodeClasses.inc.d",
+        "path": "clang/Tooling/Syntax/NodeClasses.inc.d",
+        "sha256": "67a685f18389f5dc0090534e465556529f4895b67dd944070f6d7402b3e54e9a"
+      },
+      {
+        "bytes": 4744,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Tooling/Syntax/Nodes.inc",
+        "path": "clang/Tooling/Syntax/Nodes.inc",
+        "sha256": "66a6f0f3881975e9b609fc21dc141e9fec6af6e6855f042d38f09b80106a7780"
+      },
+      {
+        "bytes": 143,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Tooling/Syntax/Nodes.inc.d",
+        "path": "clang/Tooling/Syntax/Nodes.inc.d",
+        "sha256": "6c209c6283a2a8961621c301cffbb937d2a4d8f72b2361e693b7243c43fef663"
+      },
+      {
+        "bytes": 1652,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/Tooling/Syntax/cmake_install.cmake",
+        "path": "clang/Tooling/Syntax/cmake_install.cmake",
+        "sha256": "f9b2c70138c9d28a0b81e946fb15dbf31043c278539aa83cbde56132e0e00211"
+      },
+      {
+        "bytes": 3624,
+        "component": "generated",
+        "componentPath": "tools/clang/include/clang/cmake_install.cmake",
+        "path": "clang/cmake_install.cmake",
+        "sha256": "34aafc41e0934a0817c809f2302de47b9a9b196043680a69e3549fde18c4f633"
+      },
+      {
+        "bytes": 1850,
+        "component": "generated",
+        "componentPath": "tools/clang/include/cmake_install.cmake",
+        "path": "cmake_install.cmake",
+        "sha256": "71bf086461d88f06e9deac0ac3dce3ade2620ea218cb9915d1353a77581b80a6"
+      }
+    ],
+    "libraries": [
+      {
+        "bytes": 721404,
+        "path": "lib/libLLVMARMAsmParser.a",
+        "sha256": "c20d1aed41983c1e9888c5e130924c2335fb9d3b948dc08d352828bba22310f8"
+      },
+      {
+        "bytes": 4380392,
+        "path": "lib/libLLVMARMCodeGen.a",
+        "sha256": "038a6931fe85a840392f9ac76675c57cb5b1e9aa48896947fee93a2e24b7af32"
+      },
+      {
+        "bytes": 1282094,
+        "path": "lib/libLLVMARMDesc.a",
+        "sha256": "cf993c7d3202638490942be9ba143a4434d5d44a36eaf76adf26461baa5b9459"
+      },
+      {
+        "bytes": 301794,
+        "path": "lib/libLLVMARMDisassembler.a",
+        "sha256": "2a4683dbdab3865ec47023935ce049c5d027ee2bc61db0165523ef98627ed905"
+      },
+      {
+        "bytes": 4838,
+        "path": "lib/libLLVMARMInfo.a",
+        "sha256": "dd2af59cd98628fe6bbc8db60eb298033175b70c3beb6526768012b4524745af"
+      },
+      {
+        "bytes": 18042,
+        "path": "lib/libLLVMARMUtils.a",
+        "sha256": "7ea688d7d64922f0f4e9ec15ac97fa96d1f566f19228cfae1f79932c2c9c99c8"
+      },
+      {
+        "bytes": 204260,
+        "path": "lib/libLLVMAggressiveInstCombine.a",
+        "sha256": "92801dc1294a43e9536ce51213d452a9d7ecefec121b378e9a3fda883cc6121c"
+      },
+      {
+        "bytes": 8988558,
+        "path": "lib/libLLVMAnalysis.a",
+        "sha256": "b6874241df5e495d55ea9038b9fef9d50ed14cbc127c48b291f9d44bba76fdab"
+      },
+      {
+        "bytes": 877106,
+        "path": "lib/libLLVMAsmParser.a",
+        "sha256": "9ba48b8e6c7567a9cff6f8f20f3b2906b47f9226d90db0f339c3c7a57a746f4d"
+      },
+      {
+        "bytes": 1882998,
+        "path": "lib/libLLVMAsmPrinter.a",
+        "sha256": "f86d470c4e1af8d4447fd53df79727f4c2e3b124d12b7593e937f8458d5084fd"
+      },
+      {
+        "bytes": 335006,
+        "path": "lib/libLLVMBinaryFormat.a",
+        "sha256": "f032f9e7b188b4ebcafdf5251ba7bbe10974dc3285c7fa7f500be51f1f492a70"
+      },
+      {
+        "bytes": 846742,
+        "path": "lib/libLLVMBitReader.a",
+        "sha256": "0b21968693e8b03d6a119b7c159159bc7c88ff94c35c3f1204eefd12da13f994"
+      },
+      {
+        "bytes": 458160,
+        "path": "lib/libLLVMBitWriter.a",
+        "sha256": "5ab433a3581742a2503ed8319d244eaf4cca96f4e83b39b6294ff002a1a6eb81"
+      },
+      {
+        "bytes": 43918,
+        "path": "lib/libLLVMBitstreamReader.a",
+        "sha256": "1fd1b35af926e0029df7d31007bad9c42ccf79a510563ce92c60924f63759fa8"
+      },
+      {
+        "bytes": 26518,
+        "path": "lib/libLLVMCFGuard.a",
+        "sha256": "993891a1559ba87eb8e6427b1ef536a66842722d6429add13b147e44d485fb2b"
+      },
+      {
+        "bytes": 309714,
+        "path": "lib/libLLVMCGData.a",
+        "sha256": "250ed469f1a2952645150db0213e58eea8820a671b0f49b15b842de0630fbaac"
+      },
+      {
+        "bytes": 15221422,
+        "path": "lib/libLLVMCodeGen.a",
+        "sha256": "683de7fac9e1bf94a1c901e3f6efc2873f4ea1e14e3d620c13f50e7f189f258f"
+      },
+      {
+        "bytes": 8502,
+        "path": "lib/libLLVMCodeGenTypes.a",
+        "sha256": "d01a771dbfa6a4256a9024ff122472813fb755c088f496c862437f741d1b4481"
+      },
+      {
+        "bytes": 7228058,
+        "path": "lib/libLLVMCore.a",
+        "sha256": "c985eb58b6987771769ae52fdcce17956d49200ed5b14587893fd90edb502d8e"
+      },
+      {
+        "bytes": 582240,
+        "path": "lib/libLLVMCoroutines.a",
+        "sha256": "738e17b803c30213fdd44c0ccd7c78bcc8038961b704343bfcb21e5cee77fd0a"
+      },
+      {
+        "bytes": 494840,
+        "path": "lib/libLLVMCoverage.a",
+        "sha256": "a9b68c82920b51dcc7540ea288116c77b43b2f629290ff0e4545fdd4d9b43fcd"
+      },
+      {
+        "bytes": 22242,
+        "path": "lib/libLLVMDTLTO.a",
+        "sha256": "af06228697af0d5e9fef29e760f432352e0f23f639d7b6f0a9523bcdc353295c"
+      },
+      {
+        "bytes": 81014,
+        "path": "lib/libLLVMDebugInfoBTF.a",
+        "sha256": "37f6fac0a57303f87f1206b42ba831ef2ac01d5324854ca43946e98cd747be81"
+      },
+      {
+        "bytes": 1310528,
+        "path": "lib/libLLVMDebugInfoCodeView.a",
+        "sha256": "b7c2fcd16e228bc8cd57600c530a4a6f09f27e17a5a99ce44b0329e1addb663d"
+      },
+      {
+        "bytes": 1636216,
+        "path": "lib/libLLVMDebugInfoDWARF.a",
+        "sha256": "42c6df8a509cf966b751112a360a294167ed4d465ff2ec21890fcc573c74c640"
+      },
+      {
+        "bytes": 71318,
+        "path": "lib/libLLVMDebugInfoDWARFLowLevel.a",
+        "sha256": "85971dc410a309dd52b5339275f0a53ce6e010ba683c82054c16fa2d173f54c1"
+      },
+      {
+        "bytes": 488170,
+        "path": "lib/libLLVMDebugInfoGSYM.a",
+        "sha256": "dddf593458fa27a0fe9b349d038fa13574d5dcf77f9a339c74fdce7fa8552851"
+      },
+      {
+        "bytes": 108834,
+        "path": "lib/libLLVMDebugInfoMSF.a",
+        "sha256": "778d2f7b64f68807adff229db7b3ac97b92cd3ac97339dcd048ae32c3edda8fc"
+      },
+      {
+        "bytes": 2001260,
+        "path": "lib/libLLVMDebugInfoPDB.a",
+        "sha256": "c0e7f446561fba77a9e7e1c4f3e47ad65034d6a3b8bd3ac77c06f07a392dc0f5"
+      },
+      {
+        "bytes": 333790,
+        "path": "lib/libLLVMDemangle.a",
+        "sha256": "1429801b90a5725ef8aece04ddb426b0393c4ec407bbcd651325d384ed38cc57"
+      },
+      {
+        "bytes": 824,
+        "path": "lib/libLLVMExtensions.a",
+        "sha256": "037d05d62ff6f8173c61e4dd5e1206dfa7c5975e0f5ba67c7e2a25f24be190f2"
+      },
+      {
+        "bytes": 20648,
+        "path": "lib/libLLVMFrontendAtomic.a",
+        "sha256": "851c5f1a98ac55e67ee905ab00620d5e1519e9b0e5ed3d21c4225ba7355f1597"
+      },
+      {
+        "bytes": 742,
+        "path": "lib/libLLVMFrontendDirective.a",
+        "sha256": "b09de94ff2a8fb2b1c71ae28e18ab3fc0c4b2ef18fc6237c1c853f0953cee71e"
+      },
+      {
+        "bytes": 2994,
+        "path": "lib/libLLVMFrontendDriver.a",
+        "sha256": "e49b89572d65c8d1633f6628f18369a1233a60f3e1b6343049b3ba86c9c56133"
+      },
+      {
+        "bytes": 127664,
+        "path": "lib/libLLVMFrontendHLSL.a",
+        "sha256": "3adcf6c43dd254214a70e6f2275318c00e724584b2e35a9a864182a5fb29eb43"
+      },
+      {
+        "bytes": 168822,
+        "path": "lib/libLLVMFrontendOffloading.a",
+        "sha256": "9f6b2d94bcb7e045999e7a628412f34cc2e71ff50bde805443c51ff9477889fe"
+      },
+      {
+        "bytes": 916462,
+        "path": "lib/libLLVMFrontendOpenMP.a",
+        "sha256": "aea09ff8d3db45eec9998d4da93f7f076d9b160ce036e7090cd81e4a1a1e6056"
+      },
+      {
+        "bytes": 2278822,
+        "path": "lib/libLLVMGlobalISel.a",
+        "sha256": "e0aee4388511a48e660e9ac4fadfe9f82d05ad70e9ff76a7d85ad501e478fea0"
+      },
+      {
+        "bytes": 52376,
+        "path": "lib/libLLVMHipStdPar.a",
+        "sha256": "93a3f201177d99d49b3fe0fc20dd8a16060d66ded5097da2cc58d8f17effd6b0"
+      },
+      {
+        "bytes": 6976,
+        "path": "lib/libLLVMIRPrinter.a",
+        "sha256": "841da695f08942d2367201788d99d8b5e492947f52395810e36229d0e0c02c22"
+      },
+      {
+        "bytes": 27192,
+        "path": "lib/libLLVMIRReader.a",
+        "sha256": "ba6483abb24ebaf269f61c7949e8aa5ae80a4ef4b3c10263975453c7db7f2dc6"
+      },
+      {
+        "bytes": 3083488,
+        "path": "lib/libLLVMInstCombine.a",
+        "sha256": "c6a278dff9989a819b5fd68e9194be98c722538a0be33e0fe3ec36e925ca08db"
+      },
+      {
+        "bytes": 3072916,
+        "path": "lib/libLLVMInstrumentation.a",
+        "sha256": "38442968b0c3be057b8bebc7ee0e8cdd816488ed8e852206afc177c1d3b73301"
+      },
+      {
+        "bytes": 975062,
+        "path": "lib/libLLVMLTO.a",
+        "sha256": "732d97da57b3253102f583db7cf4e93096caeb6d78a2f1ec9915f971d6e95c77"
+      },
+      {
+        "bytes": 193170,
+        "path": "lib/libLLVMLinker.a",
+        "sha256": "6eca10c0ca619d41508ab23dece251f36e4ee857efd3a557844e5c62864ecbe0"
+      },
+      {
+        "bytes": 1829466,
+        "path": "lib/libLLVMMC.a",
+        "sha256": "bb0107f86a5776fb1cc752f3e3071cbdc21adcb285501ba30704a4db2adae12a"
+      },
+      {
+        "bytes": 25622,
+        "path": "lib/libLLVMMCDisassembler.a",
+        "sha256": "2dcf6f29cc2389958e6b51e1c5d266f6dd20ab7e05d4ece40669e0956a6b2b64"
+      },
+      {
+        "bytes": 802648,
+        "path": "lib/libLLVMMCParser.a",
+        "sha256": "fd616eb0abb5b25e6752b8b2d9f379eac5cd148850ff6cccd83c0497706d5253"
+      },
+      {
+        "bytes": 246122,
+        "path": "lib/libLLVMObjCARCOpts.a",
+        "sha256": "048ca2776759798af50fb9f371dafdadfb0055dc1a787ad6c715b7b7f508e447"
+      },
+      {
+        "bytes": 2699394,
+        "path": "lib/libLLVMObject.a",
+        "sha256": "202b9c15b84438b2a2895a13a11c4a0fcac0db537dd01e795cba42b59fc39c2d"
+      },
+      {
+        "bytes": 4650356,
+        "path": "lib/libLLVMObjectYAML.a",
+        "sha256": "a97be9dc9a760f23ec20237391662049ea5f9f73bb49d854866e41d1d19f47f2"
+      },
+      {
+        "bytes": 100400,
+        "path": "lib/libLLVMOption.a",
+        "sha256": "2684c3c4846e1c7e0c6f9474f1a7c4ab7aff7a40bb625b496fe04795ef0814a8"
+      },
+      {
+        "bytes": 5981904,
+        "path": "lib/libLLVMPasses.a",
+        "sha256": "dc9670d3eb01e23020ee42eb2e7c665a45f947ba8a78883812101b119a51ae84"
+      },
+      {
+        "bytes": 3216,
+        "path": "lib/libLLVMPlugins.a",
+        "sha256": "6a1b9f92393f352164d1ec69fba5ea5593065d399405cc8f7df82cc5717e2c69"
+      },
+      {
+        "bytes": 2634798,
+        "path": "lib/libLLVMProfileData.a",
+        "sha256": "9a44583e6a66273097a4ac9feaa0df7b4f14f5b3a74ca7223d30bdb03e2e024c"
+      },
+      {
+        "bytes": 295028,
+        "path": "lib/libLLVMRemarks.a",
+        "sha256": "64b2992cce7ce836301b0cc3cf70e5c6a543d75e27b22656f67f84ecd367044e"
+      },
+      {
+        "bytes": 592246,
+        "path": "lib/libLLVMSandboxIR.a",
+        "sha256": "9173a7f4ef6b86556de505dc671173a2c8bb1cd418afffd27320543dd6df2b0b"
+      },
+      {
+        "bytes": 6577206,
+        "path": "lib/libLLVMScalarOpts.a",
+        "sha256": "c18b413c0409cee2bff30b5ff60062816aaeb53f722d445163408a453e711d0c"
+      },
+      {
+        "bytes": 5479812,
+        "path": "lib/libLLVMSelectionDAG.a",
+        "sha256": "1602f3d33ac068fb09602d1f8d85f8d396f084f04d0f0d6cfb61d47e45b3bfe8"
+      },
+      {
+        "bytes": 3270514,
+        "path": "lib/libLLVMSupport.a",
+        "sha256": "395ec8ec6ca316fa8a54ed7a939889bb3d20df1f6aeb31d15df69e5f2ad02dc2"
+      },
+      {
+        "bytes": 331398,
+        "path": "lib/libLLVMSymbolize.a",
+        "sha256": "f74f2da20bbe38d1d8ab7b4c3d5319ee3c73e1fc228b9ac9eb4f10866b9458d1"
+      },
+      {
+        "bytes": 72524,
+        "path": "lib/libLLVMTarget.a",
+        "sha256": "4f7fd9f6ba72ba4458615220f6bdbbb974b6ad4b78c78a1e60e0683f2ae6b826"
+      },
+      {
+        "bytes": 692004,
+        "path": "lib/libLLVMTargetParser.a",
+        "sha256": "8f5b4d4a15197e6ba4828b66eaf2d11524d3025391972485dd22b52061ad264b"
+      },
+      {
+        "bytes": 674330,
+        "path": "lib/libLLVMTextAPI.a",
+        "sha256": "c92bfc42c51ec7801af5e902493de833b9d542f6932819aa73cfcb1feedb3fda"
+      },
+      {
+        "bytes": 81434,
+        "path": "lib/libLLVMTextAPIBinaryReader.a",
+        "sha256": "aba1df0ed49ab3e589a50067425b10d01aa74b3d1c2af3dd813d8d1556c73b0c"
+      },
+      {
+        "bytes": 5069658,
+        "path": "lib/libLLVMTransformUtils.a",
+        "sha256": "7fd5280ecaa2ad35ba2cda0dd1cc7fa09da91a8a721dca8bacce684116cca5fa"
+      },
+      {
+        "bytes": 6143274,
+        "path": "lib/libLLVMVectorize.a",
+        "sha256": "c8a7fe211a5868713594ed20b803ba0d35f52be48435ee4a0025a03237fa0b05"
+      },
+      {
+        "bytes": 18836,
+        "path": "lib/libLLVMWindowsDriver.a",
+        "sha256": "003d939134c47b7fe0297ab22d9bd978d569c609176645c22bdda9412fbce450"
+      },
+      {
+        "bytes": 7184168,
+        "path": "lib/libLLVMipo.a",
+        "sha256": "b6cf503e87b5283bc314fad896702ebb9a415d977993ba0a6e3b5a0fdbe5ff16"
+      },
+      {
+        "bytes": 714606,
+        "path": "lib/libclangAPINotes.a",
+        "sha256": "dfebac3e8034afa6175084b39411e9892ca123de495b8e9bd006cb952df168c9"
+      },
+      {
+        "bytes": 19470872,
+        "path": "lib/libclangAST.a",
+        "sha256": "f9efbbe7db2c4de2192e40e1a4c3e5afeffb9c0c6d8d886d2f0990f5111c495a"
+      },
+      {
+        "bytes": 827120,
+        "path": "lib/libclangASTMatchers.a",
+        "sha256": "26ceac3828bc9e4915f5d93647c8b86d95c81969aa393653515c0e3fdf1f009a"
+      },
+      {
+        "bytes": 3004806,
+        "path": "lib/libclangAnalysis.a",
+        "sha256": "caeeade9ced5decbf3685f3e6cafac43db88a896e402e65826d2f265cebcc8b1"
+      },
+      {
+        "bytes": 551356,
+        "path": "lib/libclangAnalysisLifetimeSafety.a",
+        "sha256": "db1634ade8a5a97e62a86952dcf323e3fefe36ed363f591bb92e0703dd171dae"
+      },
+      {
+        "bytes": 6537396,
+        "path": "lib/libclangBasic.a",
+        "sha256": "56afdc94c3c9238c793fec04e4ab9da0eea9417278396eae6840dd15e25cf183"
+      },
+      {
+        "bytes": 13482632,
+        "path": "lib/libclangCodeGen.a",
+        "sha256": "051c6b5e19964ecf13853101204ce048e07ff322af23213393c48bd748cd216a"
+      },
+      {
+        "bytes": 5570022,
+        "path": "lib/libclangDriver.a",
+        "sha256": "bb1e079b1d4723c8a7c35cd6cfde290a82ae922759e17b980d5a68cc5525d68c"
+      },
+      {
+        "bytes": 84500,
+        "path": "lib/libclangEdit.a",
+        "sha256": "aed30621925e8e99ca7d8897e672039d5ecbe6e24cb869971544ccfa428cd659"
+      },
+      {
+        "bytes": 1446146,
+        "path": "lib/libclangExtractAPI.a",
+        "sha256": "3436a23957d9f5c105f9267f673e1892dbcb3ab63a1da38f6eee7919696f75f2"
+      },
+      {
+        "bytes": 1560996,
+        "path": "lib/libclangFormat.a",
+        "sha256": "148dcb63f42cc2c0aa2c0fede153223c6fd0132239c1bc7ef4e2c62a257d73b8"
+      },
+      {
+        "bytes": 3799286,
+        "path": "lib/libclangFrontend.a",
+        "sha256": "4dc50e332dd9bdd5a7c2d942eb89996ce8ecdd2aac648cf59ec4aab394b26b0f"
+      },
+      {
+        "bytes": 20986,
+        "path": "lib/libclangFrontendTool.a",
+        "sha256": "18c7ace7334fd8d8f8f1b8552d04ea89e15d168f8952d299933740b8baffe6ff"
+      },
+      {
+        "bytes": 674326,
+        "path": "lib/libclangIndex.a",
+        "sha256": "6eec08817772ddf39ba295abc6f32a758746e351b7212a1b4e85a740a1ccd55b"
+      },
+      {
+        "bytes": 742030,
+        "path": "lib/libclangInstallAPI.a",
+        "sha256": "3f021692ec6e6a276b7f7274ca84c53caa86fd1ffaf7bfab60fbca08efe8b1de"
+      },
+      {
+        "bytes": 1752460,
+        "path": "lib/libclangLex.a",
+        "sha256": "6395d7f0f699c8e211220714bf7c4854d59928774b5d6941a15690ecb44e6bf3"
+      },
+      {
+        "bytes": 556578,
+        "path": "lib/libclangOptions.a",
+        "sha256": "89764565722420700c357400aea43b72c29ed705ec53580aa718b02168c2d2b0"
+      },
+      {
+        "bytes": 1839162,
+        "path": "lib/libclangParse.a",
+        "sha256": "2f06a59b2328456a229dd91bdadace8fee4c650328cc74fb1c773a71094aea36"
+      },
+      {
+        "bytes": 89948,
+        "path": "lib/libclangRewrite.a",
+        "sha256": "c5ca4051c77dfbb4edecfbbd047b0a2c3bd9398b7b2bfcb82900ddc006f64369"
+      },
+      {
+        "bytes": 161062,
+        "path": "lib/libclangRewriteFrontend.a",
+        "sha256": "fd0f98dce7aa3a57cd8197252f955066c015120abdbe9ec1ce4e905b47d6f26f"
+      },
+      {
+        "bytes": 21454920,
+        "path": "lib/libclangSema.a",
+        "sha256": "6b6a3e5745a03d718006acb677ac53aa935881bbe86b82f6faa5a9de96801ac4"
+      },
+      {
+        "bytes": 3362552,
+        "path": "lib/libclangSerialization.a",
+        "sha256": "bfe906f492d69ead70e3567c013871c3d461fd341c7610cc7920ff0039d4c2fe"
+      },
+      {
+        "bytes": 58146,
+        "path": "lib/libclangSupport.a",
+        "sha256": "ad3c24d866d3dc0f597962172676c864afedee84476f55ec13aa3e4e389221c4"
+      },
+      {
+        "bytes": 111672,
+        "path": "lib/libclangToolingCore.a",
+        "sha256": "5fb156d4489a6d956fa2660dce47a890ac2bdfce8c071af9914860a9ee6f6a84"
+      },
+      {
+        "bytes": 72628,
+        "path": "lib/libclangToolingInclusions.a",
+        "sha256": "74c6f85c59991ffae52bb6ef949ef6cc38e03d2802eeeba9eb44c7b0ac3b056c"
+      },
+      {
+        "bytes": 238402,
+        "path": "lib/liblldCommon.a",
+        "sha256": "140fe4e796e620204a26d735fd8cfded8aca87c66cf6af4088cd6471cef328d5"
+      },
+      {
+        "bytes": 5280878,
+        "path": "lib/liblldELF.a",
+        "sha256": "ee9f75280b99aef206e8b87791938a0bb934880904e358f7c8ffed27afec3c4e"
+      }
+    ],
+    "lldHeaders": [
+      {
+        "bytes": 36,
+        "component": "generated",
+        "componentPath": "tools/lld/include/lld/Common/Version.inc",
+        "path": "lld/Common/Version.inc",
+        "sha256": "bd063dff23906a2a53c65f448e414456e492362dca52adb74c2fa63b14823219"
+      }
+    ],
+    "llvmHeaders": [
+      {
+        "bytes": 1824,
+        "component": "generated",
+        "componentPath": "include/cmake_install.cmake",
+        "path": "cmake_install.cmake",
+        "sha256": "54ed644c4b0d6241452094ebf139eb9d68cd7066e9e5476021151be41e0115e8"
+      },
+      {
+        "bytes": 50937,
+        "component": "generated",
+        "componentPath": "include/llvm/Analysis/TargetLibraryInfo.inc",
+        "path": "llvm/Analysis/TargetLibraryInfo.inc",
+        "sha256": "4bce0bb2fcf118e41622ea88e61fa18b25bc5dd4981132e4b1db0020e1796c68"
+      },
+      {
+        "bytes": 162,
+        "component": "generated",
+        "componentPath": "include/llvm/Analysis/TargetLibraryInfo.inc.d",
+        "path": "llvm/Analysis/TargetLibraryInfo.inc.d",
+        "sha256": "6b08166163796384571116f912cac0dd7fac7875e1f2be221f85a446513552a5"
+      },
+      {
+        "bytes": 1625,
+        "component": "generated",
+        "componentPath": "include/llvm/Analysis/cmake_install.cmake",
+        "path": "llvm/Analysis/cmake_install.cmake",
+        "sha256": "2e05012086b7d2ccb12cb83e83037b79bb5a4d6dcb0998b863c125a09f1ec6e3"
+      },
+      {
+        "bytes": 46024,
+        "component": "generated",
+        "componentPath": "include/llvm/CodeGen/GenVT.inc",
+        "path": "llvm/CodeGen/GenVT.inc",
+        "sha256": "d3ac9f7deafa8dc38e445ab475178502d75d82d7145ec76a9aea34ffb2f39ea0"
+      },
+      {
+        "bytes": 11,
+        "component": "generated",
+        "componentPath": "include/llvm/CodeGen/GenVT.inc.d",
+        "path": "llvm/CodeGen/GenVT.inc.d",
+        "sha256": "3037bda0c255559ea6b68437183c06697923ec78381140de0dec7c26cfcf1daf"
+      },
+      {
+        "bytes": 1623,
+        "component": "generated",
+        "componentPath": "include/llvm/CodeGen/cmake_install.cmake",
+        "path": "llvm/CodeGen/cmake_install.cmake",
+        "sha256": "f95d3cd55fa74052ce46b21424a0f595a9e7312cf65a9e3688035bd130076a8d"
+      },
+      {
+        "bytes": 1841,
+        "component": "generated",
+        "componentPath": "include/llvm/Config/AsmParsers.def",
+        "path": "llvm/Config/AsmParsers.def",
+        "sha256": "a6e9a6bfec4f5acb9f87bed06e88bc68da9a913aadb10dbc4644ccdffa4fd825"
+      },
+      {
+        "bytes": 1845,
+        "component": "generated",
+        "componentPath": "include/llvm/Config/AsmPrinters.def",
+        "path": "llvm/Config/AsmPrinters.def",
+        "sha256": "15477180c57d3f8509073e0bc3b51bda12ba1ce14ff0efe499363226d114432e"
+      },
+      {
+        "bytes": 1849,
+        "component": "generated",
+        "componentPath": "include/llvm/Config/Disassemblers.def",
+        "path": "llvm/Config/Disassemblers.def",
+        "sha256": "709eb6dd5cca2fc53b48582a12313921cd5f4150c9639c7a80be8b20085a4d00"
+      },
+      {
+        "bytes": 1814,
+        "component": "generated",
+        "componentPath": "include/llvm/Config/TargetExegesis.def",
+        "path": "llvm/Config/TargetExegesis.def",
+        "sha256": "713f530362d90d34af21de59d1a56af3b0e739e69f11b416b1b90c88da793824"
+      },
+      {
+        "bytes": 1795,
+        "component": "generated",
+        "componentPath": "include/llvm/Config/TargetMCAs.def",
+        "path": "llvm/Config/TargetMCAs.def",
+        "sha256": "cc83d1724c96fe1b7a360d3f2974d11d42d27df78359f087a6dfee2307c32e62"
+      },
+      {
+        "bytes": 1744,
+        "component": "generated",
+        "componentPath": "include/llvm/Config/Targets.def",
+        "path": "llvm/Config/Targets.def",
+        "sha256": "edfc8267d1705d078e4219d37e9c4dd3194e356bbdcef89fae3806b29bc8a39b"
+      },
+      {
+        "bytes": 2760,
+        "component": "generated",
+        "componentPath": "include/llvm/Config/Targets.h",
+        "path": "llvm/Config/Targets.h",
+        "sha256": "ab2be0b0220163e6939137cb568fb1b73cda73cbee5dba9d7b921775d6c50399"
+      },
+      {
+        "bytes": 3456,
+        "component": "generated",
+        "componentPath": "include/llvm/Config/abi-breaking.h",
+        "path": "llvm/Config/abi-breaking.h",
+        "sha256": "5371d879cf7d29fabc866485473d7e69ab0a730bc5a4259ffbeceb87a9c2e9db"
+      },
+      {
+        "bytes": 8379,
+        "component": "generated",
+        "componentPath": "include/llvm/Config/config.h",
+        "path": "llvm/Config/config.h",
+        "sha256": "c5c5085e85e50c9f386ab26b30efe6a241a8667b4e039873baf6c24da63df528"
+      },
+      {
+        "bytes": 5146,
+        "component": "generated",
+        "componentPath": "include/llvm/Config/llvm-config.h",
+        "path": "llvm/Config/llvm-config.h",
+        "sha256": "ae07b543d44918bd46b37a5356273668a4462ae21404737141900476fffe2242"
+      },
+      {
+        "bytes": 7687,
+        "component": "generated",
+        "componentPath": "include/llvm/Frontend/OpenACC/ACC.h.inc",
+        "path": "llvm/Frontend/OpenACC/ACC.h.inc",
+        "sha256": "b236f9d87d060b5f4f4f7464928448234d180067957491a6e914c2d4412adc1d"
+      },
+      {
+        "bytes": 152,
+        "component": "generated",
+        "componentPath": "include/llvm/Frontend/OpenACC/ACC.h.inc.d",
+        "path": "llvm/Frontend/OpenACC/ACC.h.inc.d",
+        "sha256": "ccf198d1c1c90967466c2c1a9f177e691172f01b69f400a1503d6b47f5e86453"
+      },
+      {
+        "bytes": 94248,
+        "component": "generated",
+        "componentPath": "include/llvm/Frontend/OpenACC/ACC.inc",
+        "path": "llvm/Frontend/OpenACC/ACC.inc",
+        "sha256": "fc5b971dfbb446fa6fe1dca924ff8bcba9216e7b8e4513fe32338de925ca54fa"
+      },
+      {
+        "bytes": 150,
+        "component": "generated",
+        "componentPath": "include/llvm/Frontend/OpenACC/ACC.inc.d",
+        "path": "llvm/Frontend/OpenACC/ACC.inc.d",
+        "sha256": "c8a216e943ec09bd870546c74011023aac19046ec79a485e798619b58f2c233d"
+      },
+      {
+        "bytes": 1641,
+        "component": "generated",
+        "componentPath": "include/llvm/Frontend/OpenACC/cmake_install.cmake",
+        "path": "llvm/Frontend/OpenACC/cmake_install.cmake",
+        "sha256": "88103ed263a78bb8c60d08b037d77503fbdf4943f6a0cb869287ac460d40ca7c"
+      },
+      {
+        "bytes": 29246,
+        "component": "generated",
+        "componentPath": "include/llvm/Frontend/OpenMP/OMP.h.inc",
+        "path": "llvm/Frontend/OpenMP/OMP.h.inc",
+        "sha256": "dd3614c80c44349dc3c9471245ca3985cdd42e05570bed7b8c2b3d9a6c71e827"
+      },
+      {
+        "bytes": 152,
+        "component": "generated",
+        "componentPath": "include/llvm/Frontend/OpenMP/OMP.h.inc.d",
+        "path": "llvm/Frontend/OpenMP/OMP.h.inc.d",
+        "sha256": "828da78a39a4383f822c71e0df9d2ae37ee5aea27a9282d0d21ddffbdb29a74a"
+      },
+      {
+        "bytes": 404944,
+        "component": "generated",
+        "componentPath": "include/llvm/Frontend/OpenMP/OMP.inc",
+        "path": "llvm/Frontend/OpenMP/OMP.inc",
+        "sha256": "5a8069f43f5e3b73784468b3d29b0e6e0554a9b099e7838d7a25f7a2e519f4a1"
+      },
+      {
+        "bytes": 150,
+        "component": "generated",
+        "componentPath": "include/llvm/Frontend/OpenMP/OMP.inc.d",
+        "path": "llvm/Frontend/OpenMP/OMP.inc.d",
+        "sha256": "65504877a69a4517699312b02fbdb8b8f425425602b2ed3e9c981fc7830f84e9"
+      },
+      {
+        "bytes": 1639,
+        "component": "generated",
+        "componentPath": "include/llvm/Frontend/OpenMP/cmake_install.cmake",
+        "path": "llvm/Frontend/OpenMP/cmake_install.cmake",
+        "sha256": "19c39b0574b9ce233810e30edd1750e68849ce437ceb5a065f8976482c1c3354"
+      },
+      {
+        "bytes": 2112,
+        "component": "generated",
+        "componentPath": "include/llvm/Frontend/cmake_install.cmake",
+        "path": "llvm/Frontend/cmake_install.cmake",
+        "sha256": "2df4437b1d64e13478584fdaa50b02f8cc2e4c6f74a4a1a026a302a9ac23e6f9"
+      },
+      {
+        "bytes": 17133,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/Attributes.inc",
+        "path": "llvm/IR/Attributes.inc",
+        "sha256": "a3598c5a7254ff471d571c6d2446ce1d3725b511ed7b4fc5734167f185fa4a7f"
+      },
+      {
+        "bytes": 16,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/Attributes.inc.d",
+        "path": "llvm/IR/Attributes.inc.d",
+        "sha256": "7075927c634c634a00404808188a01b70ac99f9e89051cba8cb3d585bdb2c07d"
+      },
+      {
+        "bytes": 49039,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicEnums.inc",
+        "path": "llvm/IR/IntrinsicEnums.inc",
+        "sha256": "e812374b05c4bf6005d24bb57c78cd97a6a589eff441282b9398468a74f9047f"
+      },
+      {
+        "bytes": 3369,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicEnums.inc.d",
+        "path": "llvm/IR/IntrinsicEnums.inc.d",
+        "sha256": "7f676002624be9a8b781c0c8171efa2185c81bf16991cbee0a4ca10796dff941"
+      },
+      {
+        "bytes": 3311090,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicImpl.inc",
+        "path": "llvm/IR/IntrinsicImpl.inc",
+        "sha256": "92e344607a3d97b3a1d542aceaa7bac5354576f4744a1ea5caa32926c609da92"
+      },
+      {
+        "bytes": 3368,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicImpl.inc.d",
+        "path": "llvm/IR/IntrinsicImpl.inc.d",
+        "sha256": "b13073ed3e3a34c4dd5acb909ffa20e97b61faaee65b3c1b59f24c5046870d0c"
+      },
+      {
+        "bytes": 181656,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsAArch64.h",
+        "path": "llvm/IR/IntrinsicsAArch64.h",
+        "sha256": "959ce127f3015fce443fcc0b117b6e39a761692446a7bf7aca2a9f5073343a09"
+      },
+      {
+        "bytes": 3370,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsAArch64.h.d",
+        "path": "llvm/IR/IntrinsicsAArch64.h.d",
+        "sha256": "3b3f43d87c8f0dfe1dab5e741798ff1730b3e7165945b6fe747dcfc4bc924cfa"
+      },
+      {
+        "bytes": 163450,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsAMDGPU.h",
+        "path": "llvm/IR/IntrinsicsAMDGPU.h",
+        "sha256": "2fbeb119cd1dc323b47080e1a2962ff177ab4ce4d9805f5a3184025748ead827"
+      },
+      {
+        "bytes": 3369,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsAMDGPU.h.d",
+        "path": "llvm/IR/IntrinsicsAMDGPU.h.d",
+        "sha256": "4916694114551b4d5c6eaa423d7b5749e15d135c1d4e320362cca0f3509ef301"
+      },
+      {
+        "bytes": 48725,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsARM.h",
+        "path": "llvm/IR/IntrinsicsARM.h",
+        "sha256": "2c6419e8772cf5a34484689725f776c531ce77672c0f1b187938043c770353e5"
+      },
+      {
+        "bytes": 3366,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsARM.h.d",
+        "path": "llvm/IR/IntrinsicsARM.h.d",
+        "sha256": "63667d294c8473ff3cd299e6f189869575688b8f08e2624c11a9d2b18c2316e6"
+      },
+      {
+        "bytes": 1939,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsBPF.h",
+        "path": "llvm/IR/IntrinsicsBPF.h",
+        "sha256": "a7a6175ce3b2a030d9f9c0f43c1068c797b2ad1938734ea6c7276c7ec074afab"
+      },
+      {
+        "bytes": 3366,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsBPF.h.d",
+        "path": "llvm/IR/IntrinsicsBPF.h.d",
+        "sha256": "1bbe16cb323d643e3f07f98b13585299aab9d135743d029426308d6909cc2f15"
+      },
+      {
+        "bytes": 8074,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsDirectX.h",
+        "path": "llvm/IR/IntrinsicsDirectX.h",
+        "sha256": "a636700da2809a5eadba98773cabfe72d68fc87b68a63a5bd1b4eceae1dea7db"
+      },
+      {
+        "bytes": 3370,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsDirectX.h.d",
+        "path": "llvm/IR/IntrinsicsDirectX.h.d",
+        "sha256": "805196cd4760a902863b5e947d9ab33ecf5c59cf7143881322bdc76c417895ff"
+      },
+      {
+        "bytes": 230108,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsHexagon.h",
+        "path": "llvm/IR/IntrinsicsHexagon.h",
+        "sha256": "094703731e4eabb6fd961db51270ab958088b3d09959d9a60206f817c88a0f07"
+      },
+      {
+        "bytes": 3370,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsHexagon.h.d",
+        "path": "llvm/IR/IntrinsicsHexagon.h.d",
+        "sha256": "8b2bf2fd236836ce4d8cc71b6858ff660a6df9cf5543bf6b2de87d306b9ab0fb"
+      },
+      {
+        "bytes": 168642,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsLoongArch.h",
+        "path": "llvm/IR/IntrinsicsLoongArch.h",
+        "sha256": "ece8c75a52b9813a62287cbb5e34e9ccc536224f7682396b54a42590d1225296"
+      },
+      {
+        "bytes": 3372,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsLoongArch.h.d",
+        "path": "llvm/IR/IntrinsicsLoongArch.h.d",
+        "sha256": "a6865b2ec1ad5365605081f6e7ae688f77a048656dac31aa14014f80bc2caaab"
+      },
+      {
+        "bytes": 63033,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsMips.h",
+        "path": "llvm/IR/IntrinsicsMips.h",
+        "sha256": "417e4016587d76619a44898fe11b0c41c8af832866467b48649793a9fe902ae3"
+      },
+      {
+        "bytes": 3367,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsMips.h.d",
+        "path": "llvm/IR/IntrinsicsMips.h.d",
+        "sha256": "bb3a981298509cd42df95c4524515af0935df84eb1f14bfece0eecedaea41fb7"
+      },
+      {
+        "bytes": 308725,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsNVPTX.h",
+        "path": "llvm/IR/IntrinsicsNVPTX.h",
+        "sha256": "cde4b3c0754e5260910480e18a522b6f9c930d6ca9f64f861dff2fec8d8bf283"
+      },
+      {
+        "bytes": 3368,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsNVPTX.h.d",
+        "path": "llvm/IR/IntrinsicsNVPTX.h.d",
+        "sha256": "b8442aaebcfe4ed55761182c3217d06d5510033b651191bd400ee1977c1d62f1"
+      },
+      {
+        "bytes": 69706,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsPowerPC.h",
+        "path": "llvm/IR/IntrinsicsPowerPC.h",
+        "sha256": "abf16f56606d88cc0ed0b214b7aa429716cb4da8f3cb85f738ded824c0ebb1ab"
+      },
+      {
+        "bytes": 3370,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsPowerPC.h.d",
+        "path": "llvm/IR/IntrinsicsPowerPC.h.d",
+        "sha256": "eb97322c6f41dfc22ea00ac5b30a2d88569dbff5c622d50a31e766cf64058f74"
+      },
+      {
+        "bytes": 4187,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsR600.h",
+        "path": "llvm/IR/IntrinsicsR600.h",
+        "sha256": "26fdd17eabadb5c4c30c279f989ad9ef07336958b42396e09f61857f96848cd5"
+      },
+      {
+        "bytes": 3367,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsR600.h.d",
+        "path": "llvm/IR/IntrinsicsR600.h.d",
+        "sha256": "d16cc0181dbde55e3a0413b4d3f33e11e2c0d99ec62135eeae09bae7f2efe9b9"
+      },
+      {
+        "bytes": 79220,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsRISCV.h",
+        "path": "llvm/IR/IntrinsicsRISCV.h",
+        "sha256": "89e4f7f07bf6c336573c3f368a68bbbea39b10e20453bce7c83700bdc2ad2f77"
+      },
+      {
+        "bytes": 3368,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsRISCV.h.d",
+        "path": "llvm/IR/IntrinsicsRISCV.h.d",
+        "sha256": "e2a0e2ca5b84aa5d55def0a720085fd3975c750525834584a3cee382ba269cd1"
+      },
+      {
+        "bytes": 24939,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsS390.h",
+        "path": "llvm/IR/IntrinsicsS390.h",
+        "sha256": "ec85ba4ff624faf758e77da20c22b1326e8b6a3cb23a6245bbfc2ef6f6660cda"
+      },
+      {
+        "bytes": 3367,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsS390.h.d",
+        "path": "llvm/IR/IntrinsicsS390.h.d",
+        "sha256": "bfc6221f9c6d70cd358aa665c4d5a10d0d3587ba0e0c35ce0362b9b0811e9ff3"
+      },
+      {
+        "bytes": 11546,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsSPIRV.h",
+        "path": "llvm/IR/IntrinsicsSPIRV.h",
+        "sha256": "c01a268bbce08e087295245605efa32c6b845488b81a2a73bea9a503644150cb"
+      },
+      {
+        "bytes": 3368,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsSPIRV.h.d",
+        "path": "llvm/IR/IntrinsicsSPIRV.h.d",
+        "sha256": "1fe02b9cccb8980f6748b135af4346ab24b753b8139310f94e98d2914471b33d"
+      },
+      {
+        "bytes": 130515,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsVE.h",
+        "path": "llvm/IR/IntrinsicsVE.h",
+        "sha256": "3db25510ae08732a4110752e4b63a58494da7a3604ab9546fec52b94abd98e04"
+      },
+      {
+        "bytes": 3365,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsVE.h.d",
+        "path": "llvm/IR/IntrinsicsVE.h.d",
+        "sha256": "d99378c97c4d908a22749fd47a8610907d7584be7c503d9cfac1c441393815df"
+      },
+      {
+        "bytes": 8674,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsWebAssembly.h",
+        "path": "llvm/IR/IntrinsicsWebAssembly.h",
+        "sha256": "b00e332d12e3adcec8303fa82a99fb111f7b8b3674b0056fca885112598257fb"
+      },
+      {
+        "bytes": 3374,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsWebAssembly.h.d",
+        "path": "llvm/IR/IntrinsicsWebAssembly.h.d",
+        "sha256": "f7f38823f12ebab981c51ed0295ce8c19782d21fca27e3c1969a95a2d9850d36"
+      },
+      {
+        "bytes": 174215,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsX86.h",
+        "path": "llvm/IR/IntrinsicsX86.h",
+        "sha256": "f7d5debc4bb3bd0b84ce6740c47867587cfc330a76c6541a4e3cba25aa3cb6cb"
+      },
+      {
+        "bytes": 3366,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsX86.h.d",
+        "path": "llvm/IR/IntrinsicsX86.h.d",
+        "sha256": "dda62760a6a9dcab75d8c07578856d1c055e8e707f62f3d50c2e77fd2039ea92"
+      },
+      {
+        "bytes": 5633,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsXCore.h",
+        "path": "llvm/IR/IntrinsicsXCore.h",
+        "sha256": "6391c45ee8a40f03168a8a26f3408b4c93ac825dde8de7d4c471e75d12db5423"
+      },
+      {
+        "bytes": 3368,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/IntrinsicsXCore.h.d",
+        "path": "llvm/IR/IntrinsicsXCore.h.d",
+        "sha256": "3c54d3550de77f5fff4627d58aa86a8af3d92a0a46c3f7f5e4c7530c24b17342"
+      },
+      {
+        "bytes": 1253325,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/RuntimeLibcalls.inc",
+        "path": "llvm/IR/RuntimeLibcalls.inc",
+        "sha256": "24351a74a9d73ce4c7aef1180229bbbfd5c1f4ebe0f45078f8af7163b0c80810"
+      },
+      {
+        "bytes": 279,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/RuntimeLibcalls.inc.d",
+        "path": "llvm/IR/RuntimeLibcalls.inc.d",
+        "sha256": "b564e727c2ae1362a133e6b94809539936feac12558bb854dbc4fd9edd58d6a9"
+      },
+      {
+        "bytes": 1613,
+        "component": "generated",
+        "componentPath": "include/llvm/IR/cmake_install.cmake",
+        "path": "llvm/IR/cmake_install.cmake",
+        "sha256": "05a2a3df85493f3007a0a6110d1d6d5b12cb03a49812d82730ae04980c08aad3"
+      },
+      {
+        "bytes": 45,
+        "component": "generated",
+        "componentPath": "include/llvm/Support/Extension.def",
+        "path": "llvm/Support/Extension.def",
+        "sha256": "cd8b6704eb0e88c73e2ba4ac82957ed214dfd78ee607edecbde0f7db33ac84eb"
+      },
+      {
+        "bytes": 44,
+        "component": "generated",
+        "componentPath": "include/llvm/Support/VCSRevision.h",
+        "path": "llvm/Support/VCSRevision.h",
+        "sha256": "f0d70e19719a64a89d77728e72b58d09aa55333a8b2b368f05acf0042a74c20d"
+      },
+      {
+        "bytes": 1623,
+        "component": "generated",
+        "componentPath": "include/llvm/Support/cmake_install.cmake",
+        "path": "llvm/Support/cmake_install.cmake",
+        "sha256": "6ac09aecfa3f45ed8b4bc2c35cb7620cb5721ca9188b7ba2c630f208887a706a"
+      },
+      {
+        "bytes": 96619,
+        "component": "generated",
+        "componentPath": "include/llvm/TargetParser/AArch64TargetParserDef.inc",
+        "path": "llvm/TargetParser/AArch64TargetParserDef.inc",
+        "sha256": "a548513dc8ace312e3c8c157a9222251253b940d2fd2ecadfbb046aeabf751b8"
+      },
+      {
+        "bytes": 12206,
+        "component": "generated",
+        "componentPath": "include/llvm/TargetParser/AArch64TargetParserDef.inc.d",
+        "path": "llvm/TargetParser/AArch64TargetParserDef.inc.d",
+        "sha256": "bbaca889b08e4e4dc347c6a90b7754ba590b4e964525acd4de8684ff341d50dd"
+      },
+      {
+        "bytes": 2434,
+        "component": "generated",
+        "componentPath": "include/llvm/TargetParser/ARMTargetParserDef.inc",
+        "path": "llvm/TargetParser/ARMTargetParserDef.inc",
+        "sha256": "b3f8f0544a52c0b982125ab6df513accaacee6bb80674a8bd5a03d91f99afef8"
+      },
+      {
+        "bytes": 8719,
+        "component": "generated",
+        "componentPath": "include/llvm/TargetParser/ARMTargetParserDef.inc.d",
+        "path": "llvm/TargetParser/ARMTargetParserDef.inc.d",
+        "sha256": "04d6dbd6ef4e365a08943b757723bbd9b0a3bcd9d25612467f3b02f7d5bd4434"
+      },
+      {
+        "bytes": 16552,
+        "component": "generated",
+        "componentPath": "include/llvm/TargetParser/PPCGenTargetFeatures.inc",
+        "path": "llvm/TargetParser/PPCGenTargetFeatures.inc",
+        "sha256": "1de50e09e2b1d88e001630007cf5e049d2daa5a754bfa02877304b5fb20a69d7"
+      },
+      {
+        "bytes": 9620,
+        "component": "generated",
+        "componentPath": "include/llvm/TargetParser/PPCGenTargetFeatures.inc.d",
+        "path": "llvm/TargetParser/PPCGenTargetFeatures.inc.d",
+        "sha256": "e5897b6397fd6bee24256b92680da056e615c758b65c39dded1ad53435199d79"
+      },
+      {
+        "bytes": 26766,
+        "component": "generated",
+        "componentPath": "include/llvm/TargetParser/RISCVTargetParserDef.inc",
+        "path": "llvm/TargetParser/RISCVTargetParserDef.inc",
+        "sha256": "4438fe86b2a9df887f3c0a08ea0d2327c3347b4e0ea645c83f227340fc0f26b7"
+      },
+      {
+        "bytes": 15603,
+        "component": "generated",
+        "componentPath": "include/llvm/TargetParser/RISCVTargetParserDef.inc.d",
+        "path": "llvm/TargetParser/RISCVTargetParserDef.inc.d",
+        "sha256": "2291908eb2f230a18dc6db09744ee70902a03b78e6df6a971bd030771f4122d5"
+      },
+      {
+        "bytes": 1633,
+        "component": "generated",
+        "componentPath": "include/llvm/TargetParser/cmake_install.cmake",
+        "path": "llvm/TargetParser/cmake_install.cmake",
+        "sha256": "f6e26f4ffc7fd32f8f8531bec0e10abd2f3520b6b8c7e1ea52d664d6dd3695f8"
+      },
+      {
+        "bytes": 3019,
+        "component": "generated",
+        "componentPath": "include/llvm/cmake_install.cmake",
+        "path": "llvm/cmake_install.cmake",
+        "sha256": "e6ca5eff08b514674425a557c306d9550681ddbcd450c71d91d9502d425b5a15"
+      },
+      {
+        "bytes": 316,
+        "component": "generated",
+        "componentPath": "include/module.modulemap",
+        "path": "module.modulemap",
+        "sha256": "5d9e46ce85116d9bc6593ac2af296c60c57852a1d9227ff99eaca7ecaef2d2d5"
+      }
+    ]
+  },
+  "executionChecks": {
+    "schema": 1,
+    "operation": "owned_development_service_execution_checks",
+    "serviceSHA256": "58a06c969b4848b7e22ce45f1a92fe887e76883131696205707046f8fda1462f",
+    "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+    "descriptor": {
+      "schema": 1,
+      "board": "nano_rp2040_connect",
+      "profile": "nano-managed-v1",
+      "backend": "application",
+      "firmwareVersion": "0.1.0-m9exp1",
+      "firmwareCommit": "4d53a285a3a39d4355253760a205fdac1a6b811c",
+      "residentELFSHA256": "5b3116cdcde28f84b86f78cfffb258591455406a1f276b35bb5fd63a6f857304",
+      "firmwareImageSHA256": "35678c95c495c4e06227a992548be893305cc2375f7a6e561d0a7f66433e6983",
+      "buildReportSHA256": "db7e505a80589291481970c274e8158e32b685655dc0c246f131341c7d45bc1a",
+      "apiAddress": 268577948,
+      "residentABI": 1,
+      "targetID": 1,
+      "maximumCapsuleBytes": 4096,
+      "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+      "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+      "qualification": "experimental"
+    },
+    "builds": [
+      {
+        "name": "gpio",
+        "source": {
+          "filename": "Sketch.ino",
+          "revision": "gpio:review-1",
+          "text": "void setup() { pinMode(6, 1); }\nvoid loop() { digitalWrite(6, 1); delay(10); }\n"
+        },
+        "capsuleBytes": 316,
+        "capsuleSHA256": "958b861bbc18d4666ed03e6976b39b9fea4812409ad91a3501abbb9685a80d7d",
+        "linkedELFSHA256": "d729a8b6a8e353b1fde011ea62597f0bc5e14500496e018e7c5bd5c15276050d",
+        "sourceSHA256": "fdad88aa8b20b045f35362c13e56090ba85b7bd3e8f024452b3b39f87c0f2568",
+        "receipt": {
+          "receiptSchema": "firmingo-compiler-packaging-v1",
+          "operation": "independent_elf_packaging",
+          "provenanceStatus": "declared",
+          "requestSHA256": "06e645c0cd3bb74f1f38828ca135de28d1f4124abe9af706a364b40b5e9de0c0",
+          "buildID": "owned-service-gpio",
+          "sourceRevision": "gpio:review-1",
+          "sourceFilename": "Sketch.ino",
+          "sourceSHA256": "fdad88aa8b20b045f35362c13e56090ba85b7bd3e8f024452b3b39f87c0f2568",
+          "translationUnitSHA256": "eff2392687f5fc41f987c9cac60244c10a37595894876e0f115123e6a1903734",
+          "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+          "board": "nano_rp2040_connect",
+          "profile": "nano-managed-v1",
+          "provenance": {
+            "compiler": "owned LLVM 22.1.8 ABI-two development service",
+            "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+            "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+            "toolchainSHA256": "37d1ad1fa81101c003c895ce806042640e3d19b3db488166e9b0cf96578635b7"
+          },
+          "buildInputSHA256": "a560486baea1bcc89d80cea8ce5a886dcb0bc09e58c0fe6fdb91e1ff5cf20bfd",
+          "linkedELFSHA256": "d729a8b6a8e353b1fde011ea62597f0bc5e14500496e018e7c5bd5c15276050d",
+          "capsuleSHA256": "958b861bbc18d4666ed03e6976b39b9fea4812409ad91a3501abbb9685a80d7d",
+          "capsuleBytes": 316
+        },
+        "memoryBytes": 27983872,
+        "diagnostics": []
+      },
+      {
+        "name": "console",
+        "source": {
+          "filename": "Sketch.ino",
+          "revision": "console:review-1",
+          "text": "void setup() { Serial.println(\"ready\"); }\nvoid loop() { int c = Serial.read(); if (c >= 0) Serial.write(uint8_t(c)); }\n"
+        },
+        "capsuleBytes": 392,
+        "capsuleSHA256": "b372c00edf4b60c662f73055685ed8764e9f8798fe9efbbafad04302549174c0",
+        "linkedELFSHA256": "2fbdd67e4d444b20e450f3f7e82cab03c87a95635e012ee45181bd1d18ec907a",
+        "sourceSHA256": "697f9547f72d478210dd29bd66c6293e0a9ae926a1b4e8d568b10aeeab37f5a3",
+        "receipt": {
+          "receiptSchema": "firmingo-compiler-packaging-v1",
+          "operation": "independent_elf_packaging",
+          "provenanceStatus": "declared",
+          "requestSHA256": "c345b569d369ada20c84049ddb8863a69f8beef43f72777cbec4c628de06491f",
+          "buildID": "owned-service-console",
+          "sourceRevision": "console:review-1",
+          "sourceFilename": "Sketch.ino",
+          "sourceSHA256": "697f9547f72d478210dd29bd66c6293e0a9ae926a1b4e8d568b10aeeab37f5a3",
+          "translationUnitSHA256": "f03f5bab33e4189ea4559985d392083a2cf9c79370b2dd589e8afb0f2ad81f25",
+          "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+          "board": "nano_rp2040_connect",
+          "profile": "nano-managed-v1",
+          "provenance": {
+            "compiler": "owned LLVM 22.1.8 ABI-two development service",
+            "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+            "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+            "toolchainSHA256": "37d1ad1fa81101c003c895ce806042640e3d19b3db488166e9b0cf96578635b7"
+          },
+          "buildInputSHA256": "1a9e9c2976bb1280abbd4d03f77da930572ffad7da8916dba76b5cc1e2b2b3cb",
+          "linkedELFSHA256": "2fbdd67e4d444b20e450f3f7e82cab03c87a95635e012ee45181bd1d18ec907a",
+          "capsuleSHA256": "b372c00edf4b60c662f73055685ed8764e9f8798fe9efbbafad04302549174c0",
+          "capsuleBytes": 392
+        },
+        "memoryBytes": 28049408,
+        "diagnostics": []
+      }
+    ],
+    "errorChecks": [
+      {
+        "name": "frontend",
+        "result": "rejected without artifact",
+        "expectedDiagnostic": "missingFunction"
+      },
+      {
+        "name": "mutable-storage",
+        "result": "rejected without artifact",
+        "expectedDiagnostic": "mutable storage"
+      },
+      {
+        "name": "runtime-helper",
+        "result": "rejected without artifact",
+        "expectedDiagnostic": "__aeabi_uidiv"
+      }
+    ],
+    "repeat": "GPIO capsule and linked ELF byte-identical",
+    "consumerPinsChanged": false,
+    "distributionStatus": "unresolved",
+    "hardwareExecuted": false
+  },
+  "independentFirmwareValidation": {
+    "validator": "actual experiments/managed_sketch/image.cpp",
+    "expectedAPIAddress": "0x10022c9c",
+    "gpio": "ImageError::ok; 316 capsule/60 code bytes",
+    "console": "ImageError::ok; 392 capsule/136 code bytes",
+    "historicalAPIAddress": "0x10022ca0 rejects new GPIO capsule as wrong_api"
+  },
+  "currentProducerConfigure": {
+    "compiled": false,
+    "distributionStatus": "unresolved",
+    "inputManifestSHA256": "cdc415564ba7eae49810530248467ec6711afd127404d0d4471926b91cb673b3",
+    "status": "configured_owned_development_service"
+  },
+  "consumerPinsChanged": false,
+  "distributionStatus": "unresolved",
+  "upstreamRuntimeSourceReproduction": "installed bytes inventoried; runtime archives not rebuilt from source",
+  "hardwareQualification": "no device connection, installation or code execution on a microcontroller"
+}

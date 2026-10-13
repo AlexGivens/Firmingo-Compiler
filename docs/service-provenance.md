@@ -50,6 +50,9 @@ Every audit therefore emits `distributionStatus: "unresolved"` and
 Next, construct an owned build with explicitly selected, hashed tool and sysroot
 components, import source/patches with recorded attribution, and compare clean
 repeat builds. Review source/notice obligations before providing a binary package.
+That owned build path is now implemented in [service maintenance](service-build.md);
+[source-build evidence](evidence/owned-service-build.md) distinguishes its actual
+local compilation from the historical receipt audit and remaining upstream gaps.
 Ordinary tests use owned synthetic Git/source/module fixtures, never sibling
 repositories or the real service. Four regression cases cover deterministic
 patch reconstruction, changed inputs, undeclared edits and unsafe references.

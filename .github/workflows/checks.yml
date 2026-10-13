@@ -6,6 +6,33 @@ defaults:
   run:
     shell: bash
 jobs:
+  service-maintenance:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0; same firmware pin
+        with:
+          python-version-file: .python-version
+      - name: Owned synthetic service-build inputs and failure/closure/repeat gates
+        run: |
+          mkdir -p .build/logs
+          node tools/dev.mjs test-service-build 2>&1 | tee .build/logs/service-maintenance.log
+          echo "Actual LLVM source builds are local opt-in maintenance; distribution/component source review remains unresolved." >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: service-maintenance-${{ matrix.os }}
+          path: .build/logs/*.log
+          if-no-files-found: warn
   contracts:
     strategy:
       fail-fast: false

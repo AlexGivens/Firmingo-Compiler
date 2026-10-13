@@ -17,6 +17,8 @@ import { exportWeb } from "./export-web.mjs";
 import { boundService } from "./bound-service.mjs";
 import { auditService } from "./audit-service.mjs";
 import { importResident } from "./import-resident.mjs";
+import { checkBuiltService } from "./test-built-service.mjs";
+import { verifyServiceMaterials } from "./verify-service-materials.mjs";
 import { SERVICE } from "../runtime/pins.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -54,12 +56,31 @@ async function main() {
       + "  package-declared request.json module.elf output-directory\n"
       + "  audit-service reference-root llvm-source original-receipt.json original-service.wasm new-output-directory\n"
       + "  import-resident explicit-export-directory trusted-manifest-sha256 new-output-directory\n"
+      + "  service-build capture|configure|build|compare ... (optional pinned Python maintenance host)\n"
+      + "  test-service-build (owned synthetic sources/tools; no actual LLVM compilation)\n"
+      + "  test-built-service explicit-built.wasm trusted-module-sha256 resident-descriptor.json new-output-directory\n"
       + "  serve-web [pinned-service.wasm]\n  test-web [pinned-service.wasm] [--browser chromium-path]\n"
       + "No device access. WASM build requires an explicitly provisioned pinned local service; none is bundled.\n"
       + `Pinned development Node: ${pin}; no external dependencies or installation required.`);
     return;
   }
   if (process.versions.node !== pin) throw new Error(`Use Node ${pin}; found ${process.versions.node}. See docs/development.md.`);
+  if (command === "test-built-service") {
+    if (argumentsList.length !== 4) throw new Error("Select explicit built service, reviewed module SHA-256, resident descriptor and new output directory");
+    const result = await checkBuiltService(resolve(argumentsList[0]), argumentsList[1], resolve(argumentsList[2]), resolve(argumentsList[3]));
+    console.log(JSON.stringify({ status: "checked_owned_development_service_execution", builds: result.builds.length,
+      errorsRejected: result.errorChecks.length, serviceSHA256: result.serviceSHA256, hardwareExecuted: false }));
+    return;
+  }
+  if (command === "service-build" || command === "test-service-build") {
+    if (command === "test-service-build" && argumentsList.length) throw new Error("test-service-build takes no arguments");
+    const python = process.env.FIRMINGO_SERVICE_BUILD_PYTHON || "python3";
+    const result = spawnSync(python, command === "service-build" ? ["-I", "-S", "-B", "tools/service_build.py", ...argumentsList]
+      : ["-I", "-S", "-B", "tests/maintenance/test_service_build.py"],
+    { cwd: root, stdio: "inherit", timeout: command === "service-build" ? 3 * 60 * 60 * 1000 : 60000 });
+    if (result.error || result.signal || result.status !== 0) throw new Error("Service maintenance failed; use the documented explicit Python host and retained phase logs");
+    return;
+  }
   if (command === "validate-request") {
     if (argumentsList.length !== 1) throw new Error("validate-request requires one explicit JSON file");
     const path = resolve(argumentsList[0]);
@@ -178,6 +199,7 @@ async function main() {
     console.log(`Node ${pin}; portable preparation/ELF/capsule modules and node:test available; no external dependencies`);
     console.log("Isolated WASI compiler runtime implemented; no service bundled; recorded Chrome/HTTP-loopback evidence available; macOS SDK adapter evidenced; signed/physical Apple hosts and hardware unqualified");
   } else if (command === "test") {
+    verifyServiceMaterials();
     verifyFixtures();
     verifyVendor();
     await verifyRecipe();
@@ -186,6 +208,7 @@ async function main() {
   } else if (command === "fuzz") fuzz();
   else if (command === "fuzz-elf") fuzzELF();
   else if (command === "check") {
+    verifyServiceMaterials();
     for (const directory of ["src", "runtime", "tools", "tests", "web", "third_party/browser_wasi_shim/dist"]) {
       for (const file of readdirSync(resolve(root, directory)).filter(name => /\.(js|mjs)$/.test(name))) {
         run(["--check", `${directory}/${file}`]);

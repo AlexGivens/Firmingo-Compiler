@@ -258,10 +258,21 @@ the two native producer/parser files, unchanged receipt goldens and current pack
 Status: in progress. Exact reference/patch-state auditing and experimental resident
 export/import are implemented; complete source reproduction and distribution remain open.
 
+Owned maintenance now captures raw LLVM Git objects, 23 custom source/header/patch
+inputs, complete selected sysroot/resources, CMake modules, isolated Python library
+and native bootstrap bytes. One fresh 2,602-step LLVM/Clang/ARM/LLD build produces a
+bounded service that passes actual compile/link/error/reentry checks and independent
+firmware capsule validation. A second clean source build is still in progress;
+whole-service reproducibility is not yet established by that work. See
+[owned source-build evidence](docs/evidence/owned-service-build.md).
+
 - [ ] Resolve source, license/component, attribution, and build-provenance gaps for
   the service and every shipped dependency. Record the outcome and any exclusions.
 - [ ] Add reproducible service/asset maintenance commands, pinned sources/tools,
   identifiable patches, and source/notice materials required by the reviewed assets.
+- [x] Add explicit owned capture/configure/build/compare commands and strict source,
+  dependency, manifest, output and failed-phase gates; retain actual generated-header/
+  link-archive inventories. Keep OS/shared-cache and upstream runtime-source gaps explicit.
 - [ ] Package a bounded versioned inventory of service, runtime, recipes, resources,
   static metadata, sizes, hashes, ABI compatibility, licenses, and notices.
 - [ ] Back offered firmware descriptors with exact trusted export/build evidence;

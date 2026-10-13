@@ -86,6 +86,14 @@ metadata only; default catalogue, distribution and hardware qualification remain
 All six CI jobs at `54c1803` are inspected passing; exact counts and unavailable
 service skips are in `docs/evidence/provenance-ci.md`.
 
+Owned service maintenance now lives in `service/` and `tools/service_build.py`,
+with optional isolated Python 3.12.14 and explicit input-manifest anchors. Actual
+source capture/build is currently qualified only on the recorded Darwin host;
+separate macOS/Linux CI exercises owned synthetic maintenance fixtures. See
+`docs/service-build.md` and `docs/evidence/owned-service-build.md` for source,
+bootstrap, runtime, source-license and repeat-build boundaries. New development
+service outputs never automatically replace consumer pins or enter packages.
+
 ## Working across the repositories
 
 The user has authorized this coding agent to work across Firmingo-Compiler,

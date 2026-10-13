@@ -11,6 +11,12 @@ and [resident metadata import](resident-import.md). Both validate before creatin
 new local output directories. Ordinary tests cover their rejection gates using
 owned fixtures; no reference checkout, firmware images or service is required.
 
+[Owned service builds](service-build.md) now provide explicit input capture,
+clean configuration/build and repeat-byte comparison. The optional maintenance
+host uses Python 3.12.14 in isolation; consumer modules and ordinary Node tests do
+not require Python. `node tools/dev.mjs test-service-build` runs the separate
+synthetic maintenance suite, also maintained independently in CI.
+
 From the repository root:
 
 ```sh
