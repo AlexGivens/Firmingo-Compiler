@@ -278,6 +278,11 @@ real-service compilation explicitly skipped there. Local ordinary tests now pass
 - [x] Add explicit owned capture/configure/build/compare commands and strict source,
   dependency, manifest, output and failed-phase gates; retain actual generated-header/
   link-archive inventories. Keep OS/shared-cache and upstream runtime-source gaps explicit.
+- [x] Add pinned Preview 1 runtime source capture/build/compare commands with explicit
+  native inputs, safe archive extraction, source-local isolated generation and
+  focused maintenance fixtures. See [runtime maintenance](docs/runtime-source-build.md).
+- [ ] Record complete clean runtime repeat-build evidence and rebuild/execute the
+  compiler service against those exact source-built inputs before consumer promotion.
 - [ ] Package a bounded versioned inventory of service, runtime, recipes, resources,
   static metadata, sizes, hashes, ABI compatibility, licenses, and notices.
 - [ ] Back offered firmware descriptors with exact trusted export/build evidence;

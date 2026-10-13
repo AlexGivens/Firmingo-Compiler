@@ -31,6 +31,13 @@ a new destination with an existing parent; existing directories are refused.
 Build outputs can require several GiB and substantial native compilation time.
 Choose 1–16 jobs explicitly (default 4). No command downloads or installs inputs.
 
+For a source-built Preview 1 sysroot/resource directory, first use
+[runtime-source-build.md](runtime-source-build.md). Select the completed runtime
+output's `sysroot` and `resources` here, and add its real output directory to
+`components`. Review both runtime and service input receipts; installed-component
+capture by itself does not prove where those inputs were built. Consumer service
+pins and export packages do not change automatically.
+
 ## Explicit local input configuration
 
 Schema 1 has exactly these fields. Paths below are placeholders for explicitly

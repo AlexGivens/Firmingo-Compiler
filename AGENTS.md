@@ -99,6 +99,14 @@ independent firmware capsule validation pass; all eight CI jobs at `04aaed0`
 are inspected passing with unavailable-service checks explicitly skipped. See
 `docs/evidence/owned-service-build.md` and `docs/evidence/owned-service-ci.md`.
 
+`runtime-build capture|build|compare` now provides owned source maintenance for
+the pinned WASI Preview 1 libc/compiler-rt/libc++/libc++abi inputs. Separate
+`test-runtime-build` cases cover safe archives, isolated source-local generation,
+failure receipts and observed-byte repeat checks; fake inputs are not compiler
+evidence. See `docs/runtime-source-build.md` for exact scope and source-generation
+limits. Keep native bootstrap provenance, development assets, consumer promotion
+and distribution distinct.
+
 ## Working across the repositories
 
 The user has authorized this coding agent to work across Firmingo-Compiler,

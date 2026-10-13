@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "identifier": "wasip1-libc32-llvm22.1.8-source-v1-development",
+  "target": "wasm32-wasip1",
+  "llvmCommit": "ca7933e47d3a3451d81e72ac174dcb5aa28b59d1",
+  "sourcePaths": ["compiler-rt", "libc", "libcxx", "libcxxabi", "runtimes", "cmake", "llvm/cmake", "llvm/include", "third-party", "LICENSE.TXT"],
+  "sourceDateEpoch": 1781562833,
+  "cpu": "lime1",
+  "libcxxABIVersion": "2",
+  "archives": {
+    "libc": {"root": "wasi-libc-wasi-sdk-32", "sha256": "ea9827495c0f35bca3b3d0a953e854cac112c43bea3196b5a4f7f8fc4704b9a4"},
+    "wasiHeaders": {"root": "WASI-59cbe140561db52fc505555e859de884e0ee7f00", "sha256": "fc78b28c2c06b64e0233544a65736fc5c515c5520365d6cf821408eadedaf367"}
+  }
+}

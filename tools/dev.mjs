@@ -58,6 +58,8 @@ async function main() {
       + "  import-resident explicit-export-directory trusted-manifest-sha256 new-output-directory\n"
       + "  service-build capture|configure|build|compare ... (optional pinned Python maintenance host)\n"
       + "  test-service-build (owned synthetic sources/tools; no actual LLVM compilation)\n"
+      + "  runtime-build capture|build|compare ... (owned WASI Preview 1 source builds)\n"
+      + "  test-runtime-build (bounded source archives and runtime receipt checks)\n"
       + "  test-built-service explicit-built.wasm trusted-module-sha256 resident-descriptor.json new-output-directory\n"
       + "  serve-web [pinned-service.wasm]\n  test-web [pinned-service.wasm] [--browser chromium-path]\n"
       + "No device access. WASM build requires an explicitly provisioned pinned local service; none is bundled.\n"
@@ -72,12 +74,13 @@ async function main() {
       errorsRejected: result.errorChecks.length, serviceSHA256: result.serviceSHA256, hardwareExecuted: false }));
     return;
   }
-  if (command === "service-build" || command === "test-service-build") {
-    if (command === "test-service-build" && argumentsList.length) throw new Error("test-service-build takes no arguments");
+  if (["service-build", "test-service-build", "runtime-build", "test-runtime-build"].includes(command)) {
+    const test = command.startsWith("test-");
+    if (test && argumentsList.length) throw new Error(`${command} takes no arguments`);
     const python = process.env.FIRMINGO_SERVICE_BUILD_PYTHON || "python3";
-    const result = spawnSync(python, command === "service-build" ? ["-I", "-S", "-B", "tools/service_build.py", ...argumentsList]
-      : ["-I", "-S", "-B", "tests/maintenance/test_service_build.py"],
-    { cwd: root, stdio: "inherit", timeout: command === "service-build" ? 3 * 60 * 60 * 1000 : 60000 });
+    const stem = command.includes("runtime") ? "runtime_build" : "service_build";
+    const result = spawnSync(python, ["-I", "-S", "-B", test ? `tests/maintenance/test_${stem}.py` : `tools/${stem}.py`, ...argumentsList],
+    { cwd: root, stdio: "inherit", timeout: test ? 60000 : 3 * 60 * 60 * 1000 });
     if (result.error || result.signal || result.status !== 0) throw new Error("Service maintenance failed; use the documented explicit Python host and retained phase logs");
     return;
   }

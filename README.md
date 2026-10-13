@@ -66,3 +66,6 @@ firmware validator. No default catalogue or hardware qualification changes.
 [Owned service maintenance](docs/service-build.md) captures explicit source,
 sysroot/resource and native bootstrap inputs, builds in new owned directories,
 and verifies repeat-build bytes. No compiler binary is added to consumer resources.
+[WASI runtime source maintenance](docs/runtime-source-build.md) builds the pinned
+Preview 1 C/C++ runtime inputs into separate owned outputs, with archive and
+repeat-build checks.
