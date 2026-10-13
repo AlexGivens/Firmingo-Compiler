@@ -44,7 +44,9 @@ maintenance/test runtime; production `src/` modules have no Node imports.
 `docs/baseline.json` pins the experimental Nano reference inputs and service
 identities. M1 inventory and portable M3 stages are recorded; see
 `docs/portable-pipeline.md` for those APIs/compatibility limits.
-CI is defined but no GitHub run has been verified; recheck facts as work lands.
+The first inspected GitHub run passed contracts and mutation but failed transient
+browser-profile cleanup. See `docs/evidence/browser-cleanup.md` for the correction
+and subsequent run status; recheck facts as work lands.
 
 The current increment implements actual isolated WASI verification/compile/link/
 validation/packaging with explicit pinned local service bytes, default browser-capable

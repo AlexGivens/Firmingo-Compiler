@@ -1,7 +1,8 @@
 import { spawn } from "node:child_process";
-import { accessSync, constants, mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { accessSync, constants, mkdirSync, mkdtempSync } from "node:fs";
 import { join, resolve, delimiter } from "node:path";
 import { fileURLToPath } from "node:url";
+import { trackBrowser, closeBrowser, removeBrowserProfile } from "./browser-lifecycle.mjs";
 
 /** Uses an explicitly provisioned browser, never downloads or modifies the user's normal profile. */
 export function findChromium(explicit) {
@@ -73,11 +74,13 @@ export async function runChromiumChecks(browserPath, host) {
   const browser = spawn(browserPath, ["--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check",
     "--disable-background-networking", "--disable-sync", "--disable-component-update", "--disable-extensions", "--disable-default-apps",
     "--disable-breakpad", "--metrics-recording-only", "--remote-debugging-port=0", "--remote-debugging-address=127.0.0.1",
-    "--user-data-dir=" + profile, "about:blank"], { stdio: ["ignore", "ignore", "pipe"] });
-  let diagnostic = "", protocol, closed = false;
-  const exited = new Promise(resolve => browser.once("exit", () => { closed = true; resolve(); }));
+    "--user-data-dir=" + profile, "about:blank"], { stdio: ["ignore", "ignore", "pipe"], detached: process.platform !== "win32" });
+  const lifetime = trackBrowser(browser);
+  let diagnostic = "", protocol, failure, interrupted = false;
+  const interrupt = () => { interrupted = true; protocol?.close(); lifetime.signal("SIGTERM"); };
+  process.once("SIGINT", interrupt); process.once("SIGTERM", interrupt);
   browser.stderr.on("data", bytes => { diagnostic = (diagnostic + bytes.toString()).slice(-16384); });
-  const outerDeadline = setTimeout(() => browser.kill("SIGKILL"), 120000);
+  const outerDeadline = setTimeout(() => lifetime.signal("SIGKILL"), 120000);
   try {
     const endpoint = await new Promise((resolve, reject) => {
       const timer = setTimeout(() => { cleanup(); reject(new Error("Headless browser startup deadline exceeded: " + diagnostic)); }, 12000);
@@ -117,13 +120,23 @@ export async function runChromiumChecks(browserPath, host) {
     const report = result.result?.value;
     if (!report || report.schema !== 1 || !Array.isArray(report.cases) || report.cases.length !== 9) throw new Error("Browser omitted bounded test report");
     stopListening();
+    if (interrupted) throw new Error("Browser checks interrupted");
     return { ...report, browser: { product: version.product, revision: version.revision, protocolVersion: version.protocolVersion, jsVersion: version.jsVersion },
       externalRequests: external, protocolFaults: faults, localRequestCount: host.requests.length };
+  } catch (error) {
+    failure = error;
+    throw error;
   } finally {
     clearTimeout(outerDeadline);
-    if (protocol) { try { await protocol.send("Browser.close", {}, undefined, 3000); } catch {} protocol.close(); }
-    if (!closed) browser.kill("SIGTERM");
-    await Promise.race([exited, new Promise(resolve => { const timer = setTimeout(() => { browser.kill("SIGKILL"); resolve(); }, 3000); exited.then(() => { clearTimeout(timer); resolve(); }); })]);
-    rmSync(profile, { recursive: true, force: true });
+    try {
+      await closeBrowser(lifetime, protocol ? () => protocol.send("Browser.close", {}, undefined, 3000) : undefined);
+      removeBrowserProfile(profile);
+    } catch (cleanup) {
+      if (failure) throw new AggregateError([failure, cleanup], `Browser checks failed: ${failure.message}; cleanup failed: ${cleanup.message}`);
+      throw cleanup;
+    } finally {
+      protocol?.close(); process.removeListener("SIGINT", interrupt); process.removeListener("SIGTERM", interrupt);
+      if (interrupted && !failure) throw new Error("Browser checks interrupted during cleanup");
+    }
   }
 }

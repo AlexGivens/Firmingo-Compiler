@@ -114,15 +114,18 @@ and disables package-manager caching according to the
 
 The maintained Nano recipe is integrity/job-generation tested in the normal
 matrix. A separate `real-runtime` job runs the actual integration entry point without
-a service and records **seven skips and zero compilation passes**, with an explicit
+a service and records **eight skips and zero compilation passes**, with an explicit
 job summary/log. Actual Nano compile/link recipe execution is deliberately excluded
 from public CI until reviewed service assets and an approved provisioning mechanism
 exist; there is no automatic download or mock compile substitute. Local explicit-service
 results are separate evidence. A separate `web-host` job now runs `test-web` with
 explicit browser/compiler absence counts and JSON artifacts. The existing runner
 browser is recorded when present; no browser or service is downloaded by this job.
-Hardware stays opt-in. A GitHub run has not been verified; local passes are not
-GitHub success. `actionlint` was unavailable on the inspected machine; the workflow
+Hardware stays opt-in. The first inspected GitHub run passed both contract jobs,
+both mutation jobs and the service-availability job, but failed browser profile
+cleanup with `ENOTEMPTY`. The lifecycle correction and subsequent run are recorded
+in [browser cleanup](evidence/browser-cleanup.md); local passes are not GitHub success.
+`actionlint` was unavailable on the inspected machine; the workflow
 has been manually reviewed and parsed with the available Ruby YAML library, with
 trigger/job/shell/matrix assertions. Local failure propagation is checked separately.
 
@@ -164,6 +167,11 @@ loopback host for `web/harness.html`. `node tools/dev.mjs test-web
 [explicit-service.wasm] [--browser path/to/chromium]` drives a new headless browser
 profile through the same standard browser module worker. It never uses the normal
 browser profile or screenshots; exact host versions and JSON results are retained.
+Shutdown waits for process/stdio closure, permits bounded graceful shutdown and
+termination of the isolated browser's own process group, then retries transient
+profile-removal failures. Unconfirmed closure retains the profile and fails;
+cleanup errors preserve the original check failure. CLI interruption also cleans
+up its isolated browser and reports failure.
 See [web harness](web-harness.md) for actual commands, byte/policy limits, controls,
 explicit 3-pass/6-skip service absence behavior and nine-case real-service evidence.
 These developer operations need permission to launch a browser/bind/connect loopback

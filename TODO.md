@@ -69,7 +69,9 @@ sibling dependencies. Synthetic test bindings remain NEVER DEPLOY.
 M5 now provides the minimal readonly web harness and actual standard module-worker
 checks: nine pass in the recorded headless Chrome host; without the service, three
 browser cases pass and six compilation cases skip. A separate CI job is defined,
-but GitHub execution remains unverified. M6 now connects both SDK build APIs through
+but the first inspected GitHub run failed browser profile cleanup after the other
+jobs passed. The shutdown correction and rerun are tracked in
+`docs/evidence/browser-cleanup.md`. M6 now connects both SDK build APIs through
 a pinned source package, with nine real macOS WebKit tests and a separate consumer.
 The old SDK standalone runtime/recipe/vendor stack and inactive bridge are retired with an exact 36-file source inventory. Explicit service-memory maintenance now lives here. Both public SDK preparation APIs now use the shared service-free worker and their Swift lexical scanner is removed. Next: migrate supplied-ELF conversion with an explicit declared-provenance contract and qualify signed/physical wrapper hosts. Service
 redistribution, production firmware exports and hardware qualification remain open.
@@ -195,7 +197,7 @@ Evidence: `docs/evidence/wasm-runtime.md`: actual compilation/link/failure/dispo
 
 ### M5 — Provide the minimal CLI, web harness, and observable CI
 
-Status: implemented locally. CLI, web harness, Chrome checks and observable CI definitions are implemented; the GitHub-run acceptance item remains unverified.
+Status: implemented locally. The first GitHub run passed contracts/mutation/service availability but failed transient browser cleanup. The bounded lifecycle fix passes local fast and browser checks; the corrected GitHub run must be inspected before completing the acceptance item.
 
 - [x] Add a developer CLI with help, explicit request/recipe/resource selection,
   structured diagnostics, artifact/receipt output, meaningful exit codes, cancellation,
