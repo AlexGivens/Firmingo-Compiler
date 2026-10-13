@@ -15,7 +15,7 @@ node tools/dev.mjs audit-service path/to/reference path/to/llvm-source \
 Select a new output directory with an existing parent. The tool verifies exact
 reference commit/file bytes, reconstructs all pinned LLVM patches in an owned
 temporary source subset, and compares every changed tracked or visible untracked
-source file. It rejects unexpected changes, unsafe paths, symlinks, inconsistent
+source file. It rejects unexpected changes, unsafe paths, symlinked source inputs, inconsistent
 receipts and wrong module bytes. Ignored/generated source files are outside this
 patch-state proof. Static WASM validation checks imports, exports and memory;
 the tool never instantiates the module. The exact receipt hash precedes decoding

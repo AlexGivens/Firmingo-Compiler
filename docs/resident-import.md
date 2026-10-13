@@ -60,6 +60,13 @@ The native GCC Blink proofs use division requiring an unsupported Clang runtime
 helper; these new builds exercise the existing constrained subset, not general
 Arduino compatibility.
 
+The fresh firmware CI export at `4d53a28` also imports successfully using the
+manifest anchor from its retained job log. Its derived API is `0x10022c9c`,
+demonstrating address drift from the historical resident. Both supported sketches
+compile against this descriptor and pass independent firmware validation; the
+historical API binding correctly rejects the new GPIO capsule. See
+[CI checks and exact additional identities](evidence/provenance-ci.md).
+
 Five importer regression cases exercise anchors/inventories, malformed UF2/API,
 source/provenance drift, schema/recipe injection, symlinks and CLI publication
 failure. Synthetic fixtures are NEVER DEPLOY. Ordinary tests require no real

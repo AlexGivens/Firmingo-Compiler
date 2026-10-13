@@ -83,6 +83,8 @@ files/exact 13-patch LLVM reconstruction, and `import-resident` with an explicit
 trusted manifest anchor and independent UF2/FAPI checks. See `docs/service-provenance.md`
 and `docs/resident-import.md`. The historical exact M9 export supplies experimental
 metadata only; default catalogue, distribution and hardware qualification remain open.
+All six CI jobs at `54c1803` are inspected passing; exact counts and unavailable
+service skips are in `docs/evidence/provenance-ci.md`.
 
 ## Working across the repositories
 

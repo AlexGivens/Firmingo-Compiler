@@ -75,12 +75,16 @@ remains explicitly skipped there. The inspected results are tracked in
 a pinned source package, with nine real macOS WebKit tests and a separate consumer.
 The old SDK standalone runtime/recipe/vendor stack and inactive bridge are retired with an exact 36-file source inventory. Both public SDK preparation and supplied-ELF conversion APIs now use the shared service-free worker; Swift lexical scanning, ELF parsing and capsule production are removed with compatibility/receipt checks. See `docs/declared-elf-packaging.md`. Next: resolve reproducible service provenance/assets and trusted firmware exports, then qualify signed/physical wrapper hosts. Service
 redistribution, production firmware exports and hardware qualification remain open.
+M7 now audits exact service reference/patch state and imports an explicitly anchored
+historical resident export. Two supported actual WASM capsules pass the independent
+firmware validator; no default catalogue changes. [Latest CI](docs/evidence/provenance-ci.md)
+at `54c1803` passes all six jobs with actual-service cases explicitly skipped.
 See `docs/runtime.md`, `docs/evidence/wasm-runtime.md`, and the support/interface docs.
 
 | Dependency or limit | Current position | Next action |
 | --- | --- | --- |
-| Compiler service distribution | Existing FirmingoKit records leave service redistribution and build provenance unresolved | Inventory source/build/component evidence in M1; resolve distributable assets in M7 |
-| Nano resident contract | Experimental source contract selected in `docs/baseline.json`; no trusted exact deployment export selected | Obtain real build facts before offering a production descriptor |
+| Compiler service distribution | 27 reference files/13 patches/19 LLVM source changes audited; sysroot/archive/tool/license gaps remain | Establish owned clean repeat builds and component source/notice closure in M7 |
+| Nano resident contract | Exact historical M9 export verified/imported as experimental metadata; production and installed-image evidence unqualified | Complete upstream provenance and wrapper/device qualification before a production offer |
 | Runtime portability | Local Node/WASI and Chrome/HTTP-loopback evidence exists; arbitrary wrappers remain unqualified | macOS SDK adapter passes; qualify signed/minimum-OS and physical iOS/iPadOS hosts |
 | Board and library breadth | Nano's constrained managed facade is the starting scope | Declare its restrictions; leave other boards and broader libraries unavailable until implemented |
 
@@ -280,6 +284,11 @@ byte-identical. Local checks: 117 fast tests passed, one optional-service test
 skipped; firmware 20 sanitizer native and 191 host tests passed. Four audit and five
 import regressions are part of normal CI. Public assets, full upstream input
 reproduction, signed/physical wrapper and hardware qualification remain open.
+[GitHub logs](docs/evidence/provenance-ci.md) at `54c1803` confirm all six jobs
+passing, with actual-service CI cases explicitly skipped.
+The fresh `4d53a28` firmware CI export also imports; its changed API address is
+derived correctly and two supported WASM capsules pass independent firmware
+validation. The stale historical address is rejected. No hardware qualification.
 
 ### M8 — Qualify the initial Nano path through real wrapper environments
 

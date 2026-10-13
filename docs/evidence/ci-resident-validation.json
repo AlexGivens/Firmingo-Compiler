@@ -1,0 +1,306 @@
+{
+  "schema": 1,
+  "date": "2026-10-13",
+  "firmwareCommit": "4d53a285a3a39d4355253760a205fdac1a6b811c",
+  "firmwareRun": "https://github.com/AlexGivens/Firmingo/actions/runs/38378075416",
+  "exportManifestSHA256": "3109c3e97c95f07c39d50fc1591dab8b8cc44022fde5aa71c7602e5a7974a78e",
+  "descriptor": {
+    "schema": 1,
+    "board": "nano_rp2040_connect",
+    "profile": "nano-managed-v1",
+    "backend": "application",
+    "firmwareVersion": "0.1.0-m9exp1",
+    "firmwareCommit": "4d53a285a3a39d4355253760a205fdac1a6b811c",
+    "residentELFSHA256": "5b3116cdcde28f84b86f78cfffb258591455406a1f276b35bb5fd63a6f857304",
+    "firmwareImageSHA256": "35678c95c495c4e06227a992548be893305cc2375f7a6e561d0a7f66433e6983",
+    "buildReportSHA256": "db7e505a80589291481970c274e8158e32b685655dc0c246f131341c7d45bc1a",
+    "apiAddress": 268577948,
+    "residentABI": 1,
+    "targetID": 1,
+    "maximumCapsuleBytes": 4096,
+    "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+    "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+    "qualification": "experimental"
+  },
+  "importReceipt": {
+    "schema": 1,
+    "operation": "experimental_resident_metadata_import",
+    "exportManifestSHA256": "3109c3e97c95f07c39d50fc1591dab8b8cc44022fde5aa71c7602e5a7974a78e",
+    "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+    "files": [
+      {
+        "bytes": 2855072,
+        "path": "resident.elf",
+        "sha256": "5b3116cdcde28f84b86f78cfffb258591455406a1f276b35bb5fd63a6f857304"
+      },
+      {
+        "bytes": 306176,
+        "path": "resident.uf2",
+        "sha256": "35678c95c495c4e06227a992548be893305cc2375f7a6e561d0a7f66433e6983"
+      },
+      {
+        "bytes": 6101,
+        "path": "build-report.json",
+        "sha256": "db7e505a80589291481970c274e8158e32b685655dc0c246f131341c7d45bc1a"
+      },
+      {
+        "bytes": 6741,
+        "path": "resident-facts.json",
+        "sha256": "3513c5f2cfb66fac2f78b786bb7067f475eb5f6328c94ca5ca2e2599a9827db4"
+      }
+    ],
+    "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+    "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+    "qualification": "experimental; no Clang-to-resident hardware qualification",
+    "apiTableSHA256": "601872c1352b5eadb3d4fff8872c8b2a27130c4e0f780209bb573fd5fbe22a5f",
+    "sourceProof": "firmware export binds reported project sources to exact commit; upstream core/toolchain full reproduction remains open",
+    "imagesCopied": false,
+    "defaultCatalogueChanged": false
+  },
+  "apiTable": {
+    "apiAddress": 268577948,
+    "apiTableBytes": 40,
+    "apiTableSHA256": "601872c1352b5eadb3d4fff8872c8b2a27130c4e0f780209bb573fd5fbe22a5f",
+    "functionAddresses": [
+      268449173,
+      268449149,
+      268449537,
+      268448813,
+      268450597,
+      268450137,
+      268450581,
+      268450421
+    ],
+    "loadFlags": 7,
+    "residentABI": 1
+  },
+  "comparedFlashBytes": 152840,
+  "builds": [
+    {
+      "name": "gpio",
+      "request": {
+        "interfaceVersion": 1,
+        "kind": "build",
+        "buildID": "ci-resident-gpio",
+        "source": {
+          "filename": "Sketch.ino",
+          "revision": "gpio:review-1",
+          "text": "void setup() { pinMode(6, 1); }\nvoid loop() { digitalWrite(6, 1); delay(10); }\n"
+        },
+        "target": {
+          "board": "nano_rp2040_connect",
+          "profile": "nano-managed-v1",
+          "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+          "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+          "firmwareBuild": {
+            "schema": 1,
+            "board": "nano_rp2040_connect",
+            "profile": "nano-managed-v1",
+            "backend": "application",
+            "firmwareVersion": "0.1.0-m9exp1",
+            "firmwareCommit": "4d53a285a3a39d4355253760a205fdac1a6b811c",
+            "residentELFSHA256": "5b3116cdcde28f84b86f78cfffb258591455406a1f276b35bb5fd63a6f857304",
+            "firmwareImageSHA256": "35678c95c495c4e06227a992548be893305cc2375f7a6e561d0a7f66433e6983",
+            "buildReportSHA256": "db7e505a80589291481970c274e8158e32b685655dc0c246f131341c7d45bc1a",
+            "apiAddress": 268577948,
+            "residentABI": 1,
+            "targetID": 1,
+            "maximumCapsuleBytes": 4096,
+            "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+            "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+            "qualification": "experimental"
+          }
+        },
+        "options": {
+          "deadlineMilliseconds": 60000
+        }
+      },
+      "receipt": {
+        "receiptSchema": "firmingo-compiler-build-v1",
+        "operation": "wasm_compile_link_package",
+        "provenanceStatus": "pinned_assets_executed",
+        "requestSHA256": "18e512184faadf48a7c26f1ac2f667b7a85629c319d0e30ede11116797ede4b7",
+        "buildID": "ci-resident-gpio",
+        "sourceRevision": "gpio:review-1",
+        "sourceFilename": "Sketch.ino",
+        "sourceSHA256": "fdad88aa8b20b045f35362c13e56090ba85b7bd3e8f024452b3b39f87c0f2568",
+        "translationUnitSHA256": "eff2392687f5fc41f987c9cac60244c10a37595894876e0f115123e6a1903734",
+        "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+        "board": "nano_rp2040_connect",
+        "profile": "nano-managed-v1",
+        "provenance": {
+          "compiler": "Clang/LLD 22.1.8 ABI-two WASI service",
+          "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+          "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+          "toolchainSHA256": "0b5502ab4ffcc2138a5bdc03c59200c6b286702ea121fd367f7c07b5bf08d409"
+        },
+        "interfaceVersion": 1,
+        "service": {
+          "bytes": 101196044,
+          "sha256": "3e2544acf7f88f6f1d5fbce34648df8eb96dfff47afa242a3e008bc8f86e2f33",
+          "serviceABI": 2,
+          "compiler": "Clang/LLD 22.1.8 ABI-two WASI service",
+          "maximumMemoryBytes": 268435456
+        },
+        "wasiShim": {
+          "package": "@bjorn3/browser_wasi_shim",
+          "version": "0.4.2",
+          "receiptSHA256": "1ad1971d3617837d1bc858a31c488d112b20ec6f8df9eecfccb361af2303087d"
+        },
+        "toolchainManifest": {
+          "schema": 1,
+          "service": {
+            "bytes": 101196044,
+            "sha256": "3e2544acf7f88f6f1d5fbce34648df8eb96dfff47afa242a3e008bc8f86e2f33",
+            "serviceABI": 2,
+            "compiler": "Clang/LLD 22.1.8 ABI-two WASI service",
+            "maximumMemoryBytes": 268435456
+          }
+        },
+        "recipeAssets": [
+          {
+            "path": "Recipe/Arduino.h",
+            "bytes": 5022,
+            "sha256": "46e2ecc7ac653b12c6f63ab616e4a49c347c6ece360e203011337733987d60da"
+          },
+          {
+            "path": "Recipe/Entry.cpp",
+            "bytes": 572,
+            "sha256": "80e5f48e6512d61f247d61e6637c40abeb25a2b9c84093e81390ee8aeed6d88d"
+          },
+          {
+            "path": "Recipe/Module.ld",
+            "bytes": 1078,
+            "sha256": "a8ded6a674337881bd650ed38b39cdba1299cd469f5e238317989e1e96de0da8"
+          },
+          {
+            "path": "Sources/ManagedRecipe.js",
+            "bytes": 3496,
+            "sha256": "e30c8f523d7938cb92127f4bb430ebb88d59f7b32dd3c430665409477e4a058e"
+          }
+        ],
+        "buildInputSHA256": "683df7fffbd24fb3540e86cd17436b79156eab076d2ffaff5313a6004714ac85",
+        "linkedELFSHA256": "d729a8b6a8e353b1fde011ea62597f0bc5e14500496e018e7c5bd5c15276050d",
+        "capsuleSHA256": "958b861bbc18d4666ed03e6976b39b9fea4812409ad91a3501abbb9685a80d7d",
+        "capsuleBytes": 316
+      },
+      "capsuleBytes": 316,
+      "capsuleSHA256": "958b861bbc18d4666ed03e6976b39b9fea4812409ad91a3501abbb9685a80d7d",
+      "firmwareValidator": "production image.cpp; ImageError::ok with exact CI API binding"
+    },
+    {
+      "name": "console",
+      "request": {
+        "interfaceVersion": 1,
+        "kind": "build",
+        "buildID": "ci-resident-console",
+        "source": {
+          "filename": "Sketch.ino",
+          "revision": "console:review-1",
+          "text": "void setup() { Serial.println(\"ready\"); }\nvoid loop() { int c = Serial.read(); if (c >= 0) Serial.write(uint8_t(c)); }\n"
+        },
+        "target": {
+          "board": "nano_rp2040_connect",
+          "profile": "nano-managed-v1",
+          "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+          "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+          "firmwareBuild": {
+            "schema": 1,
+            "board": "nano_rp2040_connect",
+            "profile": "nano-managed-v1",
+            "backend": "application",
+            "firmwareVersion": "0.1.0-m9exp1",
+            "firmwareCommit": "4d53a285a3a39d4355253760a205fdac1a6b811c",
+            "residentELFSHA256": "5b3116cdcde28f84b86f78cfffb258591455406a1f276b35bb5fd63a6f857304",
+            "firmwareImageSHA256": "35678c95c495c4e06227a992548be893305cc2375f7a6e561d0a7f66433e6983",
+            "buildReportSHA256": "db7e505a80589291481970c274e8158e32b685655dc0c246f131341c7d45bc1a",
+            "apiAddress": 268577948,
+            "residentABI": 1,
+            "targetID": 1,
+            "maximumCapsuleBytes": 4096,
+            "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+            "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+            "qualification": "experimental"
+          }
+        },
+        "options": {
+          "deadlineMilliseconds": 60000
+        }
+      },
+      "receipt": {
+        "receiptSchema": "firmingo-compiler-build-v1",
+        "operation": "wasm_compile_link_package",
+        "provenanceStatus": "pinned_assets_executed",
+        "requestSHA256": "309dab0d88b141f6b0f2dc1a713c9e28649925db61c8213c53994219df917d8e",
+        "buildID": "ci-resident-console",
+        "sourceRevision": "console:review-1",
+        "sourceFilename": "Sketch.ino",
+        "sourceSHA256": "697f9547f72d478210dd29bd66c6293e0a9ae926a1b4e8d568b10aeeab37f5a3",
+        "translationUnitSHA256": "f03f5bab33e4189ea4559985d392083a2cf9c79370b2dd589e8afb0f2ad81f25",
+        "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+        "board": "nano_rp2040_connect",
+        "profile": "nano-managed-v1",
+        "provenance": {
+          "compiler": "Clang/LLD 22.1.8 ABI-two WASI service",
+          "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+          "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+          "toolchainSHA256": "0b5502ab4ffcc2138a5bdc03c59200c6b286702ea121fd367f7c07b5bf08d409"
+        },
+        "interfaceVersion": 1,
+        "service": {
+          "bytes": 101196044,
+          "sha256": "3e2544acf7f88f6f1d5fbce34648df8eb96dfff47afa242a3e008bc8f86e2f33",
+          "serviceABI": 2,
+          "compiler": "Clang/LLD 22.1.8 ABI-two WASI service",
+          "maximumMemoryBytes": 268435456
+        },
+        "wasiShim": {
+          "package": "@bjorn3/browser_wasi_shim",
+          "version": "0.4.2",
+          "receiptSHA256": "1ad1971d3617837d1bc858a31c488d112b20ec6f8df9eecfccb361af2303087d"
+        },
+        "toolchainManifest": {
+          "schema": 1,
+          "service": {
+            "bytes": 101196044,
+            "sha256": "3e2544acf7f88f6f1d5fbce34648df8eb96dfff47afa242a3e008bc8f86e2f33",
+            "serviceABI": 2,
+            "compiler": "Clang/LLD 22.1.8 ABI-two WASI service",
+            "maximumMemoryBytes": 268435456
+          }
+        },
+        "recipeAssets": [
+          {
+            "path": "Recipe/Arduino.h",
+            "bytes": 5022,
+            "sha256": "46e2ecc7ac653b12c6f63ab616e4a49c347c6ece360e203011337733987d60da"
+          },
+          {
+            "path": "Recipe/Entry.cpp",
+            "bytes": 572,
+            "sha256": "80e5f48e6512d61f247d61e6637c40abeb25a2b9c84093e81390ee8aeed6d88d"
+          },
+          {
+            "path": "Recipe/Module.ld",
+            "bytes": 1078,
+            "sha256": "a8ded6a674337881bd650ed38b39cdba1299cd469f5e238317989e1e96de0da8"
+          },
+          {
+            "path": "Sources/ManagedRecipe.js",
+            "bytes": 3496,
+            "sha256": "e30c8f523d7938cb92127f4bb430ebb88d59f7b32dd3c430665409477e4a058e"
+          }
+        ],
+        "buildInputSHA256": "9bcac7d8ab5159cd9cf04df79124b9b87ce44118d11f854c7ec73f264ebd9c4d",
+        "linkedELFSHA256": "2fbdd67e4d444b20e450f3f7e82cab03c87a95635e012ee45181bd1d18ec907a",
+        "capsuleSHA256": "b372c00edf4b60c662f73055685ed8764e9f8798fe9efbbafad04302549174c0",
+        "capsuleBytes": 392
+      },
+      "capsuleBytes": 392,
+      "capsuleSHA256": "b372c00edf4b60c662f73055685ed8764e9f8798fe9efbbafad04302549174c0",
+      "firmwareValidator": "production image.cpp; ImageError::ok with exact CI API binding"
+    }
+  ],
+  "wrongHistoricalAPIBinding": "GPIO capsule rejected as ImageError::wrong_api using 0x10022ca0; accepted with actual 0x10022c9c",
+  "hardwareQualification": "no device connection, installation or microcontroller execution"
+}
