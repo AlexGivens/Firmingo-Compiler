@@ -56,3 +56,9 @@ public Swift preparation adapters and standard module-worker path without a WASM
 
 [Declared ELF packaging](docs/declared-elf-packaging.md) preserves legacy recipe
 declarations and Swift receipts while keeping actual compilation pins strict.
+
+[Service provenance audit](docs/service-provenance.md) verifies the pinned reference
+and patch state while preserving unresolved distribution gaps.
+[Experimental resident import](docs/resident-import.md) consumes verified firmware
+exports into explicit metadata outputs; two actual WASM capsules pass the independent
+firmware validator. No default catalogue or hardware qualification changes.

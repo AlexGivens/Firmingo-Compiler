@@ -6,6 +6,11 @@ and pinned in `.node-version` and `package.json`. No external package installati
 Swift/Apple tools, board, sibling checkout or network is needed for normal checks.
 Consumer modules under `src/` have no Node imports.
 
+Explicit maintenance commands now include [service auditing](service-provenance.md)
+and [resident metadata import](resident-import.md). Both validate before creating
+new local output directories. Ordinary tests cover their rejection gates using
+owned fixtures; no reference checkout, firmware images or service is required.
+
 From the repository root:
 
 ```sh

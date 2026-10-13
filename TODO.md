@@ -251,8 +251,8 @@ the two native producer/parser files, unchanged receipt goldens and current pack
 
 ### M7 — Produce reproducible, distributable compiler assets
 
-Status: not started. Distribution has the unresolved service-provenance dependency
-identified above; inventory/build work can begin with M1.
+Status: in progress. Exact reference/patch-state auditing and experimental resident
+export/import are implemented; complete source reproduction and distribution remain open.
 
 - [ ] Resolve source, license/component, attribution, and build-provenance gaps for
   the service and every shipped dependency. Record the outcome and any exclusions.
@@ -271,7 +271,15 @@ identified above; inventory/build work can begin with M1.
 Acceptance: another maintainer can reproduce and verify the declared asset set,
 its distribution basis is recorded, and consumers can compile with packaged inputs.
 Opt-in use of a local service does not complete this gate.
-Evidence: pending.
+Evidence: [service provenance](docs/service-provenance.md) pins 27 reference files,
+13 patches and 19 verified LLVM file changes without modifying the reference or
+executing the service. [Resident import](docs/resident-import.md) uses the exact
+historical M9 ELF/UF2/report/project-source binding; two supported actual WASM
+capsules pass independent production firmware validation, and a repeat build is
+byte-identical. Local checks: 117 fast tests passed, one optional-service test
+skipped; firmware 20 sanitizer native and 191 host tests passed. Four audit and five
+import regressions are part of normal CI. Public assets, full upstream input
+reproduction, signed/physical wrapper and hardware qualification remain open.
 
 ### M8 — Qualify the initial Nano path through real wrapper environments
 

@@ -1,0 +1,184 @@
+{
+  "schema": 1,
+  "referenceRepository": "ArduinoKit",
+  "referenceCommit": "0eb3cd1841147dfc7ea25bf076545e38b01601e4",
+  "llvmCommit": "ca7933e47d3a3451d81e72ac174dcb5aa28b59d1",
+  "llvmVersion": "22.1.8",
+  "distributionStatus": "unresolved",
+  "referenceRootLicense": "no top-level license file in the pinned Git tree; wrapper attribution/license selection unresolved",
+  "receipt": {
+    "bytes": 7283,
+    "sha256": "43a306a7be62d0df3e3ff23326a1b74833e6830259cf4ab3adb6231f43bbdc46"
+  },
+  "llvmLicense": {
+    "path": "LICENSE.TXT",
+    "bytes": 15141,
+    "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+    "declaredLicense": "Apache-2.0 WITH LLVM-exception",
+    "source": "https://github.com/llvm/llvm-project/blob/ca7933e47d3a3451d81e72ac174dcb5aa28b59d1/LICENSE.TXT"
+  },
+  "files": [
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0001-wasi-cmake-platform.patch",
+      "bytes": 565,
+      "sha256": "58bbe928a7f28bb0de7cf252f299049ad3a9def271f51c787e3c4c438bbca83a",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0002-wasi-endian-header.patch",
+      "bytes": 607,
+      "sha256": "a06f4f0347aef442af82867a3b62568658b3a723239f666894f5e35211230c80",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0003-wasi-disable-crash-recovery.patch",
+      "bytes": 4388,
+      "sha256": "b0bc35cc59155c79258f1b90229b4975ea065382f4c0b85e033d4949a63d4fca",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0004-wasi-disable-process-jobserver-features.patch",
+      "bytes": 2178,
+      "sha256": "d8e70922200aacc582fb5d125fdd045be567904304f387599344ab423b26a491",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0005-wasi-random-source.patch",
+      "bytes": 1185,
+      "sha256": "406272beaf7a160744774e2725a69be3707000bd32b28580ff84f68d1ab99468",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0006-wasi-memory-and-sockets.patch",
+      "bytes": 5078,
+      "sha256": "46f9e8d671ff35c890ca80eff6a4595989594d65d58c9c20e278c2987dc2f23b",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0007-wasi-stack-and-watchdog.patch",
+      "bytes": 1704,
+      "sha256": "08687e5fd2539b093a0f07770fc76155829f453949f9e62d84d7f89a2d156dc5",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0008-wasi-filesystem.patch",
+      "bytes": 5238,
+      "sha256": "b6c31118f28095b0968e9793691f821462139dfa7503837ad5901291c11c0dd8",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0009-wasi-processes.patch",
+      "bytes": 7021,
+      "sha256": "635a6acfe824710a6cbe208d03be3f04a471e8c0d1a74b0d217ca91332853dfb",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0010-wasi-signals.patch",
+      "bytes": 1640,
+      "sha256": "70cab7e8ba1178c012abe5ff8f29a43db7834a2ef6fba4c258442d5a452496ab",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0011-wasi-clang-visibility.patch",
+      "bytes": 641,
+      "sha256": "3de2133a2b36f95647ee78b0478809ebbf3526973e2061320ac559f540aca9d3",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0012-wasi-clang-driver-process.patch",
+      "bytes": 458,
+      "sha256": "87beb107631da8c006dae0541e0d03b8910877cadad030522e6d99e1e4fa5dbe",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Patches/0013-wasi-dynamic-loading-and-memory-advice.patch",
+      "bytes": 1481,
+      "sha256": "73eb9090e82dd43b66e192f79405b9c2caad121c4f39dcb35106be1c5c17ce05",
+      "role": "patch"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Sources/ArduinoCompilerService.cpp",
+      "bytes": 2790,
+      "sha256": "c49e75f5afb7aae4ef0d6e9ed31c96332053de2d5f74117c5db366ff283aa816",
+      "role": "source"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Sources/CompilerDriver.cpp",
+      "bytes": 4362,
+      "sha256": "c027b54e2256d49d6f07d2b00ccb727ea4b7560d2a474d064acda9a6ca2476c1",
+      "role": "source"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Sources/CompilerDriver.h",
+      "bytes": 371,
+      "sha256": "a6bb90ceaa6e27bd540ac46debd5965b4a9e955e909e3525d3ea5ba5d4752acf",
+      "role": "source"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Sources/LinkerDriver.cpp",
+      "bytes": 1400,
+      "sha256": "e34b743ec78188bed8055661fbd69eb8b2cd3e7b286b8ba24dffd3c43ed37689",
+      "role": "source"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Sources/LinkerDriver.h",
+      "bytes": 378,
+      "sha256": "3456f0dd37013fedf814cf4088893f618568298d3c8f75a2270ee81d9a8c3695",
+      "role": "source"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Sources/ResponseFile.cpp",
+      "bytes": 1359,
+      "sha256": "16382ce779ca095014d83deb8d1f5af2f0d915524a3be55ca2cab8d9231b89a7",
+      "role": "source"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Sources/ResponseFile.h",
+      "bytes": 393,
+      "sha256": "4774bde9d979a57154f43df50b98dccfa3d38991600602966baacb3eacaf4ec4",
+      "role": "source"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Sources/WASICompatibility.cpp",
+      "bytes": 545,
+      "sha256": "ca668136b339ff0cb54d75ae214deda29589f264dd546072ce84f01f07fcfbc5",
+      "role": "source"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/Sources/main.cpp",
+      "bytes": 1003,
+      "sha256": "c019c014a0d2d2546e131328ec71bb3091daf8140aca60b087cc69c25b6f5eeb",
+      "role": "source"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/WASIClangToolchain.cmake",
+      "bytes": 1028,
+      "sha256": "bc8a3778ee7ebb711ba74d587bbbc006eb59df7eb880d9164009819cf185c6e8",
+      "role": "build-script"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/build-wasi-service.sh",
+      "bytes": 2325,
+      "sha256": "ea7ab7ed085da87fb2c76b993c0fef35cf877867b496b66c19590a282de1aed1",
+      "role": "build-script"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/configure-wasi-llvm.sh",
+      "bytes": 2681,
+      "sha256": "4b74c549cbdd183905f22e2cc2a2fb7c30214f5df9287b0e55c3d711a361cc89",
+      "role": "build-script"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/CompilerService/include/ArduinoCompilerService.h",
+      "bytes": 3153,
+      "sha256": "06de306587d78fad8c16c829ec58f4907e35bcca6e3e1d6ad3cc2121732e8db5",
+      "role": "source"
+    },
+    {
+      "path": "Tools/ArduinoDirectWASM/build-wasi-module.mjs",
+      "bytes": 6208,
+      "sha256": "1f41397e0bf95a1f27bb93047c9855d7db36af58acc8e9b0903224709f60f0af",
+      "role": "build-script"
+    }
+  ]
+}

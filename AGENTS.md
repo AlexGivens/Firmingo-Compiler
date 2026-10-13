@@ -78,6 +78,12 @@ The existing compiler-service binary's redistribution and reproducible
 build-provenance review remains unresolved and is tracked here in M7. Repository creation and code
 migration do not resolve that status. Preserve it until evidence supports a change.
 
+M7 maintenance now includes `tools/dev.mjs audit-service` with 27 pinned reference
+files/exact 13-patch LLVM reconstruction, and `import-resident` with an explicit
+trusted manifest anchor and independent UF2/FAPI checks. See `docs/service-provenance.md`
+and `docs/resident-import.md`. The historical exact M9 export supplies experimental
+metadata only; default catalogue, distribution and hardware qualification remain open.
+
 ## Working across the repositories
 
 The user has authorized this coding agent to work across Firmingo-Compiler,

@@ -15,6 +15,8 @@ import { startWebHarness } from "./web-server.mjs";
 import { webChecks } from "./web-checks.mjs";
 import { exportWeb } from "./export-web.mjs";
 import { boundService } from "./bound-service.mjs";
+import { auditService } from "./audit-service.mjs";
+import { importResident } from "./import-resident.mjs";
 import { SERVICE } from "../runtime/pins.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -50,6 +52,8 @@ async function main() {
       + "  bound-service <pinned-original.wasm> <new-development-directory>\n"
       + "  test-memory [pinned-original.wasm] (explicit skip when absent)\n"
       + "  package-declared request.json module.elf output-directory\n"
+      + "  audit-service reference-root llvm-source original-receipt.json original-service.wasm new-output-directory\n"
+      + "  import-resident explicit-export-directory trusted-manifest-sha256 new-output-directory\n"
       + "  serve-web [pinned-service.wasm]\n  test-web [pinned-service.wasm] [--browser chromium-path]\n"
       + "No device access. WASM build requires an explicitly provisioned pinned local service; none is bundled.\n"
       + `Pinned development Node: ${pin}; no external dependencies or installation required.`);
@@ -140,6 +144,23 @@ async function main() {
       "receipt.json": JSON.stringify(artifact.receipt, null, 2) + "\n" },
     { status: "packaged_independent_elf", buildID: request.buildID, capsuleSHA256: artifact.sha256,
       capsuleBytes: artifact.bytes.length, provenanceStatus: "declared" });
+    return;
+  }
+  if (command === "import-resident") {
+    if (argumentsList.length !== 3) throw new Error("Select an explicit resident export, independently trusted manifest SHA-256 and new output directory");
+    const result = await importResident(argumentsList[0], argumentsList[1]);
+    writeOutput(resolve(argumentsList[2]), { "descriptor.json": JSON.stringify(result.descriptor, null, 2) + "\n",
+      "catalogue.json": JSON.stringify(result.catalogue, null, 2) + "\n", "import-receipt.json": JSON.stringify(result.receipt, null, 2) + "\n" },
+      { status: "imported_experimental_resident_metadata", firmwareBuildID: result.receipt.firmwareBuildID, imagesCopied: false,
+        apiAddress: result.descriptor.apiAddress, defaultCatalogueChanged: false });
+    return;
+  }
+  if (command === "audit-service") {
+    if (argumentsList.length !== 5) throw new Error("Select explicit reference/LLVM roots, original receipt/service and a new output directory");
+    const audit = auditService(...argumentsList.slice(0, 4));
+    writeOutput(resolve(argumentsList[4]), { "audit.json": JSON.stringify(audit, null, 2) + "\n" },
+      { status: "audited_service_provenance_unresolved", moduleSHA256: audit.module.sha256, sourceFiles: audit.sourceFiles.length,
+        patchedLLVMFiles: audit.patchedLLVMFiles.length, distributionStatus: "unresolved", serviceExecuted: false });
     return;
   }
   if (command === "package-declared") {
