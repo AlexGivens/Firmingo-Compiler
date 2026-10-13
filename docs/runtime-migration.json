@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "sourceRepository": "FirmingoKit",
+  "sourceCommit": "05cae8fa8e58c706eceb6a15812d7ca500375d7b",
+  "files": [
+    {
+      "path": "Tools/ManagedWASM/Sources/ManagedService.js",
+      "bytes": 10439,
+      "sha256": "bf8e3f657e173b0b443b3a57d5f64f5e8372bbcf85584d8371391d13e20a8fc2",
+      "destination": "runtime/ManagedService.js",
+      "changes": "Relative imports and portable hashing adapted; bounded diagnostics retain their actual phase and original BOM mapping is applied by the build core."
+    },
+    {
+      "path": "Tools/ManagedWASM/Sources/Workspace.js",
+      "bytes": 11420,
+      "sha256": "16ea8b04c3abe5587984c8c691b9044c615f3e8dff86837d160f134430e68ecc",
+      "destination": "runtime/Workspace.js",
+      "changes": "Relative vendor import adapted; nested insertion now enforces the existing 64-entry budget before creating a directory."
+    },
+    {
+      "path": "Tools/ManagedWASM/Sources/ModuleMemory.js",
+      "bytes": 3772,
+      "sha256": "7f74944a72f92307670e6c710e4a3f09c3f556f3e52161c76f4f308275009719",
+      "destination": "runtime/ModuleMemory.js",
+      "changes": "Relative imports adapted; ManagedService uses portable hashing and structured stage diagnostics."
+    }
+  ],
+  "vendor": "Unchanged browser_wasi_shim 0.4.2 files, both licenses and receipt. No service binary copied."
+}

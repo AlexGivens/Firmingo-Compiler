@@ -1,0 +1,412 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Serialized runtime events with canonical padded base64 capsule bytes",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interfaceVersion",
+        "buildID",
+        "sequence",
+        "kind",
+        "phase"
+      ],
+      "properties": {
+        "interfaceVersion": {
+          "const": 1
+        },
+        "buildID": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 136
+        },
+        "kind": {
+          "const": "progress"
+        },
+        "phase": {
+          "enum": [
+            "verifying",
+            "preprocessing",
+            "compiling",
+            "linking",
+            "validating",
+            "packaging"
+          ]
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interfaceVersion",
+        "buildID",
+        "sequence",
+        "kind",
+        "diagnostic"
+      ],
+      "properties": {
+        "interfaceVersion": {
+          "const": 1
+        },
+        "buildID": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 136
+        },
+        "kind": {
+          "const": "diagnostic"
+        },
+        "diagnostic": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "severity",
+            "stage",
+            "code",
+            "message",
+            "filename",
+            "line",
+            "column"
+          ],
+          "properties": {
+            "severity": {
+              "enum": [
+                "error",
+                "warning",
+                "note"
+              ]
+            },
+            "stage": {
+              "enum": [
+                "verifying",
+                "preprocessing",
+                "compiling",
+                "linking",
+                "validating",
+                "packaging"
+              ]
+            },
+            "code": {
+              "type": "string",
+              "maxLength": 64,
+              "x-maximumUtf8Bytes": 64,
+              "pattern": "^[a-z_]+$"
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 4096,
+              "x-maximumUtf8Bytes": 4096
+            },
+            "filename": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 256,
+              "x-maximumUtf8Bytes": 256
+            },
+            "line": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "column": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interfaceVersion",
+        "buildID",
+        "sequence",
+        "kind",
+        "outcome",
+        "artifact"
+      ],
+      "properties": {
+        "interfaceVersion": {
+          "const": 1
+        },
+        "buildID": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 136
+        },
+        "kind": {
+          "const": "result"
+        },
+        "outcome": {
+          "const": "succeeded"
+        },
+        "artifact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "format",
+            "filename",
+            "bytes",
+            "sha256",
+            "reportJSON",
+            "receipt"
+          ],
+          "properties": {
+            "format": {
+              "const": "nano-managed-v1"
+            },
+            "filename": {
+              "type": "string",
+              "maxLength": 96,
+              "x-maximumUtf8Bytes": 96,
+              "pattern": "^[A-Za-z0-9_][A-Za-z0-9_. -]*\\.fms$"
+            },
+            "bytes": {
+              "type": "string",
+              "contentEncoding": "base64",
+              "minLength": 348,
+              "maxLength": 5464,
+              "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$",
+              "x-decodedMaximumBytes": 4096
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "reportJSON": {
+              "type": "string",
+              "maxLength": 16384,
+              "x-maximumUtf8Bytes": 16384
+            },
+            "receipt": {
+              "$ref": "build-receipt.schema.json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interfaceVersion",
+        "buildID",
+        "sequence",
+        "kind",
+        "outcome",
+        "error"
+      ],
+      "properties": {
+        "interfaceVersion": {
+          "const": 1
+        },
+        "buildID": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 136
+        },
+        "kind": {
+          "const": "result"
+        },
+        "outcome": {
+          "const": "failed"
+        },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "stage",
+            "message"
+          ],
+          "properties": {
+            "code": {
+              "type": "string",
+              "maxLength": 64,
+              "x-maximumUtf8Bytes": 64,
+              "pattern": "^[a-z_]+$"
+            },
+            "stage": {
+              "enum": [
+                "verifying",
+                "preprocessing",
+                "compiling",
+                "linking",
+                "validating",
+                "packaging"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 4096,
+              "x-maximumUtf8Bytes": 4096
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interfaceVersion",
+        "buildID",
+        "sequence",
+        "kind",
+        "outcome",
+        "error"
+      ],
+      "properties": {
+        "interfaceVersion": {
+          "const": 1
+        },
+        "buildID": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 136
+        },
+        "kind": {
+          "const": "result"
+        },
+        "outcome": {
+          "const": "cancelled"
+        },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "stage",
+            "message"
+          ],
+          "properties": {
+            "code": {
+              "const": "cancelled"
+            },
+            "stage": {
+              "enum": [
+                "verifying",
+                "preprocessing",
+                "compiling",
+                "linking",
+                "validating",
+                "packaging"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 4096,
+              "x-maximumUtf8Bytes": 4096
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interfaceVersion",
+        "buildID",
+        "sequence",
+        "kind",
+        "outcome",
+        "error"
+      ],
+      "properties": {
+        "interfaceVersion": {
+          "const": 1
+        },
+        "buildID": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 136
+        },
+        "kind": {
+          "const": "result"
+        },
+        "outcome": {
+          "const": "timed_out"
+        },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "stage",
+            "message"
+          ],
+          "properties": {
+            "code": {
+              "const": "timed_out"
+            },
+            "stage": {
+              "enum": [
+                "verifying",
+                "preprocessing",
+                "compiling",
+                "linking",
+                "validating",
+                "packaging"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 4096,
+              "x-maximumUtf8Bytes": 4096
+            }
+          }
+        }
+      }
+    }
+  ]
+}

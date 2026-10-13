@@ -1,0 +1,7 @@
+/** Trusted maintenance pins; the service must be provisioned explicitly, never downloaded here. */
+export const SERVICE = Object.freeze({ bytes: 101196044,
+  sha256: "3e2544acf7f88f6f1d5fbce34648df8eb96dfff47afa242a3e008bc8f86e2f33",
+  serviceABI: 2, compiler: "Clang/LLD 22.1.8 ABI-two WASI service", maximumMemoryBytes: 268435456 });
+export const SHIM = Object.freeze({ package: "@bjorn3/browser_wasi_shim", version: "0.4.2",
+  receiptSHA256: "1ad1971d3617837d1bc858a31c488d112b20ec6f8df9eecfccb361af2303087d" });
+export const RECIPE_ASSETS = Object.freeze([{"path":"Recipe/Arduino.h","bytes":5022,"sha256":"46e2ecc7ac653b12c6f63ab616e4a49c347c6ece360e203011337733987d60da"},{"path":"Recipe/Entry.cpp","bytes":572,"sha256":"80e5f48e6512d61f247d61e6637c40abeb25a2b9c84093e81390ee8aeed6d88d"},{"path":"Recipe/Module.ld","bytes":1078,"sha256":"a8ded6a674337881bd650ed38b39cdba1299cd469f5e238317989e1e96de0da8"},{"path":"Sources/ManagedRecipe.js","bytes":3496,"sha256":"e30c8f523d7938cb92127f4bb430ebb88d59f7b32dd3c430665409477e4a058e"}].map(item => Object.freeze(item)));

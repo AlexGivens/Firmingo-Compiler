@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Firmingo compiler checks</title>
+  <link rel="stylesheet" href="/web/harness.css">
+  <script type="module" src="/web/harness.js"></script>
+</head>
+<body>
+<main>
+  <h1>Firmingo compiler checks</h1>
+  <p>A local developer harness for the Nano RP2040 Connect compiler. No device operations.</p>
+  <p><strong>The included sample uses synthetic firmware metadata. Never install its output.</strong></p>
+  <label>Build request (JSON) <input id="request-file" type="file" accept=".json,application/json"></label>
+  <label>Local compiler service (WASM) <input id="service-file" type="file" accept=".wasm,application/wasm"></label>
+  <p>Choose your own request and pinned service, or use the sample and explicitly provisioned development service.</p>
+  <button id="build" type="button" disabled>Build selected request</button>
+  <button id="cancel" type="button" disabled>Cancel build</button>
+  <button id="checks" type="button" disabled>Run browser checks</button>
+  <button id="download" type="button" disabled>Save build output</button>
+  <p id="status" role="status" aria-live="polite">Loading local compiler modules…</p>
+  <pre id="output" aria-label="Compiler results"></pre>
+</main>
+</body>
+</html>

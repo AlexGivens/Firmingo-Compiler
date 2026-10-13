@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "host": "macOS arm64; Node 22.12.0 developer adapter",
+  "qualification": "actual local WASM compile/link; synthetic resident bindings, NEVER DEPLOY; no web/SDK/hardware qualification",
+  "serviceSHA256": "3e2544acf7f88f6f1d5fbce34648df8eb96dfff47afa242a3e008bc8f86e2f33",
+  "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+  "records": [
+    {
+      "source": "A",
+      "sourceFilename": "A.ino",
+      "sourceSHA256": "257a9b096715782491fb125f9356982f248a4b4bc3f8de020f4ab8921172af69",
+      "translationUnitSHA256": "f718c9146bfa83700d6791e9aa825ed92a479c4f36d31258fd7607602a451bcb",
+      "requestSHA256": "113587c1cb7cb83df55cc209d9d11d45c3d62eee3347dd51e00ae02f30784c65",
+      "capsuleBytes": 316,
+      "capsuleSHA256": "a23bc8cc24d960dc60283e3d5dc9bd80d61a7d8c6cbe0f08f5248bc14848231a",
+      "linkedELFBytes": 860,
+      "linkedELFSHA256": "e4a4055b297a59c536f3af5f44dec127c495dbb394fb333df0fab8b86527d729",
+      "memoryBytes": 27983872,
+      "timings": [
+        {
+          "phase": "compiling",
+          "milliseconds": 191.884167
+        },
+        {
+          "phase": "compiling",
+          "milliseconds": 30.543916999999965
+        },
+        {
+          "phase": "linking",
+          "milliseconds": 14.47608299999996
+        }
+      ],
+      "comparison": "byte-identical to pinned SDK Node/WASI reference",
+      "independentFirmwareValidator": "accepted; wrong API and corrupted code rejected"
+    },
+    {
+      "source": "B",
+      "sourceFilename": "B.ino",
+      "sourceSHA256": "116cf6546318172d6b65fb38989609bad17001a971fdad5e7c20739a66a274b3",
+      "translationUnitSHA256": "751be80ebaa181c5e179828a526f2e973262feeacea1cd0c0838c70dfdc13ff7",
+      "requestSHA256": "d790dd14aef70fc776cdb538d623ef3b3548a6f3af79cd4b5eb23f3b2bf20108",
+      "capsuleBytes": 392,
+      "capsuleSHA256": "ba26c3a28700b8ae177eb05c81434e35c16d8f6306bf5e9822f8c85adf6ea063",
+      "linkedELFBytes": 1116,
+      "linkedELFSHA256": "8e7c677f7451de4f1762c07be3301b2934428cbbda3b9b25655893703d4b46ef",
+      "memoryBytes": 28049408,
+      "timings": [
+        {
+          "phase": "compiling",
+          "milliseconds": 248.14633400000002
+        },
+        {
+          "phase": "compiling",
+          "milliseconds": 29.55362500000001
+        },
+        {
+          "phase": "linking",
+          "milliseconds": 14.367083999999977
+        }
+      ],
+      "comparison": "byte-identical to pinned SDK Node/WASI reference",
+      "independentFirmwareValidator": "accepted; wrong API and corrupted code rejected"
+    }
+  ]
+}

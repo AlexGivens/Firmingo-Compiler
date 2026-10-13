@@ -1,0 +1,24 @@
+{
+  "name": "firmingo-compiler",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Experimental portable Firmingo WASM compiler, recipes, validation and packaging",
+  "license": "GPL-3.0-only",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "scripts": {
+    "doctor": "node tools/dev.mjs doctor",
+    "test": "node tools/dev.mjs test",
+    "check": "node tools/dev.mjs check",
+    "fuzz": "node tools/dev.mjs fuzz",
+    "fuzz:elf": "node tools/dev.mjs fuzz-elf",
+    "test:runtime": "node tools/dev.mjs test-runtime",
+    "test:web": "node tools/dev.mjs test-web",
+    "serve:web": "node tools/dev.mjs serve-web"
+  },
+  "engines": {
+    "node": "22.12.0"
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "schema": 1,
+  "selected_on": "2026-10-12",
+  "qualification": "portable structural, actual Node/WASI and standard Chrome/HTTP-loopback execution; other web/SDK/hardware unqualified",
+  "board": "nano_rp2040_connect",
+  "profile": "nano-managed-v1",
+  "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+  "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+  "residentABI": 1,
+  "targetID": 1,
+  "maximumCapsuleBytes": 4096,
+  "maximumCodeBytes": 3840,
+  "codeAddress": 270532864,
+  "service": {
+    "compiler": "Clang/LLD 22.1.8",
+    "serviceABI": 2,
+    "originalBytes": 101196042,
+    "originalSHA256": "bce6632512852bf86baf7ca7b6eddd07209c0c4e29ae3b2288ec27e69028887d",
+    "boundedBytes": 101196044,
+    "boundedSHA256": "3e2544acf7f88f6f1d5fbce34648df8eb96dfff47afa242a3e008bc8f86e2f33",
+    "maximumMemoryBytes": 268435456,
+    "distribution": "unresolved; no binary copied or bundled",
+    "provenance": "Original/bounded service identities reverified read-only; bounded service now executed as an explicit local development input, without copying or bundling. Source/build/component review remains open.",
+    "binaryVerification": {
+      "date": "2026-10-12",
+      "result": "sizes and SHA-256 match existing SDK pins; no execution",
+      "sourceRepository": "FirmingoKit",
+      "sourceDirectory": ".build/managed-wasm"
+    }
+  },
+  "runtimeShim": {
+    "name": "@bjorn3/browser_wasi_shim",
+    "version": "0.4.2",
+    "licenseSelection": "Unmodified 0.4.2 vendored from pinned SDK; MIT selection with both MIT/Apache notices and original hash receipt preserved."
+  },
+  "references": {
+    "Firmingo": {
+      "source_commit": "f17fdf0301256ba48270230cbf213126e70aa8d0",
+      "local_differences": "Documentation refocus only; selected source/resource bytes unchanged and match prior inventory",
+      "files": {
+        "experiments/managed_sketch/abi.h": {
+          "bytes": 814,
+          "sha256": "941fd824a765e1dc9efaa5c9bdd670d77bdb26fedef98c47d9c7969d5bb6ad2a"
+        },
+        "experiments/managed_sketch/image.h": {
+          "bytes": 1399,
+          "sha256": "658ceac8716a6a6709714f2b51e2e01684a06ba87db999ee0d75cff0b9e6ffd9"
+        },
+        "experiments/managed_sketch/image.cpp": {
+          "bytes": 5935,
+          "sha256": "b694ed15b5c6c84b819da31e14961e48cf4ab8338bb6e1fee538f964a3501ca5"
+        },
+        "experiments/managed_sketch/module.ld": {
+          "bytes": 596,
+          "sha256": "3fd5e2ba42dec5f10bfb15bc70e35faefc1b44a7de3cd68de0573ed7d6428110"
+        },
+        "experiments/managed_sketch/build_module.py": {
+          "bytes": 6000,
+          "sha256": "ca3cf9afc9170d6e06025d4e61ba9994e7b43400cc145b5b3ceb527f618314f4"
+        },
+        "experiments/managed_sketch/facade/Arduino.h": {
+          "bytes": 2236,
+          "sha256": "b35175c2569f4203dac411dadff9e340e562cd5a09f89f82e119e78ed4bca6b3"
+        },
+        "boards/nano_rp2040_connect/baseline.json": {
+          "bytes": 898,
+          "sha256": "227cf02f03d35fa36b227fd32be1c5e784f35f89c0be18387e683a42c3c2a23a"
+        },
+        "boards/nano_rp2040_connect/core-lock.json": {
+          "bytes": 1110,
+          "sha256": "a53fc4653d6ffda348f3fed36c86d68d7f13b31aa4fda98b0a9aec5934242b24"
+        }
+      }
+    },
+    "FirmingoKit": {
+      "source_commit": "05cae8fa8e58c706eceb6a15812d7ca500375d7b",
+      "local_differences": "Documentation refocus only; selected source/resource bytes unchanged and match prior inventory",
+      "files": {
+        "Tools/ManagedWASM/Recipe/manifest.json": {
+          "bytes": 1263,
+          "sha256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9"
+        },
+        "Tools/ManagedWASM/Recipe/Arduino.h": {
+          "bytes": 5022,
+          "sha256": "46e2ecc7ac653b12c6f63ab616e4a49c347c6ece360e203011337733987d60da"
+        },
+        "Tools/ManagedWASM/Recipe/Entry.cpp": {
+          "bytes": 572,
+          "sha256": "80e5f48e6512d61f247d61e6637c40abeb25a2b9c84093e81390ee8aeed6d88d"
+        },
+        "Tools/ManagedWASM/Recipe/Module.ld": {
+          "bytes": 1078,
+          "sha256": "a8ded6a674337881bd650ed38b39cdba1299cd469f5e238317989e1e96de0da8"
+        },
+        "Tools/ManagedWASM/Sources/ManagedRecipe.js": {
+          "bytes": 3496,
+          "sha256": "e30c8f523d7938cb92127f4bb430ebb88d59f7b32dd3c430665409477e4a058e"
+        },
+        "Tools/ManagedWASM/Sources/ModuleMemory.js": {
+          "bytes": 3772,
+          "sha256": "7f74944a72f92307670e6c710e4a3f09c3f556f3e52161c76f4f308275009719"
+        },
+        "Tools/ManagedWASM/Sources/WorkerCore.js": {
+          "bytes": 3282,
+          "sha256": "58c98f54f2432444e2f2c3b6743d25bacaf82f1ccd7135bf97ae67109a58effc"
+        },
+        "Tools/ManagedWASM/Sources/ManagedService.js": {
+          "bytes": 10439,
+          "sha256": "bf8e3f657e173b0b443b3a57d5f64f5e8372bbcf85584d8371391d13e20a8fc2"
+        },
+        "Tools/ManagedWASM/Sources/Workspace.js": {
+          "bytes": 11420,
+          "sha256": "16ea8b04c3abe5587984c8c691b9044c615f3e8dff86837d160f134430e68ecc"
+        },
+        "Sources/FirmingoKit/Compiler/ManagedSketchPreprocessor.swift": {
+          "bytes": 9462,
+          "sha256": "f81aa63be19d44ff84fb231905a0b97c55076f06267afa7103f1143a752a2220"
+        },
+        "Sources/FirmingoKit/Compiler/ManagedELFImage.swift": {
+          "bytes": 14568,
+          "sha256": "894953d39606f68e2552c82cee4d123a03ec1e4102c05914fa6ba9ba54ed7aee"
+        },
+        "Sources/FirmingoKit/Compiler/ManagedELFConverter.swift": {
+          "bytes": 6243,
+          "sha256": "3d30291ccfcfc1592c9cf951d793e878f7c94e5c8ff706d6f02693161660cedb"
+        },
+        "Sources/FirmingoKit/Compiler/ManagedFirmwareBuildDescriptor.swift": {
+          "bytes": 6090,
+          "sha256": "f8236fc895374e054a4809bea73ed153a2dab2803206c7190fd2066a001deaf4"
+        },
+        "Sources/FirmingoKit/CompilerRuntime/VerifiedManagedToolchain.swift": {
+          "bytes": 5593,
+          "sha256": "fb2658eb4f10e16b00ffc343901c9a30c9dd9080a4677c8dd8f1d76f03ea3563"
+        },
+        "Sources/FirmingoKit/Resources/ManagedCompiler/manifest.json": {
+          "bytes": 641,
+          "sha256": "fb732842e1b94b1f3ca5055fb6aaa0a0f71e0a6d3e9c1a173063955f21a0b76a"
+        },
+        "Tools/ManagedWASM/Vendor/browser_wasi_shim/receipt.json": {
+          "bytes": 2153,
+          "sha256": "1ad1971d3617837d1bc858a31c488d112b20ec6f8df9eecfccb361af2303087d"
+        }
+      }
+    }
+  },
+  "ArduinoKit": {
+    "commit": "0eb3cd1841147dfc7ea25bf076545e38b01601e4",
+    "access": "read-only historical reference",
+    "copiedAssets": false,
+    "files": {
+      "Tools/ArduinoDirectWASM/CompilerService/build-wasi-service.sh": {
+        "bytes": 2325,
+        "sha256": "ea7ab7ed085da87fb2c76b993c0fef35cf877867b496b66c19590a282de1aed1"
+      },
+      "Tools/ArduinoDirectWASM/CompilerService/Sources/ArduinoCompilerService.cpp": {
+        "bytes": 2790,
+        "sha256": "c49e75f5afb7aae4ef0d6e9ed31c96332053de2d5f74117c5db366ff283aa816"
+      },
+      "Tools/ArduinoDirectWASM/CompilerService/Sources/CompilerDriver.cpp": {
+        "bytes": 4362,
+        "sha256": "c027b54e2256d49d6f07d2b00ccb727ea4b7560d2a474d064acda9a6ca2476c1"
+      },
+      "Tools/ArduinoDirectWASM/CompilerService/Sources/LinkerDriver.cpp": {
+        "bytes": 1400,
+        "sha256": "e34b743ec78188bed8055661fbd69eb8b2cd3e7b286b8ba24dffd3c43ed37689"
+      },
+      "Tools/ArduinoDirectWASM/CompilerService/include/ArduinoCompilerService.h": {
+        "bytes": 3153,
+        "sha256": "06de306587d78fad8c16c829ec58f4907e35bcca6e3e1d6ad3cc2121732e8db5"
+      }
+    },
+    "localDifferences": []
+  },
+  "blockers": [
+    "No trusted exact resident build selected/exported for deployment; synthetic descriptors are parser tests only",
+    "Custom WASI service distribution and reproducible-build/component evidence unresolved",
+    "WASM execution, runtime event/output receipts, web hosting and Swift adapter not implemented here"
+  ],
+  "recipeImport": {
+    "date": "2026-10-12",
+    "sourceRepository": "FirmingoKit",
+    "sourceCommit": "05cae8fa8e58c706eceb6a15812d7ca500375d7b",
+    "destination": "recipes/nano_rp2040_connect",
+    "manifestAndAssetsUnchanged": true,
+    "binaryServiceCopied": false
+  },
+  "executionEvidence": "evidence/wasm-runtime.md",
+  "browserExecutionEvidence": "evidence/web-host.md"
+}

@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "status": "SYNTHETIC NON-EXECUTABLE PARSER FIXTURES \u2014 NEVER DEPLOY",
+  "origins": {
+    "elf": {
+      "repository": "FirmingoKit",
+      "commit": "05cae8fa8e58c706eceb6a15812d7ca500375d7b",
+      "path": "Tests/FirmingoKitTests/Fixtures/compiler/stateless.elf.hex",
+      "note": "Unchanged independent hand-authored ELF layout"
+    },
+    "capsule": {
+      "repository": "Firmingo",
+      "commit": "f17fdf0301256ba48270230cbf213126e70aa8d0",
+      "path": "tests/fixtures/protocol-v1/managed-upload/chunk.hex",
+      "note": "Unchanged frame bytes via SDK-local fixture; capsule extracted after the 16-byte header and 8-byte chunk metadata; firmware GPLv3 attribution retained"
+    },
+    "expectedJSON": "Python hashlib/struct and compact sorted JSON independently generate report and distinct packaging receipt; no compiler executed"
+  },
+  "elfSHA256": "bda1e92d1cd5eaa6acaee2e8495072a716d3937bc4b4e7d7bd72304e5045fa52",
+  "capsuleSHA256": "ef8bff817d9b80026f6eaeac33d1c40fac2f41b046865de967d3c0cf2539d52a",
+  "files": {
+    "stateless.elf.hex": {
+      "bytes": 2136,
+      "sha256": "39275358ab631f0b43601e4aea3a6372638e908e71a1216746e0e257e44edc56"
+    },
+    "firmware-upload-chunk.hex": {
+      "bytes": 864,
+      "sha256": "a2f85c0c043a3006757186ca7afa3a09648aecb9d623941ffff2d8d24855e416"
+    },
+    "synthetic-packaging-request.json": {
+      "bytes": 1159,
+      "sha256": "11c865680deb89bbddaa8f23abfec5ad31b1a3118e1b80bd819800ee634fed6a"
+    },
+    "declared-packaging-provenance.json": {
+      "bytes": 285,
+      "sha256": "264ff730ab375290689f39d46e60a116c83ae65ef344bd0d07395a90c528b363"
+    },
+    "golden-packaging-report.json": {
+      "bytes": 1160,
+      "sha256": "723edce0f65d653fc46e48eac3ae943d0c2e5aa9dd8342c2df6cf77ad51ffa45"
+    },
+    "golden-packaging-receipt.json": {
+      "bytes": 1191,
+      "sha256": "c951417d6e72dc9f0bb8699b8b0809990f8b99b663e77f8c309a4449819f8992"
+    }
+  }
+}

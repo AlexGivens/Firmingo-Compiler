@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "status": "SYNTHETIC PARSER INPUTS ONLY \u2014 NEVER DEPLOY; no real resident/image/report identity",
+  "origin": {
+    "repository": "FirmingoKit",
+    "commit": "05cae8fa8e58c706eceb6a15812d7ca500375d7b",
+    "path": "Tests/FirmingoKitTests/Fixtures/compiler-catalogue/descriptor.json",
+    "sha256": "0aba07a8cf184481c19372d24bded8bee5deffc5709003f30c3dab4226b9fc6a",
+    "note": "Descriptor bytes copied unchanged; request independently authored. Golden content identities calculated with Python hashlib and compact sorted JSON, not production JS."
+  },
+  "descriptorID": "818e03b95a375fdeeb584ec1daf7261561bf918255dec3b14fb3b22e75750d4d",
+  "requestID": "49a2ac17565816848577c312e044e190a957a779e0407f07a10880e07b6af3cb",
+  "files": {
+    "synthetic-nano-descriptor.json": {
+      "bytes": 773,
+      "sha256": "0aba07a8cf184481c19372d24bded8bee5deffc5709003f30c3dab4226b9fc6a"
+    },
+    "synthetic-build-request.json": {
+      "bytes": 1382,
+      "sha256": "dbf5c009e9dd41bc597f82f94fe2ea9032f26f6894bc5ce4129c3b31843149a1"
+    }
+  }
+}

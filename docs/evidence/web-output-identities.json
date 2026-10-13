@@ -1,0 +1,171 @@
+{
+  "schema": 1,
+  "date": "2026-10-12",
+  "host": "macOS arm64; externally provisioned headless Chrome; developer Node 22.12.0",
+  "qualification": "HTTP loopback secure context; standard module workers; synthetic resident metadata NEVER DEPLOY; no WebKit/Swift/hardware qualification",
+  "browser": {
+    "product": "Chrome/154.0.8037.93",
+    "revision": "@f89f3a4363808e117c592adedcf9947882ac3b79",
+    "protocolVersion": "1.3",
+    "jsVersion": "15.4.80.19"
+  },
+  "serviceAvailable": true,
+  "cases": [
+    {
+      "name": "secure context, Web Crypto and portable source preparation",
+      "outcome": "passed",
+      "actualCompiler": false,
+      "milliseconds": 0.8000001907348633
+    },
+    {
+      "name": "actual default module worker rejects an unpinned service before compiler execution",
+      "outcome": "passed",
+      "actualCompiler": false,
+      "milliseconds": 132.5
+    },
+    {
+      "name": "real two-sketch compilation, byte reproducibility, immutable output and event codec",
+      "outcome": "passed",
+      "actualCompiler": true,
+      "milliseconds": 1270.2999999523163
+    },
+    {
+      "name": "real frontend diagnostics and original BOM byte columns, then fresh build",
+      "outcome": "passed",
+      "actualCompiler": true,
+      "milliseconds": 649
+    },
+    {
+      "name": "real linker rejects mutable state and unavailable runtime helpers",
+      "outcome": "passed",
+      "actualCompiler": true,
+      "milliseconds": 1169.5999999046326
+    },
+    {
+      "name": "real compile cancellation, busy/stale rejection and fresh worker",
+      "outcome": "passed",
+      "actualCompiler": true,
+      "milliseconds": 410.10000014305115
+    },
+    {
+      "name": "real startup deadline, no late artifact and fresh build",
+      "outcome": "passed",
+      "actualCompiler": true,
+      "milliseconds": 378
+    },
+    {
+      "name": "real resource-integrity rejection and clean subsequent build",
+      "outcome": "passed",
+      "actualCompiler": true,
+      "milliseconds": 518.8999998569489
+    },
+    {
+      "name": "application CSP prevents external resource access",
+      "outcome": "passed",
+      "actualCompiler": false,
+      "milliseconds": 0.40000009536743164
+    }
+  ],
+  "artifacts": [
+    {
+      "buildID": "web-a",
+      "sourceFilename": "A.ino",
+      "sourceSHA256": "257a9b096715782491fb125f9356982f248a4b4bc3f8de020f4ab8921172af69",
+      "requestSHA256": "d3ab55de37c355085d0fa907a074c177173f306043a877d5f32747db89604e5f",
+      "capsuleBytes": 316,
+      "capsuleSHA256": "a23bc8cc24d960dc60283e3d5dc9bd80d61a7d8c6cbe0f08f5248bc14848231a",
+      "linkedELFSHA256": "e4a4055b297a59c536f3af5f44dec127c495dbb394fb333df0fab8b86527d729",
+      "memoryBytes": 27983872
+    },
+    {
+      "buildID": "web-a",
+      "sourceFilename": "A.ino",
+      "sourceSHA256": "257a9b096715782491fb125f9356982f248a4b4bc3f8de020f4ab8921172af69",
+      "requestSHA256": "d3ab55de37c355085d0fa907a074c177173f306043a877d5f32747db89604e5f",
+      "capsuleBytes": 316,
+      "capsuleSHA256": "a23bc8cc24d960dc60283e3d5dc9bd80d61a7d8c6cbe0f08f5248bc14848231a",
+      "linkedELFSHA256": "e4a4055b297a59c536f3af5f44dec127c495dbb394fb333df0fab8b86527d729",
+      "memoryBytes": 27983872
+    },
+    {
+      "buildID": "web-b",
+      "sourceFilename": "B.ino",
+      "sourceSHA256": "116cf6546318172d6b65fb38989609bad17001a971fdad5e7c20739a66a274b3",
+      "requestSHA256": "a66ce4dddc1114223ed82c12fa6bc902e69dcd012750a094fe693e9ce8deb15c",
+      "capsuleBytes": 392,
+      "capsuleSHA256": "ba26c3a28700b8ae177eb05c81434e35c16d8f6306bf5e9822f8c85adf6ea063",
+      "linkedELFSHA256": "8e7c677f7451de4f1762c07be3301b2934428cbbda3b9b25655893703d4b46ef",
+      "memoryBytes": 28049408
+    },
+    {
+      "buildID": "web-after-frontend",
+      "sourceFilename": "Sketch.ino",
+      "sourceSHA256": "0c780126909b7263933e016c526cd183bb3c8e642be9544b0159aa3381a0ab74",
+      "requestSHA256": "36194e66611ca59a2b666132f20107d58a758fcbd13e5d5fbe15ad2a10f272da",
+      "capsuleBytes": 276,
+      "capsuleSHA256": "b1fe6d33463c0147d82ce646af01439055b372d4b6a17d2e621935d22eaaa802",
+      "linkedELFSHA256": "9ecd1eeef7cc5de5912a4a81484f374d2e1da609c07bce4b6ff6411885169fbc",
+      "memoryBytes": 27983872
+    },
+    {
+      "buildID": "web-after-link",
+      "sourceFilename": "Sketch.ino",
+      "sourceSHA256": "0c780126909b7263933e016c526cd183bb3c8e642be9544b0159aa3381a0ab74",
+      "requestSHA256": "b9eecab97628114cf8ff4e1acf581105022eca1f19ba54b9d7c22fdae5d65ec5",
+      "capsuleBytes": 276,
+      "capsuleSHA256": "b1fe6d33463c0147d82ce646af01439055b372d4b6a17d2e621935d22eaaa802",
+      "linkedELFSHA256": "9ecd1eeef7cc5de5912a4a81484f374d2e1da609c07bce4b6ff6411885169fbc",
+      "memoryBytes": 27983872
+    },
+    {
+      "buildID": "web-after-cancel",
+      "sourceFilename": "Sketch.ino",
+      "sourceSHA256": "0c780126909b7263933e016c526cd183bb3c8e642be9544b0159aa3381a0ab74",
+      "requestSHA256": "5e8813bc5ad065f0b7d349e6871fc097ed4b68470b8e1cfb02277d924f33723b",
+      "capsuleBytes": 276,
+      "capsuleSHA256": "b1fe6d33463c0147d82ce646af01439055b372d4b6a17d2e621935d22eaaa802",
+      "linkedELFSHA256": "9ecd1eeef7cc5de5912a4a81484f374d2e1da609c07bce4b6ff6411885169fbc",
+      "memoryBytes": 27983872
+    },
+    {
+      "buildID": "web-after-deadline",
+      "sourceFilename": "Sketch.ino",
+      "sourceSHA256": "0c780126909b7263933e016c526cd183bb3c8e642be9544b0159aa3381a0ab74",
+      "requestSHA256": "5dd041e5a4a4791353f5ff18e8a0b9c719a4cf400b9acf9ce74db5734e4fc108",
+      "capsuleBytes": 276,
+      "capsuleSHA256": "b1fe6d33463c0147d82ce646af01439055b372d4b6a17d2e621935d22eaaa802",
+      "linkedELFSHA256": "9ecd1eeef7cc5de5912a4a81484f374d2e1da609c07bce4b6ff6411885169fbc",
+      "memoryBytes": 27983872
+    },
+    {
+      "buildID": "web-after-corrupt",
+      "sourceFilename": "Sketch.ino",
+      "sourceSHA256": "0c780126909b7263933e016c526cd183bb3c8e642be9544b0159aa3381a0ab74",
+      "requestSHA256": "e6bdec19c6cf4f3346bb7689469e745ef81f9ebb7cbbced7ab994b15dd29ddd4",
+      "capsuleBytes": 276,
+      "capsuleSHA256": "b1fe6d33463c0147d82ce646af01439055b372d4b6a17d2e621935d22eaaa802",
+      "linkedELFSHA256": "9ecd1eeef7cc5de5912a4a81484f374d2e1da609c07bce4b6ff6411885169fbc",
+      "memoryBytes": 27983872
+    }
+  ],
+  "passed": 9,
+  "skipped": 0,
+  "failed": 0,
+  "actualCompilerPasses": 6,
+  "externalRequests": [],
+  "protocolFaults": [],
+  "localRequestCount": 441,
+  "absentService": {
+    "passed": 3,
+    "skipped": 6,
+    "failed": 0,
+    "actualCompilerPasses": 0,
+    "browser": {
+      "product": "Chrome/154.0.8037.93",
+      "revision": "@f89f3a4363808e117c592adedcf9947882ac3b79",
+      "protocolVersion": "1.3",
+      "jsVersion": "15.4.80.19"
+    },
+    "localRequestCount": 75
+  }
+}

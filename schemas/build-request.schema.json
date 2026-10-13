@@ -1,0 +1,278 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Firmingo Compiler build input \u2014 interface one draft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "interfaceVersion",
+    "kind",
+    "buildID",
+    "source",
+    "target",
+    "options"
+  ],
+  "properties": {
+    "interfaceVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "build"
+    },
+    "buildID": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "filename",
+        "revision",
+        "text"
+      ],
+      "properties": {
+        "filename": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 96,
+          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_. -]*\\.ino$",
+          "not": {
+            "pattern": "\\.\\."
+          }
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 262144,
+          "pattern": "^[^\\u0000]*$",
+          "x-maximumUtf8Bytes": 262144,
+          "x-requireUnicodeScalars": true
+        }
+      }
+    },
+    "target": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "board",
+            "profile",
+            "recipeIdentifier",
+            "recipeSHA256",
+            "firmwareBuild"
+          ],
+          "properties": {
+            "board": {
+              "const": "nano_rp2040_connect"
+            },
+            "profile": {
+              "const": "nano-managed-v1"
+            },
+            "recipeIdentifier": {
+              "const": "nano-stateless-clang-22.1.8-v1-experimental"
+            },
+            "recipeSHA256": {
+              "const": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9"
+            },
+            "firmwareBuild": {
+              "$ref": "#/$defs/firmwareBuild"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "board",
+            "profile",
+            "recipeIdentifier",
+            "recipeSHA256",
+            "residentBinding"
+          ],
+          "properties": {
+            "board": {
+              "const": "nano_rp2040_connect"
+            },
+            "profile": {
+              "const": "nano-managed-v1"
+            },
+            "recipeIdentifier": {
+              "const": "nano-stateless-clang-22.1.8-v1-experimental"
+            },
+            "recipeSHA256": {
+              "const": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9"
+            },
+            "residentBinding": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "schema",
+                "board",
+                "profile",
+                "residentELFSHA256",
+                "firmwareImageSHA256",
+                "apiAddress",
+                "residentABI",
+                "targetID",
+                "maximumCapsuleBytes"
+              ],
+              "properties": {
+                "schema": {
+                  "const": 1
+                },
+                "board": {
+                  "const": "nano_rp2040_connect"
+                },
+                "profile": {
+                  "const": "nano-managed-v1"
+                },
+                "residentELFSHA256": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "firmwareImageSHA256": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "apiAddress": {
+                  "type": "integer",
+                  "minimum": 268435456,
+                  "maximum": 270532604,
+                  "multipleOf": 4
+                },
+                "residentABI": {
+                  "const": 1
+                },
+                "targetID": {
+                  "const": 1
+                },
+                "maximumCapsuleBytes": {
+                  "const": 4096
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deadlineMilliseconds"
+      ],
+      "properties": {
+        "deadlineMilliseconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000
+        }
+      }
+    }
+  },
+  "$defs": {
+    "firmwareBuild": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "board",
+        "profile",
+        "recipeIdentifier",
+        "recipeSHA256",
+        "residentABI",
+        "targetID",
+        "maximumCapsuleBytes",
+        "schema",
+        "backend",
+        "qualification",
+        "firmwareVersion",
+        "firmwareCommit",
+        "residentELFSHA256",
+        "firmwareImageSHA256",
+        "buildReportSHA256",
+        "apiAddress"
+      ],
+      "properties": {
+        "board": {
+          "const": "nano_rp2040_connect"
+        },
+        "profile": {
+          "const": "nano-managed-v1"
+        },
+        "recipeIdentifier": {
+          "const": "nano-stateless-clang-22.1.8-v1-experimental"
+        },
+        "recipeSHA256": {
+          "const": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9"
+        },
+        "residentABI": {
+          "const": 1
+        },
+        "targetID": {
+          "const": 1
+        },
+        "maximumCapsuleBytes": {
+          "const": 4096
+        },
+        "schema": {
+          "const": 1
+        },
+        "backend": {
+          "const": "application"
+        },
+        "qualification": {
+          "const": "experimental"
+        },
+        "firmwareVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9._-]+$"
+        },
+        "firmwareCommit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "residentELFSHA256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "firmwareImageSHA256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "buildReportSHA256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "apiAddress": {
+          "type": "integer",
+          "minimum": 268435456,
+          "maximum": 270532604,
+          "multipleOf": 4
+        }
+      }
+    }
+  }
+}

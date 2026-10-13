@@ -1,0 +1,113 @@
+name: Compiler contracts and runtime
+on: [push, pull_request]
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  contracts:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0; same pin as firmware
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - name: Inspect portable stages and check syntax/resources
+        run: |
+          mkdir -p .build/logs
+          node tools/dev.mjs doctor 2>&1 | tee .build/logs/doctor.log
+          node tools/dev.mjs check 2>&1 | tee .build/logs/check.log
+      - name: Production contracts, pipeline, WASI, lifecycle and reproducible source-package regressions
+        run: node tools/dev.mjs test 2>&1 | tee .build/logs/test.log
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0; same pin as firmware
+        if: always()
+        with:
+          name: contract-logs-${{ matrix.os }}
+          path: .build/logs/*.log
+          if-no-files-found: warn
+  elf-mutation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - name: Separate bounded ELF parser mutation job
+        run: |
+          mkdir -p .build/logs
+          node tools/dev.mjs fuzz-elf 2>&1 | tee .build/logs/elf-fuzz.log
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: elf-mutation-log
+          path: .build/logs/*.log
+          if-no-files-found: warn
+  json-mutation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - name: Separate bounded JSON mutation job
+        run: |
+          mkdir -p .build/logs
+          node tools/dev.mjs fuzz 2>&1 | tee .build/logs/fuzz.log
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: json-mutation-log
+          path: .build/logs/*.log
+          if-no-files-found: warn
+  real-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - name: Observe real-service qualification separately (explicit skips until approved assets exist)
+        run: |
+          mkdir -p .build/logs
+          node tools/dev.mjs test-runtime 2>&1 | tee .build/logs/real-runtime.log
+          node tools/dev.mjs test-memory 2>&1 | tee .build/logs/memory-maintenance.log
+          echo "Actual Nano compile/link tests are skipped: compiler-service distribution remains unresolved." >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: real-runtime-availability-log
+          path: .build/logs/*.log
+          if-no-files-found: warn
+  web-host:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - name: Observe browser module workers and policy separately from unavailable compiler assets
+        run: |
+          mkdir -p .build/logs
+          node tools/dev.mjs test-web 2>&1 | tee .build/logs/web-host.log
+          node -e 'const r=JSON.parse(require("fs").readFileSync(".build/logs/web-results.json")); console.log(`Browser checks: ${r.passed} passed, ${r.skipped} skipped; actual compiler cases: ${r.actualCompilerPasses} passed`)' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: browser-host-availability-log
+          path: .build/logs/*
+          if-no-files-found: warn
