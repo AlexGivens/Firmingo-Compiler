@@ -106,6 +106,12 @@ failure receipts and observed-byte repeat checks; fake inputs are not compiler
 evidence. See `docs/runtime-source-build.md` for exact scope and source-generation
 limits. Keep native bootstrap provenance, development assets, consumer promotion
 and distribution distinct.
+Two fresh Preview 1 source builds now reproduce all 2,353 sysroot/resource files
+and pass the actual C++ header-discovery gate. A fresh complete service build
+against those verified bytes passes real Node compilation/error/reentry checks
+and independent firmware image validation. See `docs/evidence/runtime-source-build.md`.
+The new asset remains a local development input; browser/WebKit/package promotion,
+custom-source licensing and distribution remain unresolved.
 
 ## Working across the repositories
 

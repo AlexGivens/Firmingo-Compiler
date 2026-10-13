@@ -1,0 +1,713 @@
+{
+  "adaptations": [
+    {
+      "after": {
+        "bytes": 14232,
+        "sha256": "b063cd74837c312f66c543e1763a24f85dc838080c88d9781de4db9eb2d79446"
+      },
+      "beforeSHA256": "acf5f866072e8b9460677380d2e3800e8a3013d14baf544cf82c3d3097de86b4",
+      "path": "CMakeLists.txt",
+      "reason": "p1-only helpers and explicit resource headers"
+    },
+    {
+      "after": {
+        "bytes": 3255,
+        "sha256": "06507786a164fd09ac197f0295d6dbeb005cdad499f6dc839e80ce3b8bdf69c6"
+      },
+      "beforeSHA256": "3a9c758cbcd52303f221a255252f3454812a11d74be4b8deaef245c97b1193ef",
+      "path": "libcxx/utils/generate_iwyu_mapping.py",
+      "reason": "only source-local libcxx package lookup under Python -I -S -B"
+    }
+  ],
+  "bootstrapCounts": {
+    "cmakeModules": 4133,
+    "nativeHeaders": 303,
+    "nonSystemFiles": 17,
+    "pythonStandardLibrary": 960
+  },
+  "consumerPinsChanged": false,
+  "distributionStatus": "unresolved",
+  "execution": {
+    "builds": [
+      {
+        "capsuleBytes": 316,
+        "capsuleSHA256": "958b861bbc18d4666ed03e6976b39b9fea4812409ad91a3501abbb9685a80d7d",
+        "diagnostics": [],
+        "linkedELFSHA256": "d729a8b6a8e353b1fde011ea62597f0bc5e14500496e018e7c5bd5c15276050d",
+        "memoryBytes": 27983872,
+        "name": "gpio",
+        "receipt": {
+          "board": "nano_rp2040_connect",
+          "buildID": "owned-service-gpio",
+          "buildInputSHA256": "f44c25dfebba65e7d0e9ea20f9b0be80ac15667e94816857af9d430a5349a890",
+          "capsuleBytes": 316,
+          "capsuleSHA256": "958b861bbc18d4666ed03e6976b39b9fea4812409ad91a3501abbb9685a80d7d",
+          "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+          "linkedELFSHA256": "d729a8b6a8e353b1fde011ea62597f0bc5e14500496e018e7c5bd5c15276050d",
+          "operation": "independent_elf_packaging",
+          "profile": "nano-managed-v1",
+          "provenance": {
+            "compiler": "owned LLVM 22.1.8 ABI-two development service",
+            "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+            "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+            "toolchainSHA256": "dbbd982cbe1df98e17b2003ec4bd6d0f259847e9d2d14bed70bd38f0a0a47bff"
+          },
+          "provenanceStatus": "declared",
+          "receiptSchema": "firmingo-compiler-packaging-v1",
+          "requestSHA256": "06e645c0cd3bb74f1f38828ca135de28d1f4124abe9af706a364b40b5e9de0c0",
+          "sourceFilename": "Sketch.ino",
+          "sourceRevision": "gpio:review-1",
+          "sourceSHA256": "fdad88aa8b20b045f35362c13e56090ba85b7bd3e8f024452b3b39f87c0f2568",
+          "translationUnitSHA256": "eff2392687f5fc41f987c9cac60244c10a37595894876e0f115123e6a1903734"
+        },
+        "source": {
+          "filename": "Sketch.ino",
+          "revision": "gpio:review-1",
+          "text": "void setup() { pinMode(6, 1); }\nvoid loop() { digitalWrite(6, 1); delay(10); }\n"
+        },
+        "sourceSHA256": "fdad88aa8b20b045f35362c13e56090ba85b7bd3e8f024452b3b39f87c0f2568"
+      },
+      {
+        "capsuleBytes": 392,
+        "capsuleSHA256": "b372c00edf4b60c662f73055685ed8764e9f8798fe9efbbafad04302549174c0",
+        "diagnostics": [],
+        "linkedELFSHA256": "2fbdd67e4d444b20e450f3f7e82cab03c87a95635e012ee45181bd1d18ec907a",
+        "memoryBytes": 28049408,
+        "name": "console",
+        "receipt": {
+          "board": "nano_rp2040_connect",
+          "buildID": "owned-service-console",
+          "buildInputSHA256": "11607fb137ee558cb8d6304568182dbad5575085956caf856f106ca76cc1ae3b",
+          "capsuleBytes": 392,
+          "capsuleSHA256": "b372c00edf4b60c662f73055685ed8764e9f8798fe9efbbafad04302549174c0",
+          "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+          "linkedELFSHA256": "2fbdd67e4d444b20e450f3f7e82cab03c87a95635e012ee45181bd1d18ec907a",
+          "operation": "independent_elf_packaging",
+          "profile": "nano-managed-v1",
+          "provenance": {
+            "compiler": "owned LLVM 22.1.8 ABI-two development service",
+            "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+            "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+            "toolchainSHA256": "dbbd982cbe1df98e17b2003ec4bd6d0f259847e9d2d14bed70bd38f0a0a47bff"
+          },
+          "provenanceStatus": "declared",
+          "receiptSchema": "firmingo-compiler-packaging-v1",
+          "requestSHA256": "c345b569d369ada20c84049ddb8863a69f8beef43f72777cbec4c628de06491f",
+          "sourceFilename": "Sketch.ino",
+          "sourceRevision": "console:review-1",
+          "sourceSHA256": "697f9547f72d478210dd29bd66c6293e0a9ae926a1b4e8d568b10aeeab37f5a3",
+          "translationUnitSHA256": "f03f5bab33e4189ea4559985d392083a2cf9c79370b2dd589e8afb0f2ad81f25"
+        },
+        "source": {
+          "filename": "Sketch.ino",
+          "revision": "console:review-1",
+          "text": "void setup() { Serial.println(\"ready\"); }\nvoid loop() { int c = Serial.read(); if (c >= 0) Serial.write(uint8_t(c)); }\n"
+        },
+        "sourceSHA256": "697f9547f72d478210dd29bd66c6293e0a9ae926a1b4e8d568b10aeeab37f5a3"
+      }
+    ],
+    "consumerPinsChanged": false,
+    "descriptor": {
+      "apiAddress": 268577948,
+      "backend": "application",
+      "board": "nano_rp2040_connect",
+      "buildReportSHA256": "db7e505a80589291481970c274e8158e32b685655dc0c246f131341c7d45bc1a",
+      "firmwareCommit": "4d53a285a3a39d4355253760a205fdac1a6b811c",
+      "firmwareImageSHA256": "35678c95c495c4e06227a992548be893305cc2375f7a6e561d0a7f66433e6983",
+      "firmwareVersion": "0.1.0-m9exp1",
+      "maximumCapsuleBytes": 4096,
+      "profile": "nano-managed-v1",
+      "qualification": "experimental",
+      "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+      "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+      "residentABI": 1,
+      "residentELFSHA256": "5b3116cdcde28f84b86f78cfffb258591455406a1f276b35bb5fd63a6f857304",
+      "schema": 1,
+      "targetID": 1
+    },
+    "distributionStatus": "unresolved",
+    "errorChecks": [
+      {
+        "expectedDiagnostic": "missingFunction",
+        "name": "frontend",
+        "result": "rejected without artifact"
+      },
+      {
+        "expectedDiagnostic": "mutable storage",
+        "name": "mutable-storage",
+        "result": "rejected without artifact"
+      },
+      {
+        "expectedDiagnostic": "__aeabi_uidiv",
+        "name": "runtime-helper",
+        "result": "rejected without artifact"
+      }
+    ],
+    "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+    "hardwareExecuted": false,
+    "operation": "owned_development_service_execution_checks",
+    "repeat": "GPIO capsule and linked ELF byte-identical",
+    "schema": 1,
+    "serviceSHA256": "a7648688ae9e349304c576804367b66b68b22185060a847a2e292675329ca493"
+  },
+  "firmwareValidation": {
+    "checks": [
+      {
+        "api": "0x10022c9c",
+        "capsule": "gpio",
+        "expectedExit": 0,
+        "observed": "validator=0 capsule_bytes=316 code_bytes=60",
+        "observedExit": 0
+      },
+      {
+        "api": "0x10022ca0",
+        "capsule": "gpio",
+        "expectedExit": 1,
+        "observed": "validator=6 capsule_bytes=316 code_bytes=0",
+        "observedExit": 1
+      },
+      {
+        "api": "0x10022c9c",
+        "capsule": "console",
+        "expectedExit": 0,
+        "observed": "validator=0 capsule_bytes=392 code_bytes=136",
+        "observedExit": 0
+      },
+      {
+        "api": "0x10022ca0",
+        "capsule": "console",
+        "expectedExit": 1,
+        "observed": "validator=6 capsule_bytes=392 code_bytes=0",
+        "observedExit": 1
+      }
+    ],
+    "hardwareExecuted": false,
+    "operation": "actual_firmware_image_parser_checks",
+    "source": {
+      "compiler": "Apple clang 21.0.0 arm64; -std=c++17 -Wall -Wextra -Werror",
+      "driver": {
+        "bytes": 738,
+        "sha256": "bbc996719aa0f189f15dbd4dac57173eccb7532d5b8b05fc609e95a53920577c"
+      },
+      "firmwareCommit": "d42613faa1abd1f4bcbbb361e9f0855d28890824",
+      "hardwareExecuted": false,
+      "nativeValidator": {
+        "bytes": 72152,
+        "sha256": "c1aa955a6d3cb12f2b3a3d2a51c8132ebb1f4ead472aab7413acf208809b4ee8"
+      },
+      "sources": [
+        {
+          "bytes": 5935,
+          "path": "Firmingo/experiments/managed_sketch/image.cpp",
+          "sha256": "b694ed15b5c6c84b819da31e14961e48cf4ab8338bb6e1fee538f964a3501ca5"
+        },
+        {
+          "bytes": 1399,
+          "path": "Firmingo/experiments/managed_sketch/image.h",
+          "sha256": "658ceac8716a6a6709714f2b51e2e01684a06ba87db999ee0d75cff0b9e6ffd9"
+        }
+      ]
+    }
+  },
+  "hardwareExecuted": false,
+  "libcSourceFiles": 3075,
+  "maintenance": [
+    {
+      "bytes": 22666,
+      "path": "tools/runtime_build.py",
+      "sha256": "5352676ebabc2c63358790586c8add761757a7a081b62aa5dce9a1db92025bb7"
+    },
+    {
+      "bytes": 35831,
+      "path": "tools/service_build.py",
+      "sha256": "abf335dc9e72d257133d8c9c32a693fc4b0292a51a46ef73860b6749dc1ad666"
+    }
+  ],
+  "nativeTools": {
+    "ar": {
+      "bytes": 88744,
+      "sha256": "cd6bb1b9e79d2612696ee6981e1f4e955339d68e3ec0b315fdd1cc51f5a15bd7",
+      "version": "22.1.8"
+    },
+    "clang": {
+      "bytes": 142264,
+      "sha256": "17a39d366aa6782d85adfe546c9ee1b799a01a38448188b0f818b104fa8e2bdd",
+      "version": "22.1.8"
+    },
+    "clangxx": {
+      "bytes": 142264,
+      "sha256": "17a39d366aa6782d85adfe546c9ee1b799a01a38448188b0f818b104fa8e2bdd",
+      "version": "22.1.8"
+    },
+    "cmake": {
+      "bytes": 14832520,
+      "sha256": "e26096151c98e03f635d56ff15b1ab2724c342f5f5e7ec87018e492c49f5fdc4",
+      "version": "4.4.0"
+    },
+    "linker": {
+      "bytes": 30080,
+      "sha256": "e7591d9155fb03ccfa5f09159af9c9eb4b8e978aad412bfb2ee33f3843759f85",
+      "version": "22.1.8"
+    },
+    "ninja": {
+      "bytes": 355496,
+      "sha256": "60c7c47ab82bb108e9b6a84d2716409c81e0e83cac640ecf072fa91113ec88ed",
+      "version": "1.13.2"
+    },
+    "nm": {
+      "bytes": 164056,
+      "sha256": "8f8ad58ba445c2c5dda7139154b809ac45cb8a768402c65a6a0ae1dcff2f49a6",
+      "version": "22.1.8"
+    },
+    "ranlib": {
+      "bytes": 88744,
+      "sha256": "cd6bb1b9e79d2612696ee6981e1f4e955339d68e3ec0b315fdd1cc51f5a15bd7",
+      "version": "22.1.8"
+    }
+  },
+  "operation": "owned_wasip1_runtime_source_evidence",
+  "os": "macOS-27.0-arm64-arm-64bit",
+  "recordedDate": "2026-10-13",
+  "repeat": {
+    "builds": 2,
+    "jobsPerBuild": 4,
+    "status": "identical_owned_runtime_builds",
+    "stepsPerBuild": {
+      "builtins": 151,
+      "cxx": 1883,
+      "libc": 1939
+    }
+  },
+  "reviewCopyDerivation": {
+    "bytes": 0,
+    "changedFile": "sysroot/include/c++/v1/.keepme",
+    "headerProbe": "passed actual target compiler",
+    "operation": "explicit_runtime_discovery_marker_review",
+    "outputInventorySHA256": "6e0d3ce6f05e7a4bf969d83df4e1b9237b229f3d74ecf1fb07dd068e7b07fd46",
+    "sourceInputManifestSHA256": "a4f8dabd67f84183fbdb4dea6ab75ba121b11951fa5f27cd87dd8fa425ef4d48",
+    "sourceLibrariesRecompiled": false,
+    "sourceOutputInventorySHA256": "6c691bd00296dc137966ec3c44d75370479cf6bd548c61b81cd9d6a8d208011e"
+  },
+  "runtime": {
+    "distributionStatus": "unresolved",
+    "headerGeneration": "pinned pre-generated libc headers; WASI source staged but Rust generator not executed",
+    "inputManifestSHA256": "54eec350dadbab4cb21ed0dfa0700f05a53c344775bb08a7bafc0a435fb91351",
+    "outputFiles": {
+      "resources": 304,
+      "sysroot": 2049
+    },
+    "outputInventorySHA256": "6e0d3ce6f05e7a4bf969d83df4e1b9237b229f3d74ecf1fb07dd068e7b07fd46",
+    "recipeIdentifier": "wasip1-libc32-llvm22.1.8-source-v1-development",
+    "schema": 1,
+    "status": "built_owned_wasip1_runtime"
+  },
+  "runtimeLibraries": [
+    {
+      "bytes": 106138,
+      "path": "lib/wasm32-unknown-wasip1/libclang_rt.builtins.a",
+      "sha256": "ce0a53a2e438dd5b2c763daf9983cd7eacca8850df7ae168c7b00c041441bdc9"
+    },
+    {
+      "bytes": 708,
+      "path": "lib/wasm32-wasip1/crt1-command.o",
+      "sha256": "4ee18dbae0f632a7d410100a30afe8479bb6b4c420567b4d7dd8ca48c9e31939"
+    },
+    {
+      "bytes": 613,
+      "path": "lib/wasm32-wasip1/crt1-reactor.o",
+      "sha256": "469d45652c2e1ff17a12f8d91b59924ef02c15b8d9b5f0bca137576ac9f2732f"
+    },
+    {
+      "bytes": 708,
+      "path": "lib/wasm32-wasip1/crt1.o",
+      "sha256": "4ee18dbae0f632a7d410100a30afe8479bb6b4c420567b4d7dd8ca48c9e31939"
+    },
+    {
+      "bytes": 1391936,
+      "path": "lib/wasm32-wasip1/libc++.a",
+      "sha256": "0b47b76d2f8511b9acd0820f483922f4b971344415824c7f981caf5997e60fae"
+    },
+    {
+      "bytes": 381836,
+      "path": "lib/wasm32-wasip1/libc++abi.a",
+      "sha256": "191c0c99e8ffd72e4a637d343e71f9ce42342a30c96484be86c30c1352e54125"
+    },
+    {
+      "bytes": 988,
+      "path": "lib/wasm32-wasip1/libc++experimental.a",
+      "sha256": "c5f38835b24fe1376fe086af6ee3dc971fed610483a1d93fa5bd768f4e1de00e"
+    },
+    {
+      "bytes": 36832,
+      "path": "lib/wasm32-wasip1/libc-printscan-long-double.a",
+      "sha256": "a3dd7817a171d4ef56139f270dcf42fadc86b1894b4f068939662220ed410d0d"
+    },
+    {
+      "bytes": 30148,
+      "path": "lib/wasm32-wasip1/libc-printscan-no-floating-point.a",
+      "sha256": "49c3121dda7c5207db2b39400a51df33afa7a65feb1fd8907b80c68b204245e3"
+    },
+    {
+      "bytes": 985068,
+      "path": "lib/wasm32-wasip1/libc.a",
+      "sha256": "095aaadb78055eed32c74909b2ef6043b5a207c4d5688a183d91a7007c730afa"
+    },
+    {
+      "bytes": 602736,
+      "path": "lib/wasm32-wasip1/libc.so",
+      "sha256": "a4d9164ef36c232ed5f83e6d7c7cabaf125067066b0db83303d2d44953a7fbe3"
+    },
+    {
+      "bytes": 88,
+      "path": "lib/wasm32-wasip1/libcrypt.a",
+      "sha256": "6d44d508e943a0c58bee925afa4e26abfe83f0c1ce8abf397bdd858c9cdb3439"
+    },
+    {
+      "bytes": 886,
+      "path": "lib/wasm32-wasip1/libdl.a",
+      "sha256": "a03518c2525b998c203a38d1ef3cf45be3a433a3d24bda9ab58fad6a281bd5cd"
+    },
+    {
+      "bytes": 952,
+      "path": "lib/wasm32-wasip1/libdl.so",
+      "sha256": "98d24e17db780f3952b8d0bbfaa1e7e7374f9a6a9b8e82aaccc31eebec086e1c"
+    },
+    {
+      "bytes": 88,
+      "path": "lib/wasm32-wasip1/libm.a",
+      "sha256": "6d44d508e943a0c58bee925afa4e26abfe83f0c1ce8abf397bdd858c9cdb3439"
+    },
+    {
+      "bytes": 88,
+      "path": "lib/wasm32-wasip1/libpthread.a",
+      "sha256": "6d44d508e943a0c58bee925afa4e26abfe83f0c1ce8abf397bdd858c9cdb3439"
+    },
+    {
+      "bytes": 88,
+      "path": "lib/wasm32-wasip1/libresolv.a",
+      "sha256": "6d44d508e943a0c58bee925afa4e26abfe83f0c1ce8abf397bdd858c9cdb3439"
+    },
+    {
+      "bytes": 88,
+      "path": "lib/wasm32-wasip1/librt.a",
+      "sha256": "6d44d508e943a0c58bee925afa4e26abfe83f0c1ce8abf397bdd858c9cdb3439"
+    },
+    {
+      "bytes": 752,
+      "path": "lib/wasm32-wasip1/libsetjmp.a",
+      "sha256": "a01d15784da536c60ed4bb4bf130d3691e1db0ad28ff0341bb8d2d18edf83b1f"
+    },
+    {
+      "bytes": 844,
+      "path": "lib/wasm32-wasip1/libsetjmp.so",
+      "sha256": "f8050e027e661579aebe5de647cadc8899814805e4af76c46ee7fd3fe6a708f5"
+    },
+    {
+      "bytes": 88,
+      "path": "lib/wasm32-wasip1/libutil.a",
+      "sha256": "6d44d508e943a0c58bee925afa4e26abfe83f0c1ce8abf397bdd858c9cdb3439"
+    },
+    {
+      "bytes": 438,
+      "path": "lib/wasm32-wasip1/libwasi-emulated-getpid.a",
+      "sha256": "aab7def1e882d2f39771f667c656827d19f793aa1a7f67edb785e23c3e317016"
+    },
+    {
+      "bytes": 593,
+      "path": "lib/wasm32-wasip1/libwasi-emulated-getpid.so",
+      "sha256": "1f71a1c22bcdd2d0f896299bb977dec0a922881c93cc488af04822434ed814b7"
+    },
+    {
+      "bytes": 1144,
+      "path": "lib/wasm32-wasip1/libwasi-emulated-mman.a",
+      "sha256": "df2ee603794a97cbad9f6c68120288c3676cf1027290dd51e8ada4756d9e2eb3"
+    },
+    {
+      "bytes": 1259,
+      "path": "lib/wasm32-wasip1/libwasi-emulated-mman.so",
+      "sha256": "7cb9703119935825650878735ef439e13801bbc1b712ee453598c7665b87e716"
+    },
+    {
+      "bytes": 1928,
+      "path": "lib/wasm32-wasip1/libwasi-emulated-process-clocks.a",
+      "sha256": "983baf70b1bdc1125d98c0d26d3a00f92e292af8c7e72128626a7819b0353f26"
+    },
+    {
+      "bytes": 1172,
+      "path": "lib/wasm32-wasip1/libwasi-emulated-process-clocks.so",
+      "sha256": "6a03401ef4a2ccd466faf18d6de0caec6aa37e416ea76b9296f41819557de09d"
+    },
+    {
+      "bytes": 4484,
+      "path": "lib/wasm32-wasip1/libwasi-emulated-signal.a",
+      "sha256": "213bb3b93252fd4e3b9ee30b01ab0384d17c3fe5a39708de5cc01623579a85c8"
+    },
+    {
+      "bytes": 3753,
+      "path": "lib/wasm32-wasip1/libwasi-emulated-signal.so",
+      "sha256": "2894e9d8cd6ba143f276937672f2a2d5e1e7ed43b61d93ee563bb8b066e4f2d1"
+    },
+    {
+      "bytes": 88,
+      "path": "lib/wasm32-wasip1/libxnet.a",
+      "sha256": "6d44d508e943a0c58bee925afa4e26abfe83f0c1ce8abf397bdd858c9cdb3439"
+    }
+  ],
+  "schema": 1,
+  "serviceBuild": {
+    "completed": {
+      "distributionStatus": "unresolved",
+      "inputManifestSHA256": "0172deea2581a2fa5385630e3c0699f40924929fd45b1376caec52327474d2fd",
+      "linkedArchiveCount": 96,
+      "module": {
+        "bytes": 101194565,
+        "path": "compiler.wasm",
+        "sha256": "a7648688ae9e349304c576804367b66b68b22185060a847a2e292675329ca493"
+      },
+      "recipeIdentifier": "llvm-22.1.8-wasip1-service-v1-development",
+      "schema": 1,
+      "status": "built_owned_development_service",
+      "upstreamRuntimeSourceReproduction": "not established by installed-component capture"
+    },
+    "finalLinkRepeat": {
+      "canonicalBasename": "compiler.wasm",
+      "freshLLVMCompilationRepeated": false,
+      "matched": true,
+      "module": {
+        "bytes": 101194565,
+        "sha256": "a7648688ae9e349304c576804367b66b68b22185060a847a2e292675329ca493"
+      },
+      "operation": "repeated_final_native_service_link"
+    },
+    "freshLLVMBuildSteps": 2602,
+    "generatedHeaders": {
+      "clangHeaders": 296,
+      "lldHeaders": 1,
+      "llvmHeaders": 87
+    },
+    "linkInputInventorySHA256": "2b086e8f1b6709a5ee328c5df893b96195cc66f739abed48056e51c5b9d81cd0",
+    "llvmSourceObjects": 113508,
+    "priorArchiveComparison": {
+      "archives": 96,
+      "differentFromPriorInstalledRuntimeBuild": []
+    },
+    "runtimeProvenance": "Separate clean component receipts and observed per-file input match establish source-built runtime provenance; service byte capture alone makes no such inference",
+    "staticInspection": {
+      "bytes": 101194565,
+      "declaredServiceABI": 2,
+      "distributionStatus": "unresolved",
+      "exports": [
+        {
+          "kind": "function",
+          "name": "_initialize"
+        },
+        {
+          "kind": "function",
+          "name": "arduino_compiler_service_abi_version"
+        },
+        {
+          "kind": "function",
+          "name": "arduino_compiler_service_build"
+        },
+        {
+          "kind": "function",
+          "name": "arduino_compiler_service_can_run_again"
+        },
+        {
+          "kind": "function",
+          "name": "arduino_compiler_service_compile"
+        },
+        {
+          "kind": "function",
+          "name": "arduino_compiler_service_last_diagnostics"
+        },
+        {
+          "kind": "function",
+          "name": "arduino_compiler_service_last_diagnostics_size"
+        },
+        {
+          "kind": "function",
+          "name": "arduino_compiler_service_link"
+        },
+        {
+          "kind": "function",
+          "name": "free"
+        },
+        {
+          "kind": "function",
+          "name": "malloc"
+        },
+        {
+          "kind": "memory",
+          "name": "memory"
+        }
+      ],
+      "imports": [
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "clock_time_get"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "environ_get"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "environ_sizes_get"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "fd_close"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "fd_fdstat_get"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "fd_fdstat_set_flags"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "fd_filestat_get"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "fd_filestat_set_size"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "fd_pread"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "fd_prestat_dir_name"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "fd_prestat_get"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "fd_read"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "fd_readdir"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "fd_seek"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "fd_write"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "path_create_directory"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "path_filestat_get"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "path_open"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "path_readlink"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "path_remove_directory"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "path_rename"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "path_symlink"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "path_unlink_file"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "poll_oneoff"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "proc_exit"
+        },
+        {
+          "kind": "function",
+          "module": "wasi_snapshot_preview1",
+          "name": "random_get"
+        }
+      ],
+      "instantiated": false,
+      "memory": {
+        "maximumPages": 4096,
+        "minimumPages": 384
+      },
+      "schema": 1,
+      "sha256": "a7648688ae9e349304c576804367b66b68b22185060a847a2e292675329ca493",
+      "status": "statically_validated_owned_service"
+    }
+  },
+  "serviceInputManifestSHA256": "0172deea2581a2fa5385630e3c0699f40924929fd45b1376caec52327474d2fd",
+  "serviceInputMatch": {
+    "resources": {
+      "byteIdentitySHA256": "84761a456afa2829420d882f73a536799ad49f7b2a3dc83c00d631000d3473aa",
+      "files": 304,
+      "matched": true
+    },
+    "sysroot": {
+      "byteIdentitySHA256": "09a4826492e224b2242f4be49c7acf155c4d1a1fde3ba5155b65742ca7d6ee75",
+      "files": 2049,
+      "matched": true
+    }
+  },
+  "sourceArchives": {
+    "libc": {
+      "bytes": 1637111,
+      "sha256": "ea9827495c0f35bca3b3d0a953e854cac112c43bea3196b5a4f7f8fc4704b9a4"
+    },
+    "wasiHeaders": {
+      "bytes": 162204,
+      "sha256": "fc78b28c2c06b64e0233544a65736fc5c515c5520365d6cf821408eadedaf367"
+    }
+  },
+  "sourceObjectCount": 26378,
+  "sourceObjectInventorySHA256": "5a3d93ecf5065c89fcd097bbc4b6414bed7cf90546b18f15387e90cc6073c90a",
+  "wasiSourceFiles": 63
+}

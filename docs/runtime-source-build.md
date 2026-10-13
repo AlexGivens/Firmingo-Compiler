@@ -13,6 +13,9 @@ the maintenance tool neither downloads them nor changes dependencies. It rejects
 archive traversal, links, devices, duplicates, oversized entries and expansions
 before extraction. LLVM source comes from verified raw Git blobs, without reading
 the reference worktree or applying its compiler-service patches to these runtimes.
+The CPU flag applies to all three runtime stages in this development recipe.
+Repeat equality is between its own builds; it does not assert identical bytes
+or identical compilation flags to every installed Homebrew component.
 
 Run with the selected Python maintenance host, isolated from site packages:
 
@@ -61,6 +64,8 @@ binding-tool downloads. The exact before/after identities and reason are recorde
 The libc++ IWYU generator receives one recorded adaptation to import its pinned
 source-local package under isolated Python; user paths and site packages remain
 excluded. Dependency test runners are explicitly disabled.
+LLVM libc's shared header utilities are included in the pinned source snapshot
+for libc++'s conversions; no replacement LLVM-libc C library is built.
 The C++ recipe retains the reference ABI, no exceptions, static libraries and
 filesystem support. Its pthread declarations do not enable shared WASM memory
 or the `-threads` target. Other WASI targets and conventional Arduino sysroots are

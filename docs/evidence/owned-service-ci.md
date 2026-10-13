@@ -50,3 +50,23 @@ checks report the original upstream license/excerpt files' terminal blank lines;
 these bytes intentionally remain unchanged and receipt-verified. Project-code
 and subsequent diffs pass whitespace checks. Native driver/CMake warnings and
 the earlier failed CI logs are preserved; none are rewritten as successful checks.
+
+The runtime-source tooling increment at
+`718736207eadb08c50dda36f6fa563884dbdf4d7` also passes all eight jobs in
+[run 38400857984](https://github.com/AlexGivens/Firmingo-Compiler/actions/runs/38400857984),
+with each job's logs inspected. Both maintenance hosts run the original nine
+source/tool fixtures and ten new runtime archive/configuration/isolation/failure/
+repeat fixtures successfully. Contracts remain 122 passed/one optional skip;
+JSON/ELF mutation remain 4,000/5,000 passes. Real-runtime availability still skips
+eight compilation cases, and memory maintenance passes one/skips one. Chrome
+154.0.8037.97 passes three service-free checks and skips six compiler cases.
+These are CI fixture results, not real native runtime builds or execution of the
+new compiler asset.
+
+The subsequent header-discovery correction at
+`fa35579187d01dd5665f2e5166d38c759b187e96` passes all eight jobs in
+[run 38402652256](https://github.com/AlexGivens/Firmingo-Compiler/actions/runs/38402652256),
+again with all logs inspected. Both maintenance hosts now pass nine service
+fixtures and eleven runtime fixtures. The other contract/mutation counts and
+explicit unavailable-service skips remain unchanged; the browser log again
+reports three passes/six skips/zero actual compiler passes.

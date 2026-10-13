@@ -264,12 +264,16 @@ and native bootstrap bytes. One fresh 2,602-step LLVM/Clang/ARM/LLD build produc
 bounded service that passes actual compile/link/error/reentry checks and independent
 firmware capsule validation. Two independent fresh source builds now produce
 identical bytes for all 96 archives and the complete bounded service. This is
-repeat identity for captured inputs on the recorded host; target runtime source
-reproduction and distribution remain open. See
+repeat identity for captured inputs on the recorded host. Pinned Preview 1 runtime
+source builds now also reproduce all 2,353 output files; a fresh complete service
+build using those exact bytes passes actual sketch/error/reentry checks and
+independent firmware capsule validation. Distribution and new-asset web/wrapper
+promotion remain open. See [runtime source evidence](docs/evidence/runtime-source-build.md) and
 [owned source-build evidence](docs/evidence/owned-service-build.md).
-[CI](docs/evidence/owned-service-ci.md) passes all eight jobs at `04aaed0`, with
+[CI](docs/evidence/owned-service-ci.md) passes all eight jobs at `fa35579`, with
 real-service compilation explicitly skipped there. Local ordinary tests now pass
-122 cases with one optional-service skip; separate maintenance tests pass nine.
+122 cases with one optional-service skip; separate maintenance suites pass nine
+service fixtures and eleven runtime fixtures.
 
 - [ ] Resolve source, license/component, attribution, and build-provenance gaps for
   the service and every shipped dependency. Record the outcome and any exclusions.
@@ -281,7 +285,7 @@ real-service compilation explicitly skipped there. Local ordinary tests now pass
 - [x] Add pinned Preview 1 runtime source capture/build/compare commands with explicit
   native inputs, safe archive extraction, source-local isolated generation and
   focused maintenance fixtures. See [runtime maintenance](docs/runtime-source-build.md).
-- [ ] Record complete clean runtime repeat-build evidence and rebuild/execute the
+- [x] Record complete clean runtime repeat-build evidence and rebuild/execute the
   compiler service against those exact source-built inputs before consumer promotion.
 - [ ] Package a bounded versioned inventory of service, runtime, recipes, resources,
   static metadata, sizes, hashes, ABI compatibility, licenses, and notices.

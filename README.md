@@ -69,3 +69,7 @@ and verifies repeat-build bytes. No compiler binary is added to consumer resourc
 [WASI runtime source maintenance](docs/runtime-source-build.md) builds the pinned
 Preview 1 C/C++ runtime inputs into separate owned outputs, with archive and
 repeat-build checks.
+[Recorded source-runtime evidence](docs/evidence/runtime-source-build.md) covers
+two identical complete runtime outputs, the fresh service rebuild, real WASI
+sketch/error checks and independent firmware capsule validation. The new binary
+remains a local development asset.
