@@ -1,8 +1,9 @@
 import { spawn } from "node:child_process";
-import { accessSync, constants, mkdirSync, mkdtempSync } from "node:fs";
+import { accessSync, constants, mkdirSync, mkdtempSync, writeFileSync, realpathSync, statSync } from "node:fs";
 import { join, resolve, delimiter } from "node:path";
 import { fileURLToPath } from "node:url";
 import { trackBrowser, closeBrowser, removeBrowserProfile } from "./browser-lifecycle.mjs";
+import { waitForBrowserEndpoint } from "./browser-startup.mjs";
 
 /** Uses an explicitly provisioned browser, never downloads or modifies the user's normal profile. */
 export function findChromium(explicit) {
@@ -74,21 +75,22 @@ export async function runChromiumChecks(browserPath, host) {
   const browser = spawn(browserPath, ["--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check",
     "--disable-background-networking", "--disable-sync", "--disable-component-update", "--disable-extensions", "--disable-default-apps",
     "--disable-breakpad", "--metrics-recording-only", "--remote-debugging-port=0", "--remote-debugging-address=127.0.0.1",
-    "--user-data-dir=" + profile, "about:blank"], { stdio: ["ignore", "ignore", "pipe"], detached: process.platform !== "win32" });
+    "--user-data-dir=" + profile, "about:blank"], { stdio: ["ignore", "pipe", "pipe"], detached: process.platform !== "win32" });
   const lifetime = trackBrowser(browser);
   let diagnostic = "", protocol, failure, interrupted = false;
+  const started = performance.now(); let firstOutputMilliseconds = null;
   const interrupt = () => { interrupted = true; protocol?.close(); lifetime.signal("SIGTERM"); };
   process.once("SIGINT", interrupt); process.once("SIGTERM", interrupt);
-  browser.stderr.on("data", bytes => { diagnostic = (diagnostic + bytes.toString()).slice(-16384); });
+  const capture = bytes => { if (firstOutputMilliseconds === null) firstOutputMilliseconds = performance.now() - started; diagnostic = (diagnostic + bytes.toString()).slice(-16384); };
+  browser.stderr.on("data", capture); browser.stdout.on("data", capture);
   const outerDeadline = setTimeout(() => lifetime.signal("SIGKILL"), 120000);
   try {
-    const endpoint = await new Promise((resolve, reject) => {
-      const timer = setTimeout(() => { cleanup(); reject(new Error("Headless browser startup deadline exceeded: " + diagnostic)); }, 12000);
-      const output = () => { const match = /DevTools listening on (ws:\/\/127\.0\.0\.1:[0-9]+\/devtools\/browser\/[A-Za-z0-9-]+)/.exec(diagnostic); if (match) { cleanup(); resolve(match[1]); } };
-      const failed = error => { cleanup(); reject(error instanceof Error ? error : new Error("Headless browser exited during startup: " + diagnostic)); };
-      const cleanup = () => { clearTimeout(timer); browser.stderr.off("data", output); browser.off("error", failed); browser.off("exit", failed); };
-      browser.stderr.on("data", output); browser.once("error", failed); browser.once("exit", failed); output();
-    });
+    const endpoint = await waitForBrowserEndpoint(browser, { diagnostic: () => diagnostic, record: state => {
+      const logs = fileURLToPath(new URL("../.build/logs/", import.meta.url)); mkdirSync(logs, { recursive: true });
+      writeFileSync(join(logs, "browser-startup.json"), JSON.stringify({ schema: 1, ...state, browserPath,
+        resolvedBrowserPath: realpathSync(browserPath), executableBytes: statSync(browserPath).size,
+        elapsedMilliseconds: performance.now() - started, firstOutputMilliseconds, diagnostic }, null, 2) + "\n");
+    } });
     protocol = await Protocol.connect(endpoint);
     const version = await protocol.send("Browser.getVersion");
     const { targetId } = await protocol.send("Target.createTarget", { url: "about:blank" });

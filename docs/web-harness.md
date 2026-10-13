@@ -1,5 +1,12 @@
 # Minimal web developer harness
 
+Browser startup now waits for the DevTools readiness event from stdout or stderr
+with a bounded 30-second startup budget, retaining the existing whole-run limit.
+`browser-startup.json` records selected/resolved executable, first output and ready/
+failure timing plus bounded diagnostics. Two cold Ubuntu CI starts exceeded the
+previous 12-second budget; no automatic retry or unconditional delay is added.
+Timeout/exit/error still fail and dispose the isolated browser/profile.
+
 The browser host exercises the production `CompilerController` and its default
 standard module Worker, rather than the Node adapter. Real compile/link/packaging
 and lifecycle checks pass in **headless Chrome 154.0.8037.93 on macOS arm64**, using
