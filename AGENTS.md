@@ -45,7 +45,7 @@ maintenance/test runtime; production `src/` modules have no Node imports.
 identities. M1 inventory and portable M3 stages are recorded; see
 `docs/portable-pipeline.md` for those APIs/compatibility limits.
 The initial GitHub browser cleanup failure is corrected; all six jobs at
-`2282bae` are verified passing, with actual-service compilation explicitly skipped.
+`9eef0f8` are verified passing, with actual-service compilation explicitly skipped.
 See `docs/evidence/browser-cleanup.md` for exact results; recheck facts as work lands.
 
 The current increment implements actual isolated WASI verification/compile/link/

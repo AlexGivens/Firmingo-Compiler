@@ -108,3 +108,21 @@ Logs use ignored `.build/declared-packaging-*.log` in each checkout. CI uses the
 production test/browser/consumer entries. New Compiler GitHub results must be
 inspected separately; SDK CI still needs its provisioned Apple runner. No device
 operation or firmware executable change occurred.
+
+## GitHub verification — 2026-10-13
+
+[Run 38359879060](https://github.com/AlexGivens/Firmingo-Compiler/actions/runs/38359879060)
+at `9eef0f82b397cd6642d226fc057f8a23eacbc72f` completed successfully. All six
+job statuses and actual logs were inspected: both macOS 14/Ubuntu 24.04 contract
+jobs have 108 passes and one optional memory skip; JSON/ELF mutation pass 4000/5000
+cases; real-runtime availability explicitly skips eight compiler cases and has
+one service-free memory pass/one actual-service skip. Ubuntu Chrome 154.0.8037.97
+passes three cases (including declared packaging) and skips six compiler cases,
+with zero actual compiler passes. Every job finalized its log artifact.
+
+Workflow YAML/job/Bash/matrix assertions and diff hygiene pass. Actionlint and an
+independent JSON Schema validator remain unavailable; schemas were reviewed as
+JSON and actual requests/receipts are exercised through production validators and
+independent goldens. No actual-service CI compilation is inferred. SDK GitHub was
+also inspected: zero configured self-hosted runners and zero Actions runs; local
+SDK checks are the evidence above, not a GitHub success.
