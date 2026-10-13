@@ -39,13 +39,30 @@ observing an active endpoint. It failed explicitly and removed its profile. The
 subsequent real-service run passed all nine cases, and a controlled in-process
 SIGINT probe then verified active-browser interruption. The startup failure's
 cause is unqualified; this cleanup change does not claim to fix browser startup.
-No screenshots or normal browser profile were used. Linux cleanup must also be
-verified in the corrected GitHub run. No hardware or signed Apple-host execution
+No screenshots or normal browser profile were used. Linux cleanup is verified
+in the corrected GitHub run below. No hardware or signed Apple-host execution
 was performed in this change.
 
 ## GitHub verification
 
-The correction will be pushed to trigger the same six independently observable
-jobs. Run identity, exact results and service-absent browser/compiler counts will
-be recorded after inspection. A green availability job does not establish actual
-WASM compilation when service cases skip.
+The [corrected GitHub run](https://github.com/AlexGivens/Firmingo-Compiler/actions/runs/38341597863)
+at `2282bae2c3f38066d7c06170a50bdcb0a54647a4` completed successfully on
+2026-10-13 UTC (2026-10-12 on the developer host). All six jobs and their logs
+were inspected, including actual test output and finalized artifact uploads.
+
+| Job | Inspected result |
+| --- | --- |
+| Contracts, Ubuntu 24.04 | 99 pass, one optional memory adaptation skip; doctor/check pass |
+| Contracts, macOS 14 | 99 pass, one optional memory adaptation skip; doctor/check pass |
+| JSON mutation | 4000 bounded mutations pass, seed 1179469647 |
+| ELF mutation | 5000 bounded mutations pass, seed 1162626609 |
+| Real-runtime availability | Eight compile cases skip, zero compiler passes; memory maintenance has one service-free pass and one actual-service skip |
+| Web host, Ubuntu 24.04 / Chrome 154.0.8037.97 | Three pass, six compiler cases skip, zero actual compiler passes; profile cleanup succeeds |
+
+Each job finalized its corresponding log artifact; web results also retain JSON.
+Local Ruby YAML assertions checked push/PR triggers, five job definitions (the
+contract matrix produces two jobs), Bash and `fail-fast: false`. A deliberately
+failing local pipeline returned status 7 through `tee` with `pipefail`. Actionlint
+remains unavailable. No service was supplied in GitHub, so this run establishes
+the maintained service-free checks and Linux browser cleanup, not CI compilation
+or hardware qualification. The real-service browser evidence above remains local.

@@ -68,9 +68,9 @@ sibling dependencies. Synthetic test bindings remain NEVER DEPLOY.
 
 M5 now provides the minimal readonly web harness and actual standard module-worker
 checks: nine pass in the recorded headless Chrome host; without the service, three
-browser cases pass and six compilation cases skip. A separate CI job is defined,
-but the first inspected GitHub run failed browser profile cleanup after the other
-jobs passed. The shutdown correction and rerun are tracked in
+browser cases pass and six compilation cases skip. All six GitHub jobs at
+`2282bae` now pass after the browser cleanup correction; actual-service compilation
+remains explicitly skipped there. The inspected results are tracked in
 `docs/evidence/browser-cleanup.md`. M6 now connects both SDK build APIs through
 a pinned source package, with nine real macOS WebKit tests and a separate consumer.
 The old SDK standalone runtime/recipe/vendor stack and inactive bridge are retired with an exact 36-file source inventory. Explicit service-memory maintenance now lives here. Both public SDK preparation APIs now use the shared service-free worker and their Swift lexical scanner is removed. Next: migrate supplied-ELF conversion with an explicit declared-provenance contract and qualify signed/physical wrapper hosts. Service
@@ -197,7 +197,7 @@ Evidence: `docs/evidence/wasm-runtime.md`: actual compilation/link/failure/dispo
 
 ### M5 — Provide the minimal CLI, web harness, and observable CI
 
-Status: implemented locally. The first GitHub run passed contracts/mutation/service availability but failed transient browser cleanup. The bounded lifecycle fix passes local fast and browser checks; the corrected GitHub run must be inspected before completing the acceptance item.
+Status: complete for the maintained CLI/web harness and service-free CI scope. All six GitHub jobs at `2282bae` are inspected passing after the browser cleanup correction; actual-service compilation remains deliberately excluded from public CI pending asset provisioning.
 
 - [x] Add a developer CLI with help, explicit request/recipe/resource selection,
   structured diagnostics, artifact/receipt output, meaningful exit codes, cancellation,
@@ -212,14 +212,14 @@ Status: implemented locally. The first GitHub run passed contracts/mutation/serv
 - [x] Keep fast tests, real-service tests, web tests, and recipe builds independently
   observable in CI. Configure pins, bounded jobs, artifacts, and explicit skips;
   never make service-absent runs appear to have passed actual compilation.
-- [ ] Preserve failing pipeline exit status and pre-test/build logs, retain matrix
+- [x] Preserve failing pipeline exit status and pre-test/build logs, retain matrix
   `fail-fast: false`, validate workflows, and inspect the GitHub run before recording
   CI success.
 
 Acceptance: a developer can exercise implemented compiler behavior through documented
 CLI and web commands. CI distinguishes actual compilation from tests that lack the
 service; web-host compatibility is evidenced rather than inferred from CLI success.
-Evidence: actual CLI new-directory/receipt/no-overwrite tests pass; fast/mutation/service-availability jobs remain separate. Real-service CI explicitly skips until approved provisioning exists. See `docs/evidence/wasm-runtime.md` and `docs/evidence/web-host.md`: nine actual Chrome cases pass, matching the independent capsule outputs; missing service has zero compiler passes. GitHub execution and non-Chrome/SDK hosts remain unverified.
+Evidence: actual CLI new-directory/receipt/no-overwrite tests pass; fast/mutation/service-availability jobs remain separate. Real-service CI explicitly skips until approved provisioning exists. See `docs/evidence/wasm-runtime.md` and `docs/evidence/web-host.md`: nine actual local Chrome cases pass, matching the independent capsule outputs; missing service has zero compiler passes. `docs/evidence/browser-cleanup.md` records the six-job GitHub pass, exact counts/skips, artifacts and Linux browser version. Other hosts and hardware remain separate qualification work.
 
 ### M6 — Integrate FirmingoKit as a wrapper and retire duplicate ownership
 
@@ -376,9 +376,9 @@ User decisions recorded on 2026-10-12:
 
 Initial ledger creation involved documentation checks only. The foundation increment
 now has input/CLI tests and bounded JSON mutation evidence. M1–M4 are complete for
-local development execution; M5 remains in progress pending GitHub verification.
-Standard Chrome hosting is now exercised; wrapper integration, firmware builds,
-hardware and GitHub CI have not run here. See
+local development execution; M5's maintained service-free CI scope is verified.
+Standard Chrome and macOS SDK hosting are exercised. Signed/physical wrapper
+hosts, trusted production firmware exports and hardware remain unqualified. See
 `docs/evidence/foundation.md`, `docs/evidence/portable-pipeline.md` and
 `docs/evidence/wasm-runtime.md` and `docs/evidence/web-host.md` for the separate
 increment records.

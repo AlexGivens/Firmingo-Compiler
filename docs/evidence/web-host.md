@@ -88,3 +88,8 @@ open. Next is the FirmingoKit Swift/WebKit adapter while retaining its current p
 APIs and deployment safeguards. No existing SDK executable implementation was removed.
 
 Subsequent macOS SDK adapter/source-package checks are recorded in [SDK adapter](../sdk-adapter.md); the original browser observations above remain unchanged.
+
+The later Linux CI cleanup correction and verified GitHub job results are recorded
+in [browser cleanup](browser-cleanup.md). The service-absent Ubuntu browser run
+passes three checks and skips six compiler cases; the original local real-service
+observations above remain separate.

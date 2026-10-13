@@ -123,7 +123,8 @@ explicit browser/compiler absence counts and JSON artifacts. The existing runner
 browser is recorded when present; no browser or service is downloaded by this job.
 Hardware stays opt-in. The first inspected GitHub run passed both contract jobs,
 both mutation jobs and the service-availability job, but failed browser profile
-cleanup with `ENOTEMPTY`. The lifecycle correction and subsequent run are recorded
+cleanup with `ENOTEMPTY`. The lifecycle correction and successful six-job run at
+`2282bae` are recorded
 in [browser cleanup](evidence/browser-cleanup.md); local passes are not GitHub success.
 `actionlint` was unavailable on the inspected machine; the workflow
 has been manually reviewed and parsed with the available Ruby YAML library, with
