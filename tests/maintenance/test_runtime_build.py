@@ -187,6 +187,21 @@ class RuntimeBuildTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "context differs"):
             rb.adapt_libcxx(source, self.root)
 
+    def test_header_probe_requires_actual_compile_success_after_target_discovery(self):
+        sysroot = self.root / "sysroot"; sysroot.mkdir()
+        def fail(args, output, log):
+            self.assertTrue((sysroot / "include/c++/v1/.keepme").is_file())
+            self.assertIn("-fsyntax-only", args)
+            self.assertIn("--target=wasm32-wasip1", args)
+            self.assertIn("--sysroot=" + str(sysroot), args)
+            self.assertIn("<atomic>", (self.root / "cxx-header-probe.cpp").read_text())
+            (output / log).write_text("fixture header discovery failure\n")
+            raise ValueError("fixture header discovery failure")
+        with patch.object(sb, "execute", side_effect=fail):
+            with self.assertRaisesRegex(ValueError, "header discovery"):
+                rb.check_headers(self.root, {"clangxx": "/explicit/clangxx"}, sysroot, self.root / "resources")
+        self.assertTrue((self.root / "header-probe.log").is_file())
+
 
 if __name__ == "__main__":
     unittest.main()

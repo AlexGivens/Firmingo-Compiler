@@ -66,6 +66,12 @@ filesystem support. Its pthread declarations do not enable shared WASM memory
 or the `-threads` target. Other WASI targets and conventional Arduino sysroots are
 outside this recipe.
 
+The generic `include/c++/v1/.keepme` preserves Clang's version-discovery directory
+before it adds the per-target libc++ path. An actual selected-Clang syntax check
+includes `atomic`, `vector` and `filesystem` and requires ABI 2, without overriding
+header paths. Failure blocks the success receipt. Building libc++ itself with
+explicit generated-header paths would not establish this consumer discovery gate.
+
 The separately pinned WASI archive is staged under libc's header-generator input
 path. The Rust generator is **not run**: the build uses libc's committed generated
 WASI headers. This reproduces the selected build sources, not a demonstration of

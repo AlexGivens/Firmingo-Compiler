@@ -143,6 +143,23 @@ def adapt_libcxx(source, output):
                   "after": sb.file_record(path), "reason": "only source-local libcxx package lookup under Python -I -S -B"})
 
 
+def check_headers(output, tools, sysroot, resources):
+    # Clang detects the libc++ version in the generic directory before adding
+    # the per-target directory. Preserve the empty directory in file inventories.
+    generic = sysroot / "include/c++/v1"
+    generic.mkdir(parents=True)
+    (generic / ".keepme").write_bytes(b"")
+    probe = output / "cxx-header-probe.cpp"
+    probe.write_text('#include <atomic>\n#include <vector>\n#include <filesystem>\n'
+                     'static_assert(_LIBCPP_ABI_VERSION == 2);\n'
+                     'int probe() { std::atomic<int> x{1}; std::vector<int> v{2}; return x.load() + v.front(); }\n')
+    args = [tools["clangxx"], "--no-default-config", "--target=wasm32-wasip1", "--sysroot=" + str(sysroot),
+            "-resource-dir=" + str(resources), "-std=c++17", "-fsyntax-only", str(probe)]
+    sb.write_json(output / "header-probe-command.json", args)
+    sb.execute(args, output, "header-probe.log")
+    return args
+
+
 def toolchain(output, tools, sysroot, resources):
     flags = ("--no-default-config -mcpu=lime1 " + shlex.quote("-resource-dir=" + str(resources))
              + " " + shlex.quote("-ffile-prefix-map=" + str(output) + "=/firmingo-runtime-build"))
@@ -246,6 +263,7 @@ def build(config, expected, output, jobs):
                             prefix + "_HAS_WIN32_THREAD_API": "OFF", prefix + "_INCLUDE_TESTS": "OFF"})
         options.update(LIBCXX_ENABLE_EXPERIMENTAL_LIBRARY="OFF", LIBCXX_ENABLE_ABI_LINKER_SCRIPT="OFF", LIBCXX_INCLUDE_BENCHMARKS="OFF")
         phase("cxx", source / "runtimes", options)
+        commands.append(check_headers(output, tools, sysroot, resources))
         required = ["lib/wasm32-wasip1/" + name for name in ("libc.a", "libc++.a", "libc++abi.a", "crt1-reactor.o", "libwasi-emulated-mman.a")]
         for name in required:
             sb.file_record(sysroot / name)
