@@ -36,4 +36,3 @@ export async function loadRecipe() {
   await verifyNanoRecipe(recipeManifest, recipeAssets);
   return { recipeManifest, recipeAssets };
 }
-

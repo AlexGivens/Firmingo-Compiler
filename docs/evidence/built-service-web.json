@@ -434,5 +434,13 @@
     "Signed sandbox/minimum OS and physical iOS/iPadOS qualification",
     "Device upload/execution qualification"
   ],
-  "CI": "Compiler workflow now observes unprovisioned candidate absence; subsequent run not yet verified. SDK workflow requires explicitly provisioned self-hosted runner; no run claimed."
+  "CI": "Compiler workflow now observes unprovisioned candidate absence; subsequent run not yet verified. SDK workflow requires explicitly provisioned self-hosted runner; no run claimed.",
+  "qualificationCompilerCommit": "9a75175cdb7726edbd13e4f974ff7e4f5429e4e3",
+  "qualificationSDKCommit": "51d64918434ec7e37d0e29526ce62d1ed2a05397",
+  "postQualificationWhitespaceCleanup": {
+    "path": "web/resource-loading.js",
+    "bytes": 2061,
+    "sha256": "993a157608e2de8a89613d493d1dc0e1d1d2a6902480a4e753eb9bd2bb48bed4",
+    "change": "Removed one trailing blank line; implementation records retain the actually qualified source bytes."
+  }
 }
