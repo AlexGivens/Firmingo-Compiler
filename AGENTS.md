@@ -93,6 +93,11 @@ separate macOS/Linux CI exercises owned synthetic maintenance fixtures. See
 `docs/service-build.md` and `docs/evidence/owned-service-build.md` for source,
 bootstrap, runtime, source-license and repeat-build boundaries. New development
 service outputs never automatically replace consumer pins or enter packages.
+Two clean native source builds now reproduce all 96 archives and the complete
+bounded WASM service on the recorded host. Actual maintenance execution and
+independent firmware capsule validation pass; all eight CI jobs at `04aaed0`
+are inspected passing with unavailable-service checks explicitly skipped. See
+`docs/evidence/owned-service-build.md` and `docs/evidence/owned-service-ci.md`.
 
 ## Working across the repositories
 

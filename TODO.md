@@ -262,9 +262,14 @@ Owned maintenance now captures raw LLVM Git objects, 23 custom source/header/pat
 inputs, complete selected sysroot/resources, CMake modules, isolated Python library
 and native bootstrap bytes. One fresh 2,602-step LLVM/Clang/ARM/LLD build produces a
 bounded service that passes actual compile/link/error/reentry checks and independent
-firmware capsule validation. A second clean source build is still in progress;
-whole-service reproducibility is not yet established by that work. See
+firmware capsule validation. Two independent fresh source builds now produce
+identical bytes for all 96 archives and the complete bounded service. This is
+repeat identity for captured inputs on the recorded host; target runtime source
+reproduction and distribution remain open. See
 [owned source-build evidence](docs/evidence/owned-service-build.md).
+[CI](docs/evidence/owned-service-ci.md) passes all eight jobs at `04aaed0`, with
+real-service compilation explicitly skipped there. Local ordinary tests now pass
+122 cases with one optional-service skip; separate maintenance tests pass nine.
 
 - [ ] Resolve source, license/component, attribution, and build-provenance gaps for
   the service and every shipped dependency. Record the outcome and any exclusions.

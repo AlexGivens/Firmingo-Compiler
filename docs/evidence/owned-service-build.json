@@ -3817,5 +3817,431 @@
   "consumerPinsChanged": false,
   "distributionStatus": "unresolved",
   "upstreamRuntimeSourceReproduction": "installed bytes inventoried; runtime archives not rebuilt from source",
-  "hardwareQualification": "no device connection, installation or code execution on a microcontroller"
+  "hardwareQualification": "no device connection, installation or code execution on a microcontroller",
+  "secondBuild": {
+    "distributionStatus": "unresolved",
+    "inputManifestSHA256": "0c68ee049a09fbf4db92eee10f1dd5babff925ffb6593389b0b1e9d8e6f65ee3",
+    "linkedArchiveCount": 96,
+    "module": {
+      "bytes": 101194613,
+      "path": "compiler.wasm",
+      "sha256": "58a06c969b4848b7e22ce45f1a92fe887e76883131696205707046f8fda1462f"
+    },
+    "recipeIdentifier": "llvm-22.1.8-wasip1-service-v1-development",
+    "schema": 1,
+    "status": "built_owned_development_service",
+    "upstreamRuntimeSourceReproduction": "not established by installed-component capture"
+  },
+  "repeatComparison": {
+    "distributionStatus": "unresolved",
+    "inputManifestSHA256": "0c68ee049a09fbf4db92eee10f1dd5babff925ffb6593389b0b1e9d8e6f65ee3",
+    "moduleSHA256": "58a06c969b4848b7e22ce45f1a92fe887e76883131696205707046f8fda1462f",
+    "status": "byte_identical_owned_service_rebuilds"
+  },
+  "repeatedArchiveCount": 96,
+  "repeatedArchives": [
+    {
+      "path": "libLLVMARMAsmParser.a",
+      "sha256": "c20d1aed41983c1e9888c5e130924c2335fb9d3b948dc08d352828bba22310f8"
+    },
+    {
+      "path": "libLLVMARMCodeGen.a",
+      "sha256": "038a6931fe85a840392f9ac76675c57cb5b1e9aa48896947fee93a2e24b7af32"
+    },
+    {
+      "path": "libLLVMARMDesc.a",
+      "sha256": "cf993c7d3202638490942be9ba143a4434d5d44a36eaf76adf26461baa5b9459"
+    },
+    {
+      "path": "libLLVMARMDisassembler.a",
+      "sha256": "2a4683dbdab3865ec47023935ce049c5d027ee2bc61db0165523ef98627ed905"
+    },
+    {
+      "path": "libLLVMARMInfo.a",
+      "sha256": "dd2af59cd98628fe6bbc8db60eb298033175b70c3beb6526768012b4524745af"
+    },
+    {
+      "path": "libLLVMARMUtils.a",
+      "sha256": "7ea688d7d64922f0f4e9ec15ac97fa96d1f566f19228cfae1f79932c2c9c99c8"
+    },
+    {
+      "path": "libLLVMAggressiveInstCombine.a",
+      "sha256": "92801dc1294a43e9536ce51213d452a9d7ecefec121b378e9a3fda883cc6121c"
+    },
+    {
+      "path": "libLLVMAnalysis.a",
+      "sha256": "b6874241df5e495d55ea9038b9fef9d50ed14cbc127c48b291f9d44bba76fdab"
+    },
+    {
+      "path": "libLLVMAsmParser.a",
+      "sha256": "9ba48b8e6c7567a9cff6f8f20f3b2906b47f9226d90db0f339c3c7a57a746f4d"
+    },
+    {
+      "path": "libLLVMAsmPrinter.a",
+      "sha256": "f86d470c4e1af8d4447fd53df79727f4c2e3b124d12b7593e937f8458d5084fd"
+    },
+    {
+      "path": "libLLVMBinaryFormat.a",
+      "sha256": "f032f9e7b188b4ebcafdf5251ba7bbe10974dc3285c7fa7f500be51f1f492a70"
+    },
+    {
+      "path": "libLLVMBitReader.a",
+      "sha256": "0b21968693e8b03d6a119b7c159159bc7c88ff94c35c3f1204eefd12da13f994"
+    },
+    {
+      "path": "libLLVMBitWriter.a",
+      "sha256": "5ab433a3581742a2503ed8319d244eaf4cca96f4e83b39b6294ff002a1a6eb81"
+    },
+    {
+      "path": "libLLVMBitstreamReader.a",
+      "sha256": "1fd1b35af926e0029df7d31007bad9c42ccf79a510563ce92c60924f63759fa8"
+    },
+    {
+      "path": "libLLVMCFGuard.a",
+      "sha256": "993891a1559ba87eb8e6427b1ef536a66842722d6429add13b147e44d485fb2b"
+    },
+    {
+      "path": "libLLVMCGData.a",
+      "sha256": "250ed469f1a2952645150db0213e58eea8820a671b0f49b15b842de0630fbaac"
+    },
+    {
+      "path": "libLLVMCodeGen.a",
+      "sha256": "683de7fac9e1bf94a1c901e3f6efc2873f4ea1e14e3d620c13f50e7f189f258f"
+    },
+    {
+      "path": "libLLVMCodeGenTypes.a",
+      "sha256": "d01a771dbfa6a4256a9024ff122472813fb755c088f496c862437f741d1b4481"
+    },
+    {
+      "path": "libLLVMCore.a",
+      "sha256": "c985eb58b6987771769ae52fdcce17956d49200ed5b14587893fd90edb502d8e"
+    },
+    {
+      "path": "libLLVMCoroutines.a",
+      "sha256": "738e17b803c30213fdd44c0ccd7c78bcc8038961b704343bfcb21e5cee77fd0a"
+    },
+    {
+      "path": "libLLVMCoverage.a",
+      "sha256": "a9b68c82920b51dcc7540ea288116c77b43b2f629290ff0e4545fdd4d9b43fcd"
+    },
+    {
+      "path": "libLLVMDTLTO.a",
+      "sha256": "af06228697af0d5e9fef29e760f432352e0f23f639d7b6f0a9523bcdc353295c"
+    },
+    {
+      "path": "libLLVMDebugInfoBTF.a",
+      "sha256": "37f6fac0a57303f87f1206b42ba831ef2ac01d5324854ca43946e98cd747be81"
+    },
+    {
+      "path": "libLLVMDebugInfoCodeView.a",
+      "sha256": "b7c2fcd16e228bc8cd57600c530a4a6f09f27e17a5a99ce44b0329e1addb663d"
+    },
+    {
+      "path": "libLLVMDebugInfoDWARF.a",
+      "sha256": "42c6df8a509cf966b751112a360a294167ed4d465ff2ec21890fcc573c74c640"
+    },
+    {
+      "path": "libLLVMDebugInfoDWARFLowLevel.a",
+      "sha256": "85971dc410a309dd52b5339275f0a53ce6e010ba683c82054c16fa2d173f54c1"
+    },
+    {
+      "path": "libLLVMDebugInfoGSYM.a",
+      "sha256": "dddf593458fa27a0fe9b349d038fa13574d5dcf77f9a339c74fdce7fa8552851"
+    },
+    {
+      "path": "libLLVMDebugInfoMSF.a",
+      "sha256": "778d2f7b64f68807adff229db7b3ac97b92cd3ac97339dcd048ae32c3edda8fc"
+    },
+    {
+      "path": "libLLVMDebugInfoPDB.a",
+      "sha256": "c0e7f446561fba77a9e7e1c4f3e47ad65034d6a3b8bd3ac77c06f07a392dc0f5"
+    },
+    {
+      "path": "libLLVMDemangle.a",
+      "sha256": "1429801b90a5725ef8aece04ddb426b0393c4ec407bbcd651325d384ed38cc57"
+    },
+    {
+      "path": "libLLVMExtensions.a",
+      "sha256": "037d05d62ff6f8173c61e4dd5e1206dfa7c5975e0f5ba67c7e2a25f24be190f2"
+    },
+    {
+      "path": "libLLVMFrontendAtomic.a",
+      "sha256": "851c5f1a98ac55e67ee905ab00620d5e1519e9b0e5ed3d21c4225ba7355f1597"
+    },
+    {
+      "path": "libLLVMFrontendDirective.a",
+      "sha256": "b09de94ff2a8fb2b1c71ae28e18ab3fc0c4b2ef18fc6237c1c853f0953cee71e"
+    },
+    {
+      "path": "libLLVMFrontendDriver.a",
+      "sha256": "e49b89572d65c8d1633f6628f18369a1233a60f3e1b6343049b3ba86c9c56133"
+    },
+    {
+      "path": "libLLVMFrontendHLSL.a",
+      "sha256": "3adcf6c43dd254214a70e6f2275318c00e724584b2e35a9a864182a5fb29eb43"
+    },
+    {
+      "path": "libLLVMFrontendOffloading.a",
+      "sha256": "9f6b2d94bcb7e045999e7a628412f34cc2e71ff50bde805443c51ff9477889fe"
+    },
+    {
+      "path": "libLLVMFrontendOpenMP.a",
+      "sha256": "aea09ff8d3db45eec9998d4da93f7f076d9b160ce036e7090cd81e4a1a1e6056"
+    },
+    {
+      "path": "libLLVMGlobalISel.a",
+      "sha256": "e0aee4388511a48e660e9ac4fadfe9f82d05ad70e9ff76a7d85ad501e478fea0"
+    },
+    {
+      "path": "libLLVMHipStdPar.a",
+      "sha256": "93a3f201177d99d49b3fe0fc20dd8a16060d66ded5097da2cc58d8f17effd6b0"
+    },
+    {
+      "path": "libLLVMIRPrinter.a",
+      "sha256": "841da695f08942d2367201788d99d8b5e492947f52395810e36229d0e0c02c22"
+    },
+    {
+      "path": "libLLVMIRReader.a",
+      "sha256": "ba6483abb24ebaf269f61c7949e8aa5ae80a4ef4b3c10263975453c7db7f2dc6"
+    },
+    {
+      "path": "libLLVMInstCombine.a",
+      "sha256": "c6a278dff9989a819b5fd68e9194be98c722538a0be33e0fe3ec36e925ca08db"
+    },
+    {
+      "path": "libLLVMInstrumentation.a",
+      "sha256": "38442968b0c3be057b8bebc7ee0e8cdd816488ed8e852206afc177c1d3b73301"
+    },
+    {
+      "path": "libLLVMLTO.a",
+      "sha256": "732d97da57b3253102f583db7cf4e93096caeb6d78a2f1ec9915f971d6e95c77"
+    },
+    {
+      "path": "libLLVMLinker.a",
+      "sha256": "6eca10c0ca619d41508ab23dece251f36e4ee857efd3a557844e5c62864ecbe0"
+    },
+    {
+      "path": "libLLVMMC.a",
+      "sha256": "bb0107f86a5776fb1cc752f3e3071cbdc21adcb285501ba30704a4db2adae12a"
+    },
+    {
+      "path": "libLLVMMCDisassembler.a",
+      "sha256": "2dcf6f29cc2389958e6b51e1c5d266f6dd20ab7e05d4ece40669e0956a6b2b64"
+    },
+    {
+      "path": "libLLVMMCParser.a",
+      "sha256": "fd616eb0abb5b25e6752b8b2d9f379eac5cd148850ff6cccd83c0497706d5253"
+    },
+    {
+      "path": "libLLVMObjCARCOpts.a",
+      "sha256": "048ca2776759798af50fb9f371dafdadfb0055dc1a787ad6c715b7b7f508e447"
+    },
+    {
+      "path": "libLLVMObject.a",
+      "sha256": "202b9c15b84438b2a2895a13a11c4a0fcac0db537dd01e795cba42b59fc39c2d"
+    },
+    {
+      "path": "libLLVMObjectYAML.a",
+      "sha256": "a97be9dc9a760f23ec20237391662049ea5f9f73bb49d854866e41d1d19f47f2"
+    },
+    {
+      "path": "libLLVMOption.a",
+      "sha256": "2684c3c4846e1c7e0c6f9474f1a7c4ab7aff7a40bb625b496fe04795ef0814a8"
+    },
+    {
+      "path": "libLLVMPasses.a",
+      "sha256": "dc9670d3eb01e23020ee42eb2e7c665a45f947ba8a78883812101b119a51ae84"
+    },
+    {
+      "path": "libLLVMPlugins.a",
+      "sha256": "6a1b9f92393f352164d1ec69fba5ea5593065d399405cc8f7df82cc5717e2c69"
+    },
+    {
+      "path": "libLLVMProfileData.a",
+      "sha256": "9a44583e6a66273097a4ac9feaa0df7b4f14f5b3a74ca7223d30bdb03e2e024c"
+    },
+    {
+      "path": "libLLVMRemarks.a",
+      "sha256": "64b2992cce7ce836301b0cc3cf70e5c6a543d75e27b22656f67f84ecd367044e"
+    },
+    {
+      "path": "libLLVMSandboxIR.a",
+      "sha256": "9173a7f4ef6b86556de505dc671173a2c8bb1cd418afffd27320543dd6df2b0b"
+    },
+    {
+      "path": "libLLVMScalarOpts.a",
+      "sha256": "c18b413c0409cee2bff30b5ff60062816aaeb53f722d445163408a453e711d0c"
+    },
+    {
+      "path": "libLLVMSelectionDAG.a",
+      "sha256": "1602f3d33ac068fb09602d1f8d85f8d396f084f04d0f0d6cfb61d47e45b3bfe8"
+    },
+    {
+      "path": "libLLVMSupport.a",
+      "sha256": "395ec8ec6ca316fa8a54ed7a939889bb3d20df1f6aeb31d15df69e5f2ad02dc2"
+    },
+    {
+      "path": "libLLVMSymbolize.a",
+      "sha256": "f74f2da20bbe38d1d8ab7b4c3d5319ee3c73e1fc228b9ac9eb4f10866b9458d1"
+    },
+    {
+      "path": "libLLVMTarget.a",
+      "sha256": "4f7fd9f6ba72ba4458615220f6bdbbb974b6ad4b78c78a1e60e0683f2ae6b826"
+    },
+    {
+      "path": "libLLVMTargetParser.a",
+      "sha256": "8f5b4d4a15197e6ba4828b66eaf2d11524d3025391972485dd22b52061ad264b"
+    },
+    {
+      "path": "libLLVMTextAPI.a",
+      "sha256": "c92bfc42c51ec7801af5e902493de833b9d542f6932819aa73cfcb1feedb3fda"
+    },
+    {
+      "path": "libLLVMTextAPIBinaryReader.a",
+      "sha256": "aba1df0ed49ab3e589a50067425b10d01aa74b3d1c2af3dd813d8d1556c73b0c"
+    },
+    {
+      "path": "libLLVMTransformUtils.a",
+      "sha256": "7fd5280ecaa2ad35ba2cda0dd1cc7fa09da91a8a721dca8bacce684116cca5fa"
+    },
+    {
+      "path": "libLLVMVectorize.a",
+      "sha256": "c8a7fe211a5868713594ed20b803ba0d35f52be48435ee4a0025a03237fa0b05"
+    },
+    {
+      "path": "libLLVMWindowsDriver.a",
+      "sha256": "003d939134c47b7fe0297ab22d9bd978d569c609176645c22bdda9412fbce450"
+    },
+    {
+      "path": "libLLVMipo.a",
+      "sha256": "b6cf503e87b5283bc314fad896702ebb9a415d977993ba0a6e3b5a0fdbe5ff16"
+    },
+    {
+      "path": "libclangAPINotes.a",
+      "sha256": "dfebac3e8034afa6175084b39411e9892ca123de495b8e9bd006cb952df168c9"
+    },
+    {
+      "path": "libclangAST.a",
+      "sha256": "f9efbbe7db2c4de2192e40e1a4c3e5afeffb9c0c6d8d886d2f0990f5111c495a"
+    },
+    {
+      "path": "libclangASTMatchers.a",
+      "sha256": "26ceac3828bc9e4915f5d93647c8b86d95c81969aa393653515c0e3fdf1f009a"
+    },
+    {
+      "path": "libclangAnalysis.a",
+      "sha256": "caeeade9ced5decbf3685f3e6cafac43db88a896e402e65826d2f265cebcc8b1"
+    },
+    {
+      "path": "libclangAnalysisLifetimeSafety.a",
+      "sha256": "db1634ade8a5a97e62a86952dcf323e3fefe36ed363f591bb92e0703dd171dae"
+    },
+    {
+      "path": "libclangBasic.a",
+      "sha256": "56afdc94c3c9238c793fec04e4ab9da0eea9417278396eae6840dd15e25cf183"
+    },
+    {
+      "path": "libclangCodeGen.a",
+      "sha256": "051c6b5e19964ecf13853101204ce048e07ff322af23213393c48bd748cd216a"
+    },
+    {
+      "path": "libclangDriver.a",
+      "sha256": "bb1e079b1d4723c8a7c35cd6cfde290a82ae922759e17b980d5a68cc5525d68c"
+    },
+    {
+      "path": "libclangEdit.a",
+      "sha256": "aed30621925e8e99ca7d8897e672039d5ecbe6e24cb869971544ccfa428cd659"
+    },
+    {
+      "path": "libclangExtractAPI.a",
+      "sha256": "3436a23957d9f5c105f9267f673e1892dbcb3ab63a1da38f6eee7919696f75f2"
+    },
+    {
+      "path": "libclangFormat.a",
+      "sha256": "148dcb63f42cc2c0aa2c0fede153223c6fd0132239c1bc7ef4e2c62a257d73b8"
+    },
+    {
+      "path": "libclangFrontend.a",
+      "sha256": "4dc50e332dd9bdd5a7c2d942eb89996ce8ecdd2aac648cf59ec4aab394b26b0f"
+    },
+    {
+      "path": "libclangFrontendTool.a",
+      "sha256": "18c7ace7334fd8d8f8f1b8552d04ea89e15d168f8952d299933740b8baffe6ff"
+    },
+    {
+      "path": "libclangIndex.a",
+      "sha256": "6eec08817772ddf39ba295abc6f32a758746e351b7212a1b4e85a740a1ccd55b"
+    },
+    {
+      "path": "libclangInstallAPI.a",
+      "sha256": "3f021692ec6e6a276b7f7274ca84c53caa86fd1ffaf7bfab60fbca08efe8b1de"
+    },
+    {
+      "path": "libclangLex.a",
+      "sha256": "6395d7f0f699c8e211220714bf7c4854d59928774b5d6941a15690ecb44e6bf3"
+    },
+    {
+      "path": "libclangOptions.a",
+      "sha256": "89764565722420700c357400aea43b72c29ed705ec53580aa718b02168c2d2b0"
+    },
+    {
+      "path": "libclangParse.a",
+      "sha256": "2f06a59b2328456a229dd91bdadace8fee4c650328cc74fb1c773a71094aea36"
+    },
+    {
+      "path": "libclangRewrite.a",
+      "sha256": "c5ca4051c77dfbb4edecfbbd047b0a2c3bd9398b7b2bfcb82900ddc006f64369"
+    },
+    {
+      "path": "libclangRewriteFrontend.a",
+      "sha256": "fd0f98dce7aa3a57cd8197252f955066c015120abdbe9ec1ce4e905b47d6f26f"
+    },
+    {
+      "path": "libclangSema.a",
+      "sha256": "6b6a3e5745a03d718006acb677ac53aa935881bbe86b82f6faa5a9de96801ac4"
+    },
+    {
+      "path": "libclangSerialization.a",
+      "sha256": "bfe906f492d69ead70e3567c013871c3d461fd341c7610cc7920ff0039d4c2fe"
+    },
+    {
+      "path": "libclangSupport.a",
+      "sha256": "ad3c24d866d3dc0f597962172676c864afedee84476f55ec13aa3e4e389221c4"
+    },
+    {
+      "path": "libclangToolingCore.a",
+      "sha256": "5fb156d4489a6d956fa2660dce47a890ac2bdfce8c071af9914860a9ee6f6a84"
+    },
+    {
+      "path": "libclangToolingInclusions.a",
+      "sha256": "74c6f85c59991ffae52bb6ef949ef6cc38e03d2802eeeba9eb44c7b0ac3b056c"
+    },
+    {
+      "path": "liblldCommon.a",
+      "sha256": "140fe4e796e620204a26d735fd8cfded8aca87c66cf6af4088cd6471cef328d5"
+    },
+    {
+      "path": "liblldELF.a",
+      "sha256": "ee9f75280b99aef206e8b87791938a0bb934880904e358f7c8ffed27afec3c4e"
+    }
+  ],
+  "ci": {
+    "runID": 38395005566,
+    "commit": "04aaed0824f133cc4885223ea034a268dec3f2ce",
+    "jobsPassed": 8,
+    "ordinaryTestsPassed": 122,
+    "ordinaryOptionalServiceSkipped": 1,
+    "maintenanceFixtureCasesPassedPerHost": 9,
+    "browserChecksPassed": 3,
+    "browserCompilerCasesSkipped": 6,
+    "browserActualCompilerPasses": 0,
+    "startup": {
+      "status": "ready",
+      "deadlineMilliseconds": 30000,
+      "elapsedMilliseconds": 508.109289,
+      "firstOutputMilliseconds": 305.08829,
+      "browserPath": "/usr/bin/google-chrome",
+      "resolvedBrowserPath": "/opt/google/chrome/google-chrome"
+    }
+  }
 }

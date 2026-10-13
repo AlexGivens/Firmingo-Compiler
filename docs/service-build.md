@@ -158,7 +158,10 @@ libraries are named with the OS identity, not assigned fictitious file hashes;
 the host OS and bootstrap tool source reproduction remain outside this proof.
 All operations preserve `distributionStatus: "unresolved"`. Custom source/patch
 attribution/license selection, complete upstream runtime source/notice closure,
-repeat-build evidence and new consumer asset promotion are separate gates.
+cross-host reproducibility and new consumer asset promotion are separate gates.
+The [local source-build record](evidence/owned-service-build.md) now verifies two
+independent clean source builds, all 96 archive outputs and the complete bounded
+WASM service byte-for-byte, plus actual execution and independent firmware validation.
 
 `service/component-sources.json` records pinned upstream source archive references
 and explicitly distinguishes verified downloads from installed declarations. Eight

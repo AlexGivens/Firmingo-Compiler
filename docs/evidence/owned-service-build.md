@@ -44,6 +44,7 @@ node tools/dev.mjs service-build build .build/service-build-config.json \
 node tools/dev.mjs test-built-service .build/service-owned-build-d/compiler.wasm \
   58a06c969b4848b7e22ce45f1a92fe887e76883131696205707046f8fda1462f \
   .build/ci-resident-import-review/descriptor.json .build/service-owned-execution-d
+node tools/dev.mjs service-build compare .build/service-owned-build-d .build/service-owned-build-e
 node tools/dev.mjs test-service-build
 node tools/dev.mjs test
 node tools/dev.mjs check
@@ -66,7 +67,8 @@ ELF/capsule bytes repeat exactly. Frontend error, mutable-storage and missing
 build. The actual firmware `image.cpp` independently accepts both capsules with
 the CI API and rejects the historical `0x10022ca0` binding as `wrong_api`.
 
-Local ordinary tests: 120 passed, one optional-service case skipped (121 total).
+Local ordinary tests after browser-startup coverage: 122 passed, one optional-service
+case skipped (123 total).
 The separate maintenance suite passes nine cases using owned synthetic
 source/tool/module fixtures. Those cases cover unchanged references, parent-Git
 patch behavior, source/library/manifest drift, unsafe paths/links, bounded special
@@ -79,7 +81,15 @@ historical CMake switches are reported unused. No compiler warnings were hidden.
 All native compile/link/configuration logs and inventories remain in ignored
 explicit outputs. YAML parsed locally; actionlint was unavailable.
 
-The independently started second full build is still in progress. Do not infer
-whole-service reproducibility from the first run or partial archive equality.
+Both independent clean source builds completed all 2,602 steps. All 96 LLVM/Clang/
+LLD archives and the final 101,194,613-byte WASM service are byte-identical. The
+actual compare command rechecks both input-manifest files and actual module bytes
+against successful receipts before reporting repeat equality. This establishes
+repeat identity for the exact captured inputs/host, not cross-host reproducibility
+or rebuilding installed runtime dependencies from source.
 Distribution, source/license/notice closure, runtime source rebuilds, packaged
 wrapper/browser promotion and hardware qualification remain open.
+
+[Final CI verification](owned-service-ci.md) records all eight jobs passing at
+`04aaed0`, including separate maintenance fixtures on both platforms and explicit
+actual-service skips. The initial two failed runs remain documented separately.
