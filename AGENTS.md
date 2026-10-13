@@ -110,8 +110,12 @@ Two fresh Preview 1 source builds now reproduce all 2,353 sysroot/resource files
 and pass the actual C++ header-discovery gate. A fresh complete service build
 against those verified bytes passes real Node compilation/error/reentry checks
 and independent firmware image validation. See `docs/evidence/runtime-source-build.md`.
-The new asset remains a local development input; browser/WebKit/package promotion,
-custom-source licensing and distribution remain unresolved.
+The new asset remains a local development input. Explicit Chrome and macOS HTTP-loopback
+WebKit maintenance checks now pass nine cases each, with artifact identity across
+Node/Chrome/WebKit and independent firmware validation; see `docs/built-service-web.md`
+and `docs/evidence/built-service-web.md`. Public SDK/private-scheme/package promotion,
+custom-source licensing and distribution remain unresolved. Normal CI observes
+candidate absence rather than fetching it; Swift hosting stays in FirmingoKit.
 
 ## Working across the repositories
 

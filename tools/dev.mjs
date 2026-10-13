@@ -20,6 +20,7 @@ import { importResident } from "./import-resident.mjs";
 import { checkBuiltService } from "./test-built-service.mjs";
 import { verifyServiceMaterials } from "./verify-service-materials.mjs";
 import { SERVICE } from "../runtime/pins.js";
+import { builtWebChecks, builtWebUnavailable, builtWebKitChecks } from "./built-web-checks.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const pin = readFileSync(new URL("../.node-version", import.meta.url), "utf8").trim();
@@ -61,12 +62,23 @@ async function main() {
       + "  runtime-build capture|build|compare ... (owned WASI Preview 1 source builds)\n"
       + "  test-runtime-build (bounded source archives and runtime receipt checks)\n"
       + "  test-built-service explicit-built.wasm trusted-module-sha256 resident-descriptor.json new-output-directory\n"
+      + "  test-built-web [built.wasm trusted-sha256 descriptor.json new-output-directory [--browser chromium-path]]\n"
+      + "  test-built-webkit built.wasm trusted-sha256 descriptor.json explicit-native-host new-output-directory\n"
       + "  serve-web [pinned-service.wasm]\n  test-web [pinned-service.wasm] [--browser chromium-path]\n"
       + "No device access. WASM build requires an explicitly provisioned pinned local service; none is bundled.\n"
       + `Pinned development Node: ${pin}; no external dependencies or installation required.`);
     return;
   }
   if (process.versions.node !== pin) throw new Error(`Use Node ${pin}; found ${process.versions.node}. See docs/development.md.`);
+  if (command === "test-built-webkit") {
+    if (argumentsList.length !== 5) throw new Error("Select explicit candidate, anchor, descriptor, native host executable and new output");
+    await builtWebKitChecks(...argumentsList); return;
+  }
+  if (command === "test-built-web") {
+    if (!argumentsList.length) { builtWebUnavailable(); return; }
+    if (argumentsList.length !== 4 && !(argumentsList.length === 6 && argumentsList[4] === "--browser")) throw new Error("Select explicit candidate, anchor, descriptor, new output and optional --browser path");
+    await builtWebChecks(...argumentsList.slice(0, 4), argumentsList[5]); return;
+  }
   if (command === "test-built-service") {
     if (argumentsList.length !== 4) throw new Error("Select explicit built service, reviewed module SHA-256, resident descriptor and new output directory");
     const result = await checkBuiltService(resolve(argumentsList[0]), argumentsList[1], resolve(argumentsList[2]), resolve(argumentsList[3]));

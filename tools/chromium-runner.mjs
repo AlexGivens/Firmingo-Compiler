@@ -69,7 +69,7 @@ class Protocol {
 }
 
 /** Runs only the isolated harness; page requests outside its loopback origin are rejected. */
-export async function runChromiumChecks(browserPath, host) {
+export async function runChromiumChecks(browserPath, host, { builtService = false } = {}) {
   const directory = fileURLToPath(new URL("../.build/web-profiles/", import.meta.url));
   mkdirSync(directory, { recursive: true }); const profile = mkdtempSync(join(directory, "isolated-"));
   const browser = spawn(browserPath, ["--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check",
@@ -116,7 +116,9 @@ export async function runChromiumChecks(browserPath, host) {
     if (navigation.errorText) throw new Error(navigation.errorText);
     await loaded;
     // Await the page's static module setup, then call its reusable test module. No source/DOM inspection is performed.
-    const result = await protocol.send("Runtime.evaluate", { expression: `(async () => { await globalThis.firmingoHarnessReady; const { runWebChecks } = await import('/web/checks.js'); return await runWebChecks({ serviceAvailable: ${host.serviceAvailable} }); })()`,
+    const invocation = builtService ? "const { runBuiltWebChecks } = await import('/web/built-service-checks.js'); return await runBuiltWebChecks();"
+      : `const { runWebChecks } = await import('/web/checks.js'); return await runWebChecks({ serviceAvailable: ${host.serviceAvailable} });`;
+    const result = await protocol.send("Runtime.evaluate", { expression: `(async () => { await globalThis.firmingoHarnessReady; ${invocation} })()`,
       awaitPromise: true, returnByValue: true, allowUnsafeEvalBlockedByCSP: false }, sessionId, 100000);
     if (result.exceptionDetails) throw new Error("Browser harness evaluation failed: " + (result.exceptionDetails.exception?.description || result.exceptionDetails.text));
     const report = result.result?.value;

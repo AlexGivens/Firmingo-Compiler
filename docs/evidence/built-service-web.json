@@ -1,0 +1,438 @@
+{
+  "schema": 1,
+  "date": "2026-10-13",
+  "qualification": "Explicit unpromoted owned service; standard module workers on recorded macOS HTTP-loopback hosts only",
+  "host": {
+    "OS": "macOS 27.0 (26A428)",
+    "architecture": "arm64",
+    "node": "22.12.0",
+    "Xcode": "27.0 (27A266a)",
+    "Swift": "6.4.0.34.1"
+  },
+  "service": {
+    "bytes": 101194565,
+    "sha256": "a7648688ae9e349304c576804367b66b68b22185060a847a2e292675329ca493"
+  },
+  "descriptor": {
+    "schema": 1,
+    "board": "nano_rp2040_connect",
+    "profile": "nano-managed-v1",
+    "backend": "application",
+    "firmwareVersion": "0.1.0-m9exp1",
+    "firmwareCommit": "4d53a285a3a39d4355253760a205fdac1a6b811c",
+    "residentELFSHA256": "5b3116cdcde28f84b86f78cfffb258591455406a1f276b35bb5fd63a6f857304",
+    "firmwareImageSHA256": "35678c95c495c4e06227a992548be893305cc2375f7a6e561d0a7f66433e6983",
+    "buildReportSHA256": "db7e505a80589291481970c274e8158e32b685655dc0c246f131341c7d45bc1a",
+    "apiAddress": 268577948,
+    "residentABI": 1,
+    "targetID": 1,
+    "maximumCapsuleBytes": 4096,
+    "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+    "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+    "qualification": "experimental"
+  },
+  "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+  "artifacts": [
+    {
+      "name": "gpio",
+      "elf": {
+        "bytes": 860,
+        "sha256": "d729a8b6a8e353b1fde011ea62597f0bc5e14500496e018e7c5bd5c15276050d"
+      },
+      "capsule": {
+        "bytes": 316,
+        "sha256": "958b861bbc18d4666ed03e6976b39b9fea4812409ad91a3501abbb9685a80d7d"
+      },
+      "memoryBytes": 27983872
+    },
+    {
+      "name": "console",
+      "elf": {
+        "bytes": 1116,
+        "sha256": "2fbdd67e4d444b20e450f3f7e82cab03c87a95635e012ee45181bd1d18ec907a"
+      },
+      "capsule": {
+        "bytes": 392,
+        "sha256": "b372c00edf4b60c662f73055685ed8764e9f8798fe9efbbafad04302549174c0"
+      },
+      "memoryBytes": 28049408
+    }
+  ],
+  "allHostArtifactsByteIdentical": true,
+  "node": {
+    "builds": 2,
+    "errorChecks": [
+      {
+        "name": "frontend",
+        "result": "rejected without artifact",
+        "expectedDiagnostic": "missingFunction"
+      },
+      {
+        "name": "mutable-storage",
+        "result": "rejected without artifact",
+        "expectedDiagnostic": "mutable storage"
+      },
+      {
+        "name": "runtime-helper",
+        "result": "rejected without artifact",
+        "expectedDiagnostic": "__aeabi_uidiv"
+      }
+    ],
+    "repeat": "GPIO capsule and linked ELF byte-identical"
+  },
+  "browsers": {
+    "chrome": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "actualCompilerPasses": 4,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+      "browser": {
+        "product": "Chrome/154.0.8037.93",
+        "revision": "@f89f3a4363808e117c592adedcf9947882ac3b79",
+        "protocolVersion": "1.3",
+        "jsVersion": "15.4.80.19"
+      },
+      "cases": [
+        {
+          "name": "secure context and standard isolated module-worker primitives",
+          "outcome": "passed",
+          "actualCompiler": false,
+          "milliseconds": 0.8999998569488525
+        },
+        {
+          "name": "actual two sketches, three errors, byte repeat and fresh build",
+          "outcome": "passed",
+          "actualCompiler": true,
+          "milliseconds": 972.2999999523163
+        },
+        {
+          "name": "wrong service anchor rejects before compilation",
+          "outcome": "passed",
+          "actualCompiler": false,
+          "milliseconds": 163.20000004768372
+        },
+        {
+          "name": "corrupt recipe rejects before compilation",
+          "outcome": "passed",
+          "actualCompiler": false,
+          "milliseconds": 141.70000004768372
+        },
+        {
+          "name": "busy and cancellation during real compilation",
+          "outcome": "passed",
+          "actualCompiler": true,
+          "milliseconds": 261.2999999523163
+        },
+        {
+          "name": "fresh worker after compile cancellation",
+          "outcome": "passed",
+          "actualCompiler": true,
+          "milliseconds": 338.2999999523163
+        },
+        {
+          "name": "startup deadline terminates before publication",
+          "outcome": "passed",
+          "actualCompiler": false,
+          "milliseconds": 1.9000000953674316
+        },
+        {
+          "name": "deadline during real compilation then fresh worker",
+          "outcome": "passed",
+          "actualCompiler": true,
+          "milliseconds": 472
+        },
+        {
+          "name": "production controller retains its pins and external requests are blocked",
+          "outcome": "passed",
+          "actualCompiler": false,
+          "milliseconds": 45.5
+        }
+      ],
+      "externalRequests": [],
+      "protocolFaults": []
+    },
+    "webkit": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "actualCompilerPasses": 4,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)",
+      "browser": null,
+      "cases": [
+        {
+          "name": "secure context and standard isolated module-worker primitives",
+          "outcome": "passed",
+          "actualCompiler": false,
+          "milliseconds": 0
+        },
+        {
+          "name": "actual two sketches, three errors, byte repeat and fresh build",
+          "outcome": "passed",
+          "actualCompiler": true,
+          "milliseconds": 965
+        },
+        {
+          "name": "wrong service anchor rejects before compilation",
+          "outcome": "passed",
+          "actualCompiler": false,
+          "milliseconds": 189
+        },
+        {
+          "name": "corrupt recipe rejects before compilation",
+          "outcome": "passed",
+          "actualCompiler": false,
+          "milliseconds": 108
+        },
+        {
+          "name": "busy and cancellation during real compilation",
+          "outcome": "passed",
+          "actualCompiler": true,
+          "milliseconds": 366
+        },
+        {
+          "name": "fresh worker after compile cancellation",
+          "outcome": "passed",
+          "actualCompiler": true,
+          "milliseconds": 621
+        },
+        {
+          "name": "startup deadline terminates before publication",
+          "outcome": "passed",
+          "actualCompiler": false,
+          "milliseconds": 2
+        },
+        {
+          "name": "deadline during real compilation then fresh worker",
+          "outcome": "passed",
+          "actualCompiler": true,
+          "milliseconds": 958
+        },
+        {
+          "name": "production controller retains its pins and external requests are blocked",
+          "outcome": "passed",
+          "actualCompiler": false,
+          "milliseconds": 83
+        }
+      ],
+      "externalRequests": null,
+      "protocolFaults": null
+    }
+  },
+  "operationReports": {
+    "node": {
+      "bytes": 5800,
+      "sha256": "8a112454eb541725afec070536359b3c38ac51011247e8a1b96f921720567692"
+    },
+    "chrome": {
+      "bytes": 11035,
+      "sha256": "b5ffebd8a2ad2633187af81927c63d50141803358c5a6824a40e66fb581bb0c5"
+    },
+    "webkit": {
+      "bytes": 39473,
+      "sha256": "e4d22003c5c45ae2bf2f81c9aded7fe8dc6bbb780e212e6db79c60795b8aefa4"
+    }
+  },
+  "implementation": {
+    "tools/built-web-checks.mjs": {
+      "bytes": 11367,
+      "sha256": "cf9c6621e9c1fc689c6b9840d7b26623e6c155da61f918ef4b67b55d54da9dd1"
+    },
+    "tools/test-built-service.mjs": {
+      "bytes": 4196,
+      "sha256": "e9445e0f36f236b2752ea274278aea4f08c13b28b7b7799a8258935359e5f6fc"
+    },
+    "tools/chromium-runner.mjs": {
+      "bytes": 10103,
+      "sha256": "caa080e8d41dbeecbb789c39f21b37f7aa8b8cc4f264ab06ae2ee3ecda55301b"
+    },
+    "tools/web-server.mjs": {
+      "bytes": 5396,
+      "sha256": "6f1b663f915345f1be68b3d48946c7d5fa7f1f68b6b50e0699f2fa00671d246a"
+    },
+    "web/built-service-checks.js": {
+      "bytes": 6636,
+      "sha256": "60f0d93edcf1227d9495fa920a7a348800af35f6b4d08c6458680dd9f64929d7"
+    },
+    "web/built-service-controller.js": {
+      "bytes": 2779,
+      "sha256": "b11c96f78137f02c4a5d43ea0bacf4dd017f1616d9d4e470c4472c31bfeb5cc2"
+    },
+    "web/built-service-page.js": {
+      "bytes": 576,
+      "sha256": "e7c993ec1a11f02d29ecaee922a3200f6e8de104365b5f26e5461edca4067d08"
+    },
+    "web/built-service-worker.js": {
+      "bytes": 1062,
+      "sha256": "888f1a6be39e0a3f57217660b6443486587a8f5c3c2694b92b56c561fe0fa6b5"
+    },
+    "web/resource-loading.js": {
+      "bytes": 2062,
+      "sha256": "5231166b7640fa09180ff79f1b7f2a7b714712723100f033045ce2d41aae93b3"
+    },
+    "web/service-execution.js": {
+      "bytes": 4535,
+      "sha256": "987be1bd0532878656f804cf793a5e89a1d0e424a5e7c2f41598a616115e2770"
+    }
+  },
+  "nativeHostSource": {
+    "bytes": 11547,
+    "sha256": "f86b06cc4b8e8d7369c731c039e172f4fa913b7d689323e641a085a35df7fb13"
+  },
+  "nativeHostExecutable": {
+    "bytes": 178408,
+    "sha256": "068d2fa175318ee42672ddb7c2e449c456910b71532cbb61501f5c07b4d1a87f"
+  },
+  "independentFirmwareValidator": {
+    "compiler": "Apple clang 21.0.0 arm64; -std=c++17 -Wall -Wextra -Werror",
+    "driver": {
+      "bytes": 738,
+      "sha256": "bbc996719aa0f189f15dbd4dac57173eccb7532d5b8b05fc609e95a53920577c"
+    },
+    "firmwareCommit": "d42613faa1abd1f4bcbbb361e9f0855d28890824",
+    "hardwareExecuted": false,
+    "nativeValidator": {
+      "bytes": 72152,
+      "sha256": "c1aa955a6d3cb12f2b3a3d2a51c8132ebb1f4ead472aab7413acf208809b4ee8"
+    },
+    "sources": [
+      {
+        "bytes": 5935,
+        "path": "Firmingo/experiments/managed_sketch/image.cpp",
+        "sha256": "b694ed15b5c6c84b819da31e14961e48cf4ab8338bb6e1fee538f964a3501ca5"
+      },
+      {
+        "bytes": 1399,
+        "path": "Firmingo/experiments/managed_sketch/image.h",
+        "sha256": "658ceac8716a6a6709714f2b51e2e01684a06ba87db999ee0d75cff0b9e6ffd9"
+      }
+    ]
+  },
+  "independentValidation": [
+    {
+      "host": "node",
+      "sketch": "gpio",
+      "apiAddress": "0x10022c9c",
+      "exitCode": 0,
+      "observed": "validator=0 capsule_bytes=316 code_bytes=60"
+    },
+    {
+      "host": "node",
+      "sketch": "gpio",
+      "apiAddress": "0x10022ca0",
+      "exitCode": 1,
+      "observed": "validator=6 capsule_bytes=316 code_bytes=0"
+    },
+    {
+      "host": "chrome",
+      "sketch": "gpio",
+      "apiAddress": "0x10022c9c",
+      "exitCode": 0,
+      "observed": "validator=0 capsule_bytes=316 code_bytes=60"
+    },
+    {
+      "host": "chrome",
+      "sketch": "gpio",
+      "apiAddress": "0x10022ca0",
+      "exitCode": 1,
+      "observed": "validator=6 capsule_bytes=316 code_bytes=0"
+    },
+    {
+      "host": "webkit",
+      "sketch": "gpio",
+      "apiAddress": "0x10022c9c",
+      "exitCode": 0,
+      "observed": "validator=0 capsule_bytes=316 code_bytes=60"
+    },
+    {
+      "host": "webkit",
+      "sketch": "gpio",
+      "apiAddress": "0x10022ca0",
+      "exitCode": 1,
+      "observed": "validator=6 capsule_bytes=316 code_bytes=0"
+    },
+    {
+      "host": "node",
+      "sketch": "console",
+      "apiAddress": "0x10022c9c",
+      "exitCode": 0,
+      "observed": "validator=0 capsule_bytes=392 code_bytes=136"
+    },
+    {
+      "host": "node",
+      "sketch": "console",
+      "apiAddress": "0x10022ca0",
+      "exitCode": 1,
+      "observed": "validator=6 capsule_bytes=392 code_bytes=0"
+    },
+    {
+      "host": "chrome",
+      "sketch": "console",
+      "apiAddress": "0x10022c9c",
+      "exitCode": 0,
+      "observed": "validator=0 capsule_bytes=392 code_bytes=136"
+    },
+    {
+      "host": "chrome",
+      "sketch": "console",
+      "apiAddress": "0x10022ca0",
+      "exitCode": 1,
+      "observed": "validator=6 capsule_bytes=392 code_bytes=0"
+    },
+    {
+      "host": "webkit",
+      "sketch": "console",
+      "apiAddress": "0x10022c9c",
+      "exitCode": 0,
+      "observed": "validator=0 capsule_bytes=392 code_bytes=136"
+    },
+    {
+      "host": "webkit",
+      "sketch": "console",
+      "apiAddress": "0x10022ca0",
+      "exitCode": 1,
+      "observed": "validator=6 capsule_bytes=392 code_bytes=0"
+    }
+  ],
+  "localChecks": {
+    "compilerContracts": {
+      "tests": 129,
+      "passed": 128,
+      "failed": 0,
+      "skipped": 1
+    },
+    "newBoundaryTests": 6,
+    "standardChromeWithoutService": {
+      "passed": 3,
+      "skipped": 6,
+      "actualCompilerPasses": 0
+    },
+    "SDKTestFunctions": 152,
+    "SDKUnavailableRuntimeSkips": 9,
+    "nativeHostAddressChecks": {
+      "accepted": 1,
+      "rejected": 10
+    },
+    "syntax": "passed",
+    "workflowYAML": "parsed; actionlint unavailable"
+  },
+  "sourcePackage": {
+    "records": 50,
+    "manifestSHA256": "93f149a454b1fc1c60ea21775b7b860e99b1a4031f8c810fb1f5de3bc18c4fd4",
+    "unchanged": true
+  },
+  "initialFailures": [
+    "Chrome report persistence rejected an erroneous expectation of five actual compilation cases; corrected to four.",
+    "Two autonomously started hidden WebKit page runs reached the original 120-second deadline without artifacts; the second reported seven successful cases before deadline recovery stalled. Explicitly awaiting the fixed page promise passes all nine with unchanged deadlines."
+  ],
+  "consumerPinsChanged": false,
+  "hardwareExecuted": false,
+  "distributionStatus": "unresolved",
+  "remaining": [
+    "Custom source license/distribution review",
+    "Public SDK/private resource scheme and packaged consumer promotion",
+    "Signed sandbox/minimum OS and physical iOS/iPadOS qualification",
+    "Device upload/execution qualification"
+  ],
+  "CI": "Compiler workflow now observes unprovisioned candidate absence; subsequent run not yet verified. SDK workflow requires explicitly provisioned self-hosted runner; no run claimed."
+}

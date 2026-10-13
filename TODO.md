@@ -267,12 +267,14 @@ identical bytes for all 96 archives and the complete bounded service. This is
 repeat identity for captured inputs on the recorded host. Pinned Preview 1 runtime
 source builds now also reproduce all 2,353 output files; a fresh complete service
 build using those exact bytes passes actual sketch/error/reentry checks and
-independent firmware capsule validation. Distribution and new-asset web/wrapper
-promotion remain open. See [runtime source evidence](docs/evidence/runtime-source-build.md) and
+independent firmware capsule validation. Explicit standard-worker Chrome and macOS
+HTTP-loopback WebKit checks now pass nine cases each; Node/Chrome/WebKit artifacts
+are byte-identical and independently firmware-validated. See [owned web evidence](docs/evidence/built-service-web.md).
+Distribution and public SDK/private-scheme/package promotion remain open. See [runtime source evidence](docs/evidence/runtime-source-build.md) and
 [owned source-build evidence](docs/evidence/owned-service-build.md).
 [CI](docs/evidence/owned-service-ci.md) passes all eight jobs at `fa35579`, with
 real-service compilation explicitly skipped there. Local ordinary tests now pass
-122 cases with one optional-service skip; separate maintenance suites pass nine
+128 cases with one optional-service skip; separate maintenance suites pass nine
 service fixtures and eleven runtime fixtures.
 
 - [ ] Resolve source, license/component, attribution, and build-provenance gaps for
@@ -287,6 +289,11 @@ service fixtures and eleven runtime fixtures.
   focused maintenance fixtures. See [runtime maintenance](docs/runtime-source-build.md).
 - [x] Record complete clean runtime repeat-build evidence and rebuild/execute the
   compiler service against those exact source-built inputs before consumer promotion.
+- [x] Qualify explicit source-built assets in standard Chrome and a native macOS
+  WebKit maintenance host, including phase cancellation/deadline cleanup and
+  independent artifact validation, without promoting public consumer pins.
+- [ ] Qualify the new asset through the actual public SDK/private resource scheme
+  and packaged consumer after source/license and promotion review.
 - [ ] Package a bounded versioned inventory of service, runtime, recipes, resources,
   static metadata, sizes, hashes, ABI compatibility, licenses, and notices.
 - [ ] Back offered firmware descriptors with exact trusted export/build evidence;

@@ -30,7 +30,7 @@ export async function harnessResources(servicePath) {
     for (const file of readdirSync(new URL(directory + "/", root)).filter(name => name.endsWith(".js")))
       add(`/${directory}/${file}`, `${directory}/${file}`, "text/javascript; charset=utf-8");
   }
-  for (const file of ["harness.js", "checks.js"]) add("/web/" + file, "web/" + file, "text/javascript; charset=utf-8");
+  for (const file of ["harness.js", "checks.js", "resource-loading.js"]) add("/web/" + file, "web/" + file, "text/javascript; charset=utf-8");
   add("/", "web/harness.html", "text/html; charset=utf-8");
   add("/web/harness.css", "web/harness.css", "text/css; charset=utf-8");
   const recipe = "recipes/nano_rp2040_connect/";
@@ -51,7 +51,12 @@ export async function harnessResources(servicePath) {
 
 /** Readonly loopback developer host; source and resulting microcontroller bytes stay in the browser. */
 export async function startWebHarness({ servicePath } = {}) {
-  const routes = await harnessResources(servicePath), requests = [];
+  return startHarnessRoutes(await harnessResources(servicePath), Boolean(servicePath));
+}
+
+/** Shared maintenance-only HTTP policy; callers snapshot their exact reviewed routes before listening. */
+export async function startHarnessRoutes(routes, serviceAvailable = false) {
+  const requests = [];
   const server = createServer((request, response) => {
     const host = "127.0.0.1:" + server.address().port;
     response.setHeader("Content-Security-Policy", HARNESS_CSP);
@@ -73,7 +78,7 @@ export async function startWebHarness({ servicePath } = {}) {
     server.once("error", reject);
     server.listen({ host: "127.0.0.1", port: 0 }, () => { server.off("error", reject); resolve(); });
   });
-  return { origin: "http://127.0.0.1:" + server.address().port, serviceAvailable: Boolean(servicePath),
+  return { origin: "http://127.0.0.1:" + server.address().port, serviceAvailable,
     get requests() { return requests.map(item => ({ ...item })); },
     close: () => new Promise((resolve, reject) => { server.close(error => error ? reject(error) : resolve()); server.closeAllConnections(); }) };
 }

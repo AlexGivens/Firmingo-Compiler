@@ -73,3 +73,8 @@ repeat-build checks.
 two identical complete runtime outputs, the fresh service rebuild, real WASI
 sketch/error checks and independent firmware capsule validation. The new binary
 remains a local development asset.
+
+[Owned development-service browser checks](docs/built-service-web.md) exercise
+explicit source-built assets without changing public pins. Chrome and a native
+macOS WebKit maintenance host now produce identical validated artifacts; see
+[the separate evidence](docs/evidence/built-service-web.md).

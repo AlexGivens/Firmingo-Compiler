@@ -227,3 +227,11 @@ updated source-package identity, actual Node/browser and Swift wrapper checks.
 `tools/dev.mjs test` covers this worker with no service; the browser entry tests
 the default module worker. The SDK consumer also prepares using only bundled
 source assets. No new maintenance setup or binary provisioning is required.
+
+## Source-built service web qualification
+
+Use the explicit `test-built-web` or `test-built-webkit` maintenance entry points
+in [owned web checks](built-service-web.md). They accept a reviewed candidate
+digest and selected resident descriptor without promoting consumer pins. The
+native WebKit executable is explicitly provisioned by the wrapper repository;
+Swift is not a compiler consumer or normal-test dependency.

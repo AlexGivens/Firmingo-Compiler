@@ -136,6 +136,7 @@ jobs:
         run: |
           mkdir -p .build/logs
           node tools/dev.mjs test-web 2>&1 | tee .build/logs/web-host.log
+          node tools/dev.mjs test-built-web 2>&1 | tee .build/logs/built-web-availability.log
           node -e 'const r=JSON.parse(require("fs").readFileSync(".build/logs/web-results.json")); console.log(`Browser checks: ${r.passed} passed, ${r.skipped} skipped; actual compiler cases: ${r.actualCompilerPasses} passed`)' >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         if: always()
