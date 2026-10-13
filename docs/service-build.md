@@ -175,3 +175,7 @@ uses only owned synthetic Git/source/tool/library fixtures, requires no real
 compiler or sibling source, and does not establish LLVM compilation. CI keeps
 that suite independently observable on macOS and Linux, with actual source builds
 remaining explicitly local opt-in work pending approved asset provisioning.
+CI uses Python 3.12.14 on Linux and explicitly pins 3.12.10 for macOS fixture tests:
+the official [Actions package inventory](https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json)
+has no Darwin 3.12.14 package. This does not change the recorded 3.12.14 local
+asset-build inputs or claim real source-build qualification from fixture CI.

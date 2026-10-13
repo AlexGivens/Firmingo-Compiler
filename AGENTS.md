@@ -88,7 +88,7 @@ service skips are in `docs/evidence/provenance-ci.md`.
 
 Owned service maintenance now lives in `service/` and `tools/service_build.py`,
 with optional isolated Python 3.12.14 and explicit input-manifest anchors. Actual
-source capture/build is currently qualified only on the recorded Darwin host;
+source capture/build is currently exercised only on the recorded Darwin host;
 separate macOS/Linux CI exercises owned synthetic maintenance fixtures. See
 `docs/service-build.md` and `docs/evidence/owned-service-build.md` for source,
 bootstrap, runtime, source-license and repeat-build boundaries. New development
