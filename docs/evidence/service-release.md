@@ -80,3 +80,18 @@ The [qualification plan](../release-qualification.md) identifies the next eviden
 for each owning repository. No board, device network, reset, flash, upload or
 visual inspection is used. Firmware's pre-existing `AGENTS.md` change is preserved;
 ArduinoKit remains untouched. A remote CI result is recorded only after inspection.
+
+## Verified compiler CI
+
+All eight jobs in [run 38651476748](https://github.com/AlexGivens/Firmingo-Compiler/actions/runs/38651476748)
+pass at implementation commit `ed45fcc821c0ada1df422b7e09ed1d75d14c6267`.
+Downloaded logs show 140 portable passes/one optional historical-service skip on
+both hosts and 12 service-build, 11 runtime, ten source-archive, six paired-delivery
+and nine transport fixture passes on each maintenance host. Mutation jobs complete
+4,000 JSON and 5,000 ELF cases. The real-runtime job has zero actual compilation
+passes/eight unavailable-service skips; historical memory checks have one static
+pass/one skip. Chrome 154.0.8037.97 passes three service-free browser cases with
+six actual-compiler skips; owned-candidate web checks explicitly skip nine cases.
+CI fetches or publishes no compiler. Actual extracted-service compilation remains
+the separate local SDK consumer result above. Coordinated SDK documentation is
+committed as `ea51fe7b1ae853d892e27f1712fe55b4f62ef8a5`.
