@@ -1,5 +1,12 @@
 # Firmingo-Compiler
 
+The reproduced WASM service now has an exact source/notice and paired-delivery
+review. [Service delivery](docs/service-delivery.md) stages the compiler, source
+archive and notices locally; no binary is committed or published. The promoted
+service passes actual Node, Chrome, SDK private-WebKit and fresh SwiftPM consumer
+checks. Default binary provisioning, firmware catalogue and physical-host/device
+qualification remain separate work.
+
 A portable WASM compiler project focused on Firmingo managed sketches, with
 conventional Arduino firmware compilation as a secondary goal.
 

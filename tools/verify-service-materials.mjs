@@ -39,5 +39,5 @@ export function verifyServiceMaterials({ quiet = false } = {}) {
       || !/^[0-9a-f]{64}$/.test(excerpt.sha256) || !/^[0-9a-f]{64}$/.test(excerpt.sourceFileSHA256)) throw new Error("Unexpected allocator attribution excerpt");
   const excerptBytes = readBounded(new URL(excerpt.path, root), excerpt.bytes);
   if (excerptBytes.length !== excerpt.bytes || createHash("sha256").update(excerptBytes).digest("hex") !== excerpt.sha256) throw new Error("Allocator notice excerpt differs from receipt");
-  if (!quiet) console.log("Verified 23 GPL custom inputs, upstream runtime notices and 232 pinned source-notice excerpts; binary distribution unresolved");
+  if (!quiet) console.log("Verified 23 GPL custom inputs and 232 source-notice excerpts; exact rebuilt-service delivery reviewed separately, legacy binary remains unresolved");
 }

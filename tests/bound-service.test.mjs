@@ -5,8 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { boundService, ORIGINAL_SERVICE } from "../tools/bound-service.mjs";
-import { SERVICE } from "../runtime/pins.js";
+import { boundService, ORIGINAL_SERVICE, LEGACY_BOUNDED_SERVICE as SERVICE } from "../tools/bound-service.mjs";
 
 // Small ordinary inputs prove identity rejection before directory/output creation, without a compiler binary.
 test("memory-maintenance rejects arbitrary input without touching source or creating output", () => {

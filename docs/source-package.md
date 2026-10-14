@@ -1,5 +1,10 @@
 # Candidate compiler source package
 
+The later [paired service delivery](service-delivery.md) records the completed
+rebuild and scoped corresponding-source/notice review for the exact archived
+bytes. This producer still emits historical candidate metadata and does not
+grant distribution approval to arbitrary future inputs.
+
 `source-package build` assembles the source inputs for an explicitly anchored,
 successful owned service and its matching source-built WASI runtime. It verifies
 the candidate bytes, both completed input manifests, every runtime output, all

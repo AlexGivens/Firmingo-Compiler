@@ -148,6 +148,16 @@ from final binary/delivery clearance; see `docs/service-upstream-notices.md` and
 
 ## Working across the repositories
 
+The exact reproduced service `a7648688…` now has a completed scoped source/notice
+and paired-delivery review in `service/delivery-review.json`. `service-package`
+stages/verifies nine binary/source/documentation roles locally; it never publishes.
+Public consumer pins select that service and the source-only export is `4cbdf856…`.
+Historical candidate/grant/inspect records retain their original status fields;
+the historical `3e2544ac…` binary remains unresolved. SDK private-origin and fresh
+consumer checks are tracked in `docs/evidence/service-delivery.md`. No service is
+committed or bundled, no production descriptors are added and hardware remains
+unqualified. Do not describe this scoped review as permission for arbitrary assets.
+
 The user has authorized this coding agent to work across Firmingo-Compiler,
 FirmingoKit, and Firmingo. Earlier sibling guidance treating Firmingo as read-only
 or assigning compilation to FirmingoKit is superseded by that ownership decision
@@ -294,7 +304,8 @@ identifiable. Record how WASM services and sysroots were produced and how to
 reproduce them. The repository license does not automatically license referenced
 or copied third-party assets.
 
-Preserve the unresolved compiler-service redistribution status. Do not put an
+Preserve unresolved status for historical/unreviewed assets. Use the exact rebuilt
+service's pinned delivery review for local packaging; do not put an
 unreviewed binary into committed resources or releases to make tests pass. An
 explicit local development input may support opt-in tests with its provenance and
 limits recorded. Continue independent interface, recipe, and validation work while

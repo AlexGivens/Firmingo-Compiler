@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "date": "2026-10-14",
+  "review": {
+    "path": "service/delivery-review.json",
+    "sha256": "2627a80ee5845929f030cfec6253f05e3cfc4f8c98bff69a0117b3d78114cb26"
+  },
+  "delivery": {
+    "completeCorrespondingSource": true,
+    "distributionStatus": "reviewed-paired-delivery",
+    "files": 9,
+    "hardwareExecuted": false,
+    "manifestSHA256": "261dcdfd80b39c11d522289d8ac411b0882cdc36ec91f370b0f92f11f2957d39",
+    "published": false,
+    "schema": 1,
+    "serviceSHA256": "a7648688ae9e349304c576804367b66b68b22185060a847a2e292675329ca493",
+    "sourceSHA256": "dcdbe2d1fc2135dc726f06aa7b4fa4be9d81ac61f5fba2969d464f21b86089ef",
+    "status": "verified_reviewed_service_delivery"
+  },
+  "consumerServiceSHA256": "a7648688ae9e349304c576804367b66b68b22185060a847a2e292675329ca493",
+  "sourceOnlyExportSHA256": "4cbdf856304063dbac59a27ea8703f74ffedbc534521b0d40d13013913d4dba5",
+  "sdk": {
+    "runtimeManifestSHA256": "9fbf7807c22468083fd38fcf7870bd3c71b1b6d002b849631aa7a5cb31572c47",
+    "inventorySHA256": "a2621c2010df4094b43e789d3e5de83c1ae94ad13444cc771ce83b5e19bb3729",
+    "toolchainSHA256": "3eda5778fdc515f974d683570a6d6d8e1891ec9a64d0285e473401ebae14dd86",
+    "roles": 12,
+    "binaryBundled": false,
+    "catalogueDescriptors": 0,
+    "ordinaryTestFunctions": 152,
+    "realWebKitTests": 9,
+    "freshConsumerCapsuleSHA256": "018c94a4a49b71880d6f04aecbe08e809c8ecf49e4278261c45dad3ead205720"
+  },
+  "checks": {
+    "portablePassed": 140,
+    "portableSkipped": 1,
+    "serviceFixtures": 12,
+    "runtimeFixtures": 11,
+    "sourceArchiveFixtures": 10,
+    "pairedDeliveryFixtures": 6,
+    "actualNodePassed": 8,
+    "actualChromePassed": 9,
+    "chromeCompilerCases": 6,
+    "iOSSimulatorBuild": "passed",
+    "iOSDeviceTargetBuild": "passed",
+    "docc": "passed"
+  },
+  "legacyBinaryCleared": false,
+  "published": false,
+  "hardwareExecuted": false,
+  "signedPhysicalHostsQualified": false
+}

@@ -1,5 +1,10 @@
 # Custom service licensing and remaining distribution review
 
+The later [paired-delivery review](service-delivery.md) closes source/notice
+distribution review for the exact reproduced `a7648688…` service, with retained
+upstream terms and corresponding source. Historical status fields below remain
+unchanged. The original `3e2544ac…` derivative is not cleared by that review.
+
 Alex Givens confirmed on 2026-10-13:
 
 > ArduinoKit and LLVM patches were all authored by me, and should use the GPL-3.0 license

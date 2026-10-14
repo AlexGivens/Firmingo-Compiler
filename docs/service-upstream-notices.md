@@ -1,5 +1,10 @@
 # Candidate service upstream notice review
 
+The completed [service delivery review](service-delivery.md) now pairs these
+preserved texts with the exact rebuilt service and reproduced source archive.
+Earlier pending statements below describe the notice-bundle assembly stage;
+historical review/grant/archive metadata remains unchanged. No binary is published.
+
 The review applies to LLVM/Clang/LLD 22.1.8 at
 `ca7933e47d3a3451d81e72ac174dcb5aa28b59d1`, wasi-libc `wasi-sdk-32` and WASI
 header-generation input `59cbe140561db52fc505555e859de884e0ee7f00`.

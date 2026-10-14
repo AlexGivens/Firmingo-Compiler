@@ -32,7 +32,8 @@ jobs:
           node tools/dev.mjs test-service-build 2>&1 | tee .build/logs/service-maintenance.log
           node tools/dev.mjs test-runtime-build 2>&1 | tee .build/logs/runtime-maintenance.log
           node tools/dev.mjs test-source-package 2>&1 | tee .build/logs/source-package.log
-          echo "Actual LLVM and WASI source builds are local opt-in maintenance; distribution review remains unresolved." >> "$GITHUB_STEP_SUMMARY"
+          node tools/dev.mjs test-service-package 2>&1 | tee .build/logs/service-delivery.log
+          echo "Actual LLVM/WASI rebuilds are local opt-in maintenance; paired-delivery fixtures exercise reviewed input gates without compiler execution or binary publication." >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         if: always()
         with:

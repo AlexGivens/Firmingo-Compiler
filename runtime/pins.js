@@ -1,6 +1,6 @@
 /** Trusted maintenance pins; the service must be provisioned explicitly, never downloaded here. */
-export const SERVICE = Object.freeze({ bytes: 101196044,
-  sha256: "3e2544acf7f88f6f1d5fbce34648df8eb96dfff47afa242a3e008bc8f86e2f33",
+export const SERVICE = Object.freeze({ bytes: 101194565,
+  sha256: "a7648688ae9e349304c576804367b66b68b22185060a847a2e292675329ca493",
   serviceABI: 2, compiler: "Clang/LLD 22.1.8 ABI-two WASI service", maximumMemoryBytes: 268435456 });
 export const SHIM = Object.freeze({ package: "@bjorn3/browser_wasi_shim", version: "0.4.2",
   receiptSHA256: "1ad1971d3617837d1bc858a31c488d112b20ec6f8df9eecfccb361af2303087d" });

@@ -3,7 +3,9 @@ import { resolve, join } from "node:path";
 import { createHash } from "node:crypto";
 import { readBounded } from "./bounded-file.mjs";
 import { boundMemory, memoryLimits } from "../runtime/ModuleMemory.js";
-import { SERVICE } from "../runtime/pins.js";
+// Historical derivative only. It is not the current reviewed source-built service.
+export const LEGACY_BOUNDED_SERVICE = Object.freeze({ bytes: 101196044,
+  sha256: "3e2544acf7f88f6f1d5fbce34648df8eb96dfff47afa242a3e008bc8f86e2f33", maximumMemoryBytes: 268435456 });
 
 export const ORIGINAL_SERVICE = Object.freeze({ bytes: 101196042,
   sha256: "bce6632512852bf86baf7ca7b6eddd07209c0c4e29ae3b2288ec27e69028887d" });
@@ -15,7 +17,7 @@ export function boundService(sourcePath, outputDirectory) {
   if (source.length !== ORIGINAL_SERVICE.bytes || hash(source) !== ORIGINAL_SERVICE.sha256)
     throw new Error("Require the exact pinned original development service");
   const sourceMemory = memoryLimits(source), derived = boundMemory(source), derivedMemory = memoryLimits(derived);
-  if (derived.length !== SERVICE.bytes || hash(derived) !== SERVICE.sha256 || derivedMemory.maximum !== 4096)
+  if (derived.length !== LEGACY_BOUNDED_SERVICE.bytes || hash(derived) !== LEGACY_BOUNDED_SERVICE.sha256 || derivedMemory.maximum !== 4096)
     throw new Error("Memory adaptation does not reproduce the pinned bounded service");
   // Compare untouched ranges independently of the producer: every other section remains verbatim.
   if (Buffer.compare(source.subarray(0, sourceMemory.sectionStart), derived.subarray(0, derivedMemory.sectionStart))
@@ -23,7 +25,7 @@ export function boundService(sourcePath, outputDirectory) {
     throw new Error("Memory adaptation changed another WASM section");
   const receipt = { schema: 1, operation: "development_service_memory_bound", source: ORIGINAL_SERVICE,
     derived: { bytes: derived.length, sha256: hash(derived) }, sourceMemory, derivedMemory,
-    maximumMemoryBytes: SERVICE.maximumMemoryBytes,
+    maximumMemoryBytes: LEGACY_BOUNDED_SERVICE.maximumMemoryBytes,
     adaptation: "Only defined-memory limits and section length change; other sections remain verbatim.",
     distribution: "unresolved; explicit local development derivative, not approved release assets" };
   const output = resolve(outputDirectory); mkdirSync(output);

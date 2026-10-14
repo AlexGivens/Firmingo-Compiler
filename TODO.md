@@ -296,8 +296,10 @@ service fixtures, eleven runtime fixtures and ten source-package fixtures.
   the module, all 96 archives and all 6,182 compiler dependency bytes, then run
   actual WASM build/error/repeat checks and independent firmware capsule validation.
   See [packaged rebuild evidence](docs/evidence/packaged-service-rebuild.md).
-- [ ] Finish final binary-notice and paired source/object delivery review before
-  consumer promotion; retain the candidate archive's historical incomplete status.
+- [x] Complete the exact rebuilt-service notice/source review and local paired
+  delivery, with nine checked payloads and scoped review. Deliberately promote
+  its consumer pin; preserve historical archive flags and legacy binary status.
+  See [delivery maintenance](docs/service-delivery.md).
 - [x] Trace all 2,310 LLVM archive objects, runtime compile inputs, custom service
   and installed/generated headers. Preserve 232 checked notice excerpts and 30
   license/grant texts in a pinned review bundle, including internal crypt,
@@ -315,14 +317,18 @@ service fixtures, eleven runtime fixtures and ten source-package fixtures.
 - [x] Qualify explicit source-built assets in standard Chrome and a native macOS
   WebKit maintenance host, including phase cancellation/deadline cleanup and
   independent artifact validation, without promoting public consumer pins.
-- [ ] Qualify the new asset through the actual public SDK/private resource scheme
-  and packaged consumer after source/license and promotion review.
+- [x] Qualify the promoted asset through all nine actual SDK/private-WebKit cases
+  and a fresh separate SwiftPM consumer using a local paired delivery. Retain
+  source/notice integrity, service-free APIs and independent deployment gates.
+  Signed sandbox/minimum-OS/physical iOS/iPadOS qualification remains M8 work.
 - [x] Add a metadata-only candidate inventory binding owned service receipts,
   static module shape, unchanged source package, reviewed firmware source contracts
   and component/notice identities; no binary distribution or pin promotion.
   See [candidate evidence](docs/evidence/candidate-contract-inventory.md).
 - [ ] Package a bounded versioned inventory of service, runtime, recipes, resources,
   static metadata, sizes, hashes, ABI compatibility, licenses, and notices.
+  Service/source/notice delivery is implemented; a complete default bundled
+  consumer plus reviewed firmware catalogue/release transport remains open.
 - [ ] Back offered firmware descriptors with exact trusted export/build evidence;
   exclude synthetic resident metadata and test-only assets from production packages.
 - [ ] Test corrupt/missing/truncated assets, unsafe paths, incompatible manifests,
