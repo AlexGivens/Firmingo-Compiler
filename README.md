@@ -11,6 +11,9 @@ qualification remain separate work.
 with a trusted release inventory and safe extraction. [Qualification gates](docs/release-qualification.md)
 separate provisioning, signed/physical hosting and selected device deployment.
 
+[Experimental consumer packaging](docs/consumer-package.md) binds those assets
+to an exact firmware export and catalogue for default SDK resource loading.
+
 A portable WASM compiler project focused on Firmingo managed sketches, with
 conventional Arduino firmware compilation as a secondary goal.
 

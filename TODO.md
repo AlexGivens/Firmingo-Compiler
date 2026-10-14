@@ -255,8 +255,10 @@ the two native producer/parser files, unchanged receipt goldens and current pack
 
 ### M7 — Produce reproducible, distributable compiler assets
 
-Status: in progress. Exact reference/patch-state auditing and experimental resident
-export/import are implemented; complete source reproduction and distribution remain open.
+Status: in progress. Exact service reproduction, scoped notice review, paired
+delivery and local transport are complete. A versioned experimental consumer
+package binds exact firmware facts. Hosted provisioning/publication and broader
+firmware provenance/signed/physical/hardware qualification remain open.
 
 Owned maintenance now captures raw LLVM Git objects, 23 custom source/header/patch
 inputs, complete selected sysroot/resources, CMake modules, isolated Python library
@@ -277,13 +279,13 @@ real-service compilation explicitly skipped there. Local ordinary tests now pass
 136 cases with one optional-service skip; separate maintenance suites pass twelve
 service fixtures, eleven runtime fixtures and ten source-package fixtures.
 
-- [ ] Resolve source, license/component, attribution, and build-provenance gaps for
-  the service and every shipped dependency. Record the outcome and any exclusions.
+- [x] Resolve the reproduced service's source, component/notice and build-provenance
+  scope. Preserve historical service and firmware provenance limits separately.
 - [x] Record the author's ownership confirmation and GPL-3.0-only grant for all
   23 original service/header/patch inputs, preserving their bytes and upstream LLVM
   terms. Add an owned provider, strict grant/source checks and deterministic
   source-and-selected-notice review export. See [licensing](docs/service-licensing.md).
-- [ ] Add reproducible service/asset maintenance commands, pinned sources/tools,
+- [x] Add reproducible service/asset maintenance commands, pinned sources/tools,
   identifiable patches, and source/notice materials required by the reviewed assets.
 - [x] Assemble and verify a source-only candidate archive containing both recipes'
   raw upstream source selections, complete pinned WASI sources, GPL grant, notices,
@@ -329,17 +331,22 @@ service fixtures, eleven runtime fixtures and ten source-package fixtures.
   static module shape, unchanged source package, reviewed firmware source contracts
   and component/notice identities; no binary distribution or pin promotion.
   See [candidate evidence](docs/evidence/candidate-contract-inventory.md).
-- [ ] Package a bounded versioned inventory of service, runtime, recipes, resources,
+- [x] Package a bounded versioned inventory of service, runtime, recipes, resources,
   static metadata, sizes, hashes, ABI compatibility, licenses, and notices.
-  Service/source/notice delivery is implemented; a complete default bundled
-  consumer plus reviewed firmware catalogue and hosted provisioning remain open.
-- [ ] Back offered firmware descriptors with exact trusted export/build evidence;
+  The 33-payload experimental package includes exact catalogue/evidence; hosted
+  provisioning and production/hardware claims remain open.
+- [x] Back the offered experimental firmware descriptor with exact trusted export/build evidence;
   exclude synthetic resident metadata and test-only assets from production packages.
-- [ ] Test corrupt/missing/truncated assets, unsafe paths, incompatible manifests,
+  See [consumer packaging](docs/consumer-package.md); firmware upstream input
+  reproduction and physical qualification remain explicitly unestablished.
+- [x] Test corrupt/missing/truncated assets, unsafe paths, incompatible manifests,
   and independently trusted integrity anchors before execution.
-- [ ] Verify a packaged consumer build from a fresh environment with no sibling
+- [x] Verify a packaged consumer build from a fresh environment with no sibling
   references, undeclared inputs, or build-time network access after provisioning.
   Record repeat-build identity or explicitly explained nondeterministic fields.
+  [Actual local evidence](docs/evidence/consumer-package.md) covers the clean prepared
+  SDK, default APIs, two exact capsules and independent correct/wrong API validation.
+  Another host/OS and signed/physical environments remain separate qualification.
 
 Acceptance: another maintainer can reproduce and verify the declared asset set,
 its distribution basis is recorded, and consumers can compile with packaged inputs.

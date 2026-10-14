@@ -20,6 +20,7 @@ import { importResident } from "./import-resident.mjs";
 import { checkBuiltService } from "./test-built-service.mjs";
 import { verifyServiceMaterials } from "./verify-service-materials.mjs";
 import { inventoryCandidate } from "./inventory-candidate.mjs";
+import { buildConsumerPackage, verifyConsumerPackage } from "./consumer-package.mjs";
 import { exportServiceMaterials } from "./service-source-materials.mjs";
 import { verifyServiceNoticeReview } from "./service-notice-review.mjs";
 import { SERVICE } from "../runtime/pins.js";
@@ -70,6 +71,7 @@ async function main() {
       + "  service-package build|verify ... (reviewed binary/source/notice delivery; no publication)\n"
       + "  test-service-package (paired-delivery rejection fixtures)\n"
       + "  service-release build|verify|extract ... (deterministic local transport; no publication)\n"
+      + "  consumer-package build DELIVERY RESIDENT_EXPORT NEW_OUTPUT | verify PACKAGE TRUSTED_MANIFEST_SHA256\n"
       + "  test-service-release (transport integrity and extraction boundaries)\n"
       + "  test-source-package (owned source/archive boundary fixtures)\n"
       + "  test-runtime-build (bounded source archives and runtime receipt checks)\n"
@@ -82,6 +84,13 @@ async function main() {
     return;
   }
   if (process.versions.node !== pin) throw new Error(`Use Node ${pin}; found ${process.versions.node}. See docs/development.md.`);
+  if (command === "consumer-package") {
+    const [mode, ...args] = argumentsList;
+    if (mode === "build" && args.length === 3) console.log(JSON.stringify(await buildConsumerPackage(...args)));
+    else if (mode === "verify" && args.length === 2) console.log(JSON.stringify(await verifyConsumerPackage(...args)));
+    else throw new Error("Use consumer-package build DELIVERY RESIDENT_EXPORT NEW_OUTPUT or verify PACKAGE TRUSTED_MANIFEST_SHA256");
+    return;
+  }
   if (command === "verify-service-notices") {
     if (argumentsList.length > 1) throw new Error("verify-service-notices accepts at most one explicit unpacked-source root");
     const result = verifyServiceNoticeReview({ sourceRoot: argumentsList[0] });

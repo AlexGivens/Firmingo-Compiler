@@ -59,7 +59,7 @@ jobs:
           mkdir -p .build/logs
           node tools/dev.mjs doctor 2>&1 | tee .build/logs/doctor.log
           node tools/dev.mjs check 2>&1 | tee .build/logs/check.log
-      - name: Production contracts, licensed-source review export, packaging and worker lifecycle
+      - name: Production contracts, consumer-package boundaries, source review and worker lifecycle
         run: node tools/dev.mjs test 2>&1 | tee .build/logs/test.log
       - name: Verify file-specific notices and export source review materials
         run: |

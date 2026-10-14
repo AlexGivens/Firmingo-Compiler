@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "version": "0.1.0-nano-managed-experimental.1",
+  "webManifestSHA256": "4cbdf856304063dbac59a27ea8703f74ffedbc534521b0d40d13013913d4dba5",
+  "deliveryManifestSHA256": "261dcdfd80b39c11d522289d8ac411b0882cdc36ec91f370b0f92f11f2957d39",
+  "firmwareManifestSHA256": "9246a7da31b3b4237d1783feb195a7e7719d65c6f4165f440d05de5daea876e4",
+  "firmwareCommit": "e0a79d1e47aa90d5dda02ccd284d40b9c2922c12",
+  "firmwareBuildID": "c44d25efe774eb47b163bc082906cf48b59b6e3dd1d0e19c7822925e6ba8275f",
+  "qualification": "experimental-unqualified",
+  "firmwareProvenance": "Exact project source contract and CI artifact identities verified; installed upstream core/toolchain inputs declared, not fully reproduced or inventoried",
+  "scope": "Offline Nano managed compilation only; no installed-image attestation, hardware qualification or firmware installation release"
+}

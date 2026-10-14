@@ -165,6 +165,13 @@ transport identities after source verification. It never downloads or publishes.
 See `docs/service-release.md` and `docs/release-qualification.md`; keep binary
 provisioning, trusted resident catalogue and signed/physical/device claims separate.
 
+`consumer-package` assembles/verifies 33 offline payloads under immutable
+`consumer/review.json` selection. The experimental Nano catalogue derives from
+firmware CI export `9246a7da…` at `e0a79d1…`, build `c44d25ef…`, API `0x10022c9c`.
+This supplies no installed-image/hardware evidence. FirmingoKit owns clean SDK
+package preparation/default loading; binaries remain outside Git. See
+`docs/consumer-package.md`.
+
 The user has authorized this coding agent to work across Firmingo-Compiler,
 FirmingoKit, and Firmingo. Earlier sibling guidance treating Firmingo as read-only
 or assigning compilation to FirmingoKit is superseded by that ownership decision
