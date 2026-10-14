@@ -74,3 +74,24 @@ a selected binary/delivery method, deliberate pin promotion and public consumer
 qualification remain open. See [the licensing record](../service-licensing.md).
 ArduinoKit is unchanged, FirmingoKit's working state is unchanged, and the
 pre-existing Firmingo `AGENTS.md` edit was preserved.
+
+## Verified GitHub run and review artifacts
+
+All eight jobs in [run 38505878869](https://github.com/AlexGivens/Firmingo-Compiler/actions/runs/38505878869)
+passed at source/tooling commit `f93f3737336b4cc7624434bf92af0883b16a127a`.
+Actual downloaded job logs show 136 portable passes and one optional-service skip
+on each OS, plus eleven service and eleven runtime maintenance fixture passes
+on each OS. JSON/ELF mutation jobs report 4,000/5,000 bounded cases respectively.
+The unavailable real-service suite has zero compiler passes/eight skips; memory
+maintenance has one static gate pass/one unavailable-service skip. Chrome
+154.0.8037.97 has three service-free passes/six compiler skips, and the candidate
+maintenance entry point explicitly skips nine cases because no asset was supplied.
+No actual compiler or hardware run is inferred from this green workflow.
+
+The `source-license-review-ubuntu-24.04` and `source-license-review-macos-14`
+artifacts were downloaded separately. Every one of their 54 inventoried files
+was reread and checked against its size/SHA-256 and local payload. Their manifests
+and completion receipts also match the local export byte-for-byte. Both manifest
+hashes are `9ccb007fb56c239d83d5d4158ed5a4126fd449cfa357f782a91ea8de56ad02d1`.
+These are verified source-and-selected-notice review artifacts, with incomplete
+corresponding-source and unresolved binary-distribution status retained.
