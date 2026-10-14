@@ -16,6 +16,10 @@ clean configuration/build and repeat-byte comparison. The optional maintenance
 host uses Python 3.12.14 in isolation; consumer modules and ordinary Node tests do
 not require Python. `node tools/dev.mjs test-service-build` runs the separate
 synthetic maintenance suite, also maintained independently in CI.
+The owned custom source provider and deterministic source-and-selected-notice
+review export are documented in [service licensing](service-licensing.md).
+Normal `check`/`test` verify the author's grant, all 23 unchanged custom inputs
+and retained upstream license identities without a sibling checkout or binary.
 
 From the repository root:
 

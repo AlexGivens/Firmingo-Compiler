@@ -1,9 +1,11 @@
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { readBounded } from "./bounded-file.mjs";
+import { verifyOwnedServiceSources } from "./service-source-materials.mjs";
 
 /** Checks committed source-reference/review materials; no binary, download, license conclusion or execution. */
 export function verifyServiceMaterials({ quiet = false } = {}) {
+  verifyOwnedServiceSources();
   const recipe = JSON.parse(readFileSync(new URL("../service/recipe.json", import.meta.url)));
   const sources = JSON.parse(readFileSync(new URL("../service/component-sources.json", import.meta.url)));
   const runtime = JSON.parse(readFileSync(new URL("../service/runtime-recipe.json", import.meta.url)));
@@ -35,5 +37,5 @@ export function verifyServiceMaterials({ quiet = false } = {}) {
       || !/^[0-9a-f]{64}$/.test(excerpt.sha256) || !/^[0-9a-f]{64}$/.test(excerpt.sourceFileSHA256)) throw new Error("Unexpected allocator attribution excerpt");
   const excerptBytes = readBounded(new URL(excerpt.path, root), excerpt.bytes);
   if (excerptBytes.length !== excerpt.bytes || createHash("sha256").update(excerptBytes).digest("hex") !== excerpt.sha256) throw new Error("Allocator notice excerpt differs from receipt");
-  if (!quiet) console.log("Verified owned development recipe/source references and eight unchanged upstream runtime notices; distribution unresolved");
+  if (!quiet) console.log("Verified 23 byte-identical GPL-3.0-only custom inputs, LLVM license and eight upstream runtime notices; binary distribution unresolved");
 }

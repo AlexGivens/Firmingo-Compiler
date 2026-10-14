@@ -1,0 +1,5 @@
+# Preserve the exact imported source/license bytes across checkout platforms.
+service/source/** -text
+# Unified-diff blank context lines and upstream license EOF spacing are intentional.
+service/source/Patches/*.patch whitespace=-blank-at-eol,-blank-at-eof
+service/source/LLVM-LICENSE.txt whitespace=-blank-at-eof

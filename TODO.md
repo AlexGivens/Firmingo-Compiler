@@ -83,7 +83,7 @@ See `docs/runtime.md`, `docs/evidence/wasm-runtime.md`, and the support/interfac
 
 | Dependency or limit | Current position | Next action |
 | --- | --- | --- |
-| Compiler service distribution | Owned service/runtime repeat builds and Node/Chrome/WebKit execution verified; metadata-only candidate inventory implemented | Resolve custom-source licensing, complete source/notice materials and review consumer promotion in M7 |
+| Compiler service distribution | Owned service/runtime repeat builds and Node/Chrome/WebKit execution verified; custom-source GPL grant recorded | Complete corresponding-source/notice materials and review consumer promotion in M7 |
 | Nano resident contract | Exact historical M9 export verified/imported as experimental metadata; production and installed-image evidence unqualified | Complete upstream provenance and wrapper/device qualification before a production offer |
 | Runtime portability | Local Node/WASI and Chrome/HTTP-loopback evidence exists; arbitrary wrappers remain unqualified | macOS SDK adapter passes; qualify signed/minimum-OS and physical iOS/iPadOS hosts |
 | Board and library breadth | Nano's constrained managed facade is the starting scope | Declare its restrictions; leave other boards and broader libraries unavailable until implemented |
@@ -274,11 +274,15 @@ Distribution and public SDK/private-scheme/package promotion remain open. See [r
 [owned source-build evidence](docs/evidence/owned-service-build.md).
 [CI](docs/evidence/owned-service-ci.md) passes all eight jobs at `fa35579`, with
 real-service compilation explicitly skipped there. Local ordinary tests now pass
-132 cases with one optional-service skip; separate maintenance suites pass nine
+136 cases with one optional-service skip; separate maintenance suites pass eleven
 service fixtures and eleven runtime fixtures.
 
 - [ ] Resolve source, license/component, attribution, and build-provenance gaps for
   the service and every shipped dependency. Record the outcome and any exclusions.
+- [x] Record the author's ownership confirmation and GPL-3.0-only grant for all
+  23 original service/header/patch inputs, preserving their bytes and upstream LLVM
+  terms. Add an owned provider, strict grant/source checks and deterministic
+  source-and-selected-notice review export. See [licensing](docs/service-licensing.md).
 - [ ] Add reproducible service/asset maintenance commands, pinned sources/tools,
   identifiable patches, and source/notice materials required by the reviewed assets.
 - [x] Add explicit owned capture/configure/build/compare commands and strict source,

@@ -20,6 +20,7 @@ import { importResident } from "./import-resident.mjs";
 import { checkBuiltService } from "./test-built-service.mjs";
 import { verifyServiceMaterials } from "./verify-service-materials.mjs";
 import { inventoryCandidate } from "./inventory-candidate.mjs";
+import { exportServiceMaterials } from "./service-source-materials.mjs";
 import { SERVICE } from "../runtime/pins.js";
 import { builtWebChecks, builtWebUnavailable, builtWebKitChecks } from "./built-web-checks.mjs";
 
@@ -53,6 +54,7 @@ async function main() {
       + "  build <request.json> <pinned-service.wasm> <new-output-directory>\n"
       + "  test-runtime [pinned-service.wasm] (explicit skip when absent)\n"
       + "  export-web <new-output-directory>\n"
+      + "  export-service-materials <new-output-directory>\n"
       + "  bound-service <pinned-original.wasm> <new-development-directory>\n"
       + "  test-memory [pinned-original.wasm] (explicit skip when absent)\n"
       + "  package-declared request.json module.elf output-directory\n"
@@ -72,6 +74,10 @@ async function main() {
     return;
   }
   if (process.versions.node !== pin) throw new Error(`Use Node ${pin}; found ${process.versions.node}. See docs/development.md.`);
+  if (command === "export-service-materials") {
+    if (argumentsList.length !== 1) throw new Error("export-service-materials requires a new explicit output directory");
+    console.log(JSON.stringify(exportServiceMaterials(argumentsList[0]))); return;
+  }
   if (command === "test-built-webkit") {
     if (argumentsList.length !== 5) throw new Error("Select explicit candidate, anchor, descriptor, native host executable and new output");
     await builtWebKitChecks(...argumentsList); return;

@@ -1,0 +1,35 @@
+diff --git a/llvm/lib/Support/Unix/DynamicLibrary.inc b/llvm/lib/Support/Unix/DynamicLibrary.inc
+index 4d3c1db59e..83783b3efe 100644
+--- a/llvm/lib/Support/Unix/DynamicLibrary.inc
++++ b/llvm/lib/Support/Unix/DynamicLibrary.inc
+@@ -9,7 +9,7 @@
+ //
+ //===----------------------------------------------------------------------===//
+ 
+-#if defined(HAVE_DLOPEN)
++#if defined(HAVE_DLOPEN) && !defined(__wasi__)
+ #include <dlfcn.h>
+ 
+ DynamicLibrary::HandleSet::~HandleSet() {
+diff --git a/llvm/lib/Support/Unix/Path.inc b/llvm/lib/Support/Unix/Path.inc
+index 8aea012f02..27bf4ec63b 100644
+--- a/llvm/lib/Support/Unix/Path.inc
++++ b/llvm/lib/Support/Unix/Path.inc
+@@ -930,7 +930,7 @@ void mapped_file_region::dontNeedImpl() {
+   assert(Mode == mapped_file_region::readonly);
+   if (!Mapping)
+     return;
+-#if defined(__MVS__) || defined(_AIX)
++#if defined(__MVS__) || defined(_AIX) || defined(__wasi__)
+     // If we don't have madvise, or it isn't beneficial, treat this as a no-op.
+ #elif defined(POSIX_MADV_DONTNEED)
+   ::posix_madvise(Mapping, Size, POSIX_MADV_DONTNEED);
+@@ -943,7 +943,7 @@ void mapped_file_region::willNeedImpl() {
+   assert(Mode == mapped_file_region::readonly);
+   if (!Mapping)
+     return;
+-#if defined(__MVS__) || defined(_AIX)
++#if defined(__MVS__) || defined(_AIX) || defined(__wasi__)
+   // If we don't have madvise, or it isn't beneficial, treat this as a no-op.
+ #elif defined(POSIX_MADV_WILLNEED)
+   ::posix_madvise(Mapping, Size, POSIX_MADV_WILLNEED);

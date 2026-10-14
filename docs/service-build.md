@@ -46,7 +46,7 @@ provisioned tools/components, not developer-specific defaults:
 ```json
 {
   "schema": 1,
-  "referenceRoot": "/path/to/pinned-readonly-reference",
+  "serviceSourceRoot": "/path/to/Firmingo-Compiler/service/source",
   "llvmGit": "/path/to/git-cache-with-pinned-llvm-commit",
   "sysroot": "/path/to/merged-wasi-sysroot",
   "resourceDirectory": "/path/to/clang-wasi-resources",
@@ -76,13 +76,16 @@ provisioned tools/components, not developer-specific defaults:
 }
 ```
 
-The source provider currently reads the pinned custom reference files from
-ArduinoKit commit `0eb3cd1841147dfc7ea25bf076545e38b01601e4`, selected explicitly
-through `referenceRoot`. It neither runs its scripts nor writes there. Those
-sources/patches are captured into ignored owned build outputs; their migration
-license selection remains unresolved. No ordinary test or consumer needs that
-checkout. An independently provisioned checkout of that exact source is sufficient;
-there is no implicit sibling lookup.
+The preferred provider reads the owned custom inputs through `serviceSourceRoot`.
+All 23 source/header/patch bytes match ArduinoKit commit
+`0eb3cd1841147dfc7ea25bf076545e38b01601e4`; the author's GPL-3.0-only grant and
+upstream LLVM license accompany them. See [service licensing](service-licensing.md).
+Capture records the grant hashes, and build retains the exact grant materials.
+This provider needs no ArduinoKit checkout. The legacy provider accepts
+`referenceRoot` instead, for historical audit/rebuild compatibility, without
+writing or running scripts there. Select exactly one provider; neither has an
+implicit sibling lookup. Historical `referenceLicenseStatus` describes the old
+Git tree; new owned captures add a separate `customSourceLicense` record.
 
 Native Clang/LLVM/LLD must be 22.1.8, CMake 4.4.0, Ninja 1.13.2 and Node 22.12.0.
 Executable bytes, non-system Darwin loader dependencies, inspector identity,
@@ -164,8 +167,9 @@ not reproduce these upstream archives from source. Darwin system shared-cache
 libraries are named with the OS identity, not assigned fictitious file hashes;
 the host OS and bootstrap tool source reproduction remain outside this proof.
 All operations preserve `distributionStatus: "unresolved"`. Custom source/patch
-attribution/license selection, complete upstream runtime source/notice closure,
-cross-host reproducibility and new consumer asset promotion are separate gates.
+ownership and GPL-3.0-only selection are now recorded. Complete upstream
+corresponding-source/notice packaging, cross-host reproducibility and new consumer
+asset promotion remain separate gates.
 The [local source-build record](evidence/owned-service-build.md) now verifies two
 independent clean source builds, all 96 archive outputs and the complete bounded
 WASM service byte-for-byte, plus actual execution and independent firmware validation.

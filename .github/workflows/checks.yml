@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0; same firmware pin
         with:
           python-version: ${{ matrix.python }}
-      - name: Owned synthetic service and runtime source-build boundaries
+      - name: Owned source-provider grant gates and synthetic service/runtime build boundaries
         run: |
           mkdir -p .build/logs
           node tools/dev.mjs test-service-build 2>&1 | tee .build/logs/service-maintenance.log
@@ -56,13 +56,21 @@ jobs:
           mkdir -p .build/logs
           node tools/dev.mjs doctor 2>&1 | tee .build/logs/doctor.log
           node tools/dev.mjs check 2>&1 | tee .build/logs/check.log
-      - name: Production contracts, schema-two firmware/candidate inventory gates, packaging and worker lifecycle
+      - name: Production contracts, licensed-source review export, packaging and worker lifecycle
         run: node tools/dev.mjs test 2>&1 | tee .build/logs/test.log
+      - name: Export custom source and selected notices for review
+        run: node tools/dev.mjs export-service-materials .build/service-license-review 2>&1 | tee .build/logs/service-license-review.log
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0; same pin as firmware
         if: always()
         with:
           name: contract-logs-${{ matrix.os }}
           path: .build/logs/*.log
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: source-license-review-${{ matrix.os }}
+          path: .build/service-license-review/
           if-no-files-found: warn
   elf-mutation:
     runs-on: ubuntu-24.04

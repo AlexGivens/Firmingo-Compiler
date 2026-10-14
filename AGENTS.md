@@ -114,8 +114,18 @@ The new asset remains a local development input. Explicit Chrome and macOS HTTP-
 WebKit maintenance checks now pass nine cases each, with artifact identity across
 Node/Chrome/WebKit and independent firmware validation; see `docs/built-service-web.md`
 and `docs/evidence/built-service-web.md`. Public SDK/private-scheme/package promotion,
-custom-source licensing and distribution remain unresolved. Normal CI observes
+complete source/notice packaging and distribution remain unresolved. Normal CI observes
 candidate absence rather than fetching it; Swift hosting stays in FirmingoKit.
+
+The author confirmed ArduinoKit and local LLVM patch ownership on 2026-10-13.
+`service/source/` now preserves all 23 pinned service/header/patch input bytes
+under his GPL-3.0-only grant, with the upstream LLVM root license retained.
+Use the explicit `serviceSourceRoot` maintenance provider for these owned inputs;
+the historical reference remains read-only. `export-service-materials` creates
+a deterministic source-and-selected-notice review directory, not complete
+Corresponding Source or binary distribution approval. See
+`docs/service-licensing.md`. Do not add a generated-output license exception or
+replace upstream terms based on the author's original-contribution grant.
 
 ## Working across the repositories
 

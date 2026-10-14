@@ -1,0 +1,163 @@
+diff --git a/llvm/lib/Support/Memory.cpp b/llvm/lib/Support/Memory.cpp
+index f1ba2d0cfe..e58018f6e0 100644
+--- a/llvm/lib/Support/Memory.cpp
++++ b/llvm/lib/Support/Memory.cpp
+@@ -19,7 +19,9 @@
+ #endif // ifndef NDEBUG
+ 
+ // Include the platform-specific parts of this class.
+-#ifdef LLVM_ON_UNIX
++#if defined(__wasi__)
++#include "WASI/Memory.inc"
++#elif defined(LLVM_ON_UNIX)
+ #include "Unix/Memory.inc"
+ #endif
+ #ifdef _WIN32
+diff --git a/llvm/lib/Support/WASI/Memory.inc b/llvm/lib/Support/WASI/Memory.inc
+new file mode 100644
+index 0000000000..a38eb043f8
+--- /dev/null
++++ b/llvm/lib/Support/WASI/Memory.inc
+@@ -0,0 +1,66 @@
++//===- WASI/Memory.inc - WASI memory support -----------------------------===//
++//
++// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++//
++//===----------------------------------------------------------------------===//
++
++#include <cstdlib>
++
++namespace llvm {
++namespace sys {
++
++MemoryBlock Memory::allocateMappedMemory(size_t NumBytes,
++                                         const MemoryBlock *const NearBlock,
++                                         unsigned Flags,
++                                         std::error_code &EC) {
++  (void)NearBlock;
++  EC = std::error_code();
++  if (NumBytes == 0)
++    return MemoryBlock();
++
++  if (Flags & MF_EXEC) {
++    EC = std::make_error_code(std::errc::operation_not_supported);
++    return MemoryBlock();
++  }
++
++  // Native mapped memory is zero-filled. LLD relies on that contract for
++  // deterministic padding between output sections.
++  void *Address = std::calloc(NumBytes, 1);
++  if (!Address) {
++    EC = std::make_error_code(std::errc::not_enough_memory);
++    return MemoryBlock();
++  }
++
++  MemoryBlock Result;
++  Result.Address = Address;
++  Result.AllocatedSize = NumBytes;
++  Result.Flags = Flags;
++  return Result;
++}
++
++std::error_code Memory::releaseMappedMemory(MemoryBlock &Block) {
++  std::free(Block.Address);
++  Block.Address = nullptr;
++  Block.AllocatedSize = 0;
++  return std::error_code();
++}
++
++std::error_code Memory::protectMappedMemory(const MemoryBlock &Block,
++                                            unsigned Flags) {
++  (void)Block;
++  if (!Flags)
++    return std::make_error_code(std::errc::invalid_argument);
++  if (Flags & MF_EXEC)
++    return std::make_error_code(std::errc::operation_not_supported);
++  return std::error_code();
++}
++
++void Memory::InvalidateInstructionCache(const void *Address, size_t Length) {
++  (void)Address;
++  (void)Length;
++}
++
++} // namespace sys
++} // namespace llvm
+diff --git a/llvm/lib/Support/raw_socket_stream.cpp b/llvm/lib/Support/raw_socket_stream.cpp
+index f71631730d..298ee9329d 100644
+--- a/llvm/lib/Support/raw_socket_stream.cpp
++++ b/llvm/lib/Support/raw_socket_stream.cpp
+@@ -41,6 +41,65 @@
+ 
+ using namespace llvm;
+ 
++#if defined(__wasi__)
++
++ListeningSocket::ListeningSocket(int SocketFD, StringRef SocketPath,
++                                 int PipeFD[2])
++    : FD(SocketFD), SocketPath(SocketPath), PipeFD{PipeFD[0], PipeFD[1]} {}
++
++ListeningSocket::ListeningSocket(ListeningSocket &&Socket)
++    : FD(Socket.FD.load()), SocketPath(std::move(Socket.SocketPath)),
++      PipeFD{Socket.PipeFD[0], Socket.PipeFD[1]} {
++  Socket.FD = -1;
++  Socket.PipeFD[0] = -1;
++  Socket.PipeFD[1] = -1;
++}
++
++ListeningSocket::~ListeningSocket() = default;
++
++Expected<ListeningSocket> ListeningSocket::createUnix(StringRef SocketPath,
++                                                      int MaxBacklog) {
++  (void)SocketPath;
++  (void)MaxBacklog;
++  return make_error<StringError>(
++      std::make_error_code(std::errc::operation_not_supported),
++      "UNIX sockets are not available in WASI");
++}
++
++Expected<std::unique_ptr<raw_socket_stream>>
++ListeningSocket::accept(const std::chrono::milliseconds &Timeout) {
++  (void)Timeout;
++  return make_error<StringError>(
++      std::make_error_code(std::errc::operation_not_supported),
++      "UNIX sockets are not available in WASI");
++}
++
++void ListeningSocket::shutdown() { FD = -1; }
++
++raw_socket_stream::raw_socket_stream(int SocketFD)
++    : raw_fd_stream(SocketFD, true) {}
++
++raw_socket_stream::~raw_socket_stream() = default;
++
++Expected<std::unique_ptr<raw_socket_stream>>
++raw_socket_stream::createConnectedUnix(StringRef SocketPath) {
++  (void)SocketPath;
++  return make_error<StringError>(
++      std::make_error_code(std::errc::operation_not_supported),
++      "UNIX sockets are not available in WASI");
++}
++
++ssize_t raw_socket_stream::read(char *Ptr, size_t Size,
++                                const std::chrono::milliseconds &Timeout) {
++  (void)Ptr;
++  (void)Size;
++  (void)Timeout;
++  error_detected(std::make_error_code(std::errc::operation_not_supported));
++  return -1;
++}
++
++#else
++
+ #ifdef _WIN32
+ WSABalancer::WSABalancer() {
+   WSADATA WsaData;
+@@ -356,3 +415,5 @@ ssize_t raw_socket_stream::read(char *Ptr, size_t Size,
+   }
+   return raw_fd_stream::read(Ptr, Size);
+ }
++
++#endif

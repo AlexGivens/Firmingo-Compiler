@@ -7,6 +7,7 @@ import { inspectService } from "./inspect-service.mjs";
 import { importResident } from "./import-resident.mjs";
 import { exportWeb } from "./export-web.mjs";
 import { verifyServiceMaterials } from "./verify-service-materials.mjs";
+import { verifyOwnedServiceSources } from "./service-source-materials.mjs";
 import { parseContractJSON } from "../src/json.js";
 import { SERVICE } from "../runtime/pins.js";
 
@@ -50,6 +51,7 @@ export async function inventoryCandidate(buildDirectory, trustedBuildReceiptSHA2
   const components = parseContractJSON(readFileSync(new URL("../service/component-sources.json", import.meta.url), "utf8"));
   const notices = parseContractJSON(readFileSync(new URL("../third_party/service-runtime-notices/wasi-libc32/manifest.json", import.meta.url), "utf8"));
   const shim = parseContractJSON(readFileSync(new URL("../third_party/browser_wasi_shim/receipt.json", import.meta.url), "utf8"));
+  const owned = verifyOwnedServiceSources();
   const record = { schema: 1, operation: "owned_candidate_package_inventory", status: "development inventory; no distributable compiler package",
     distributionStatus: "unresolved", binaryIncluded: false, serviceInstantiated: false, hardwareExecuted: false,
     build: { receipt: identity(receiptBytes), inputManifest: identity(inputManifest), linkedArchiveCount: receipt.linkedArchiveCount,
@@ -62,8 +64,10 @@ export async function inventoryCandidate(buildDirectory, trustedBuildReceiptSHA2
       contract: firmware.contract, imageRoles: firmware.receipt.files.filter(item => ["resident.elf", "resident.uf2"].includes(item.path)), payloadIncluded: false },
     components: { sourceReferences: components.components, runtimeNotices: notices.files, runtimeNoticeExcerpts: notices.sourceExcerpts,
       shim: { package: shim.package, version: shim.version, license: shim.license, notices: shim.files.filter(item => item.path.startsWith("LICENSE-")) },
-      projectLicense: { path: "LICENSE", ...identity(readFileSync(new URL("../LICENSE", import.meta.url))), designation: "GPL-3.0 repository license; does not resolve custom service source licensing" } },
-    promotionRequirements: ["Record custom service source/patch ownership, licensing and required source/notice materials",
+      customSourceGrant: { manifest: owned.manifestIdentity, author: owned.manifest.author, contributionLicense: owned.manifest.contributionLicense,
+        sourceInputs: owned.manifest.files.length, scope: "author grant for pinned original source/patch contributions; upstream terms retained" },
+      projectLicense: { path: "LICENSE", ...identity(readFileSync(new URL("../LICENSE", import.meta.url))), designation: "GPL-3.0-only project and original custom-source contributions; upstream terms retained" } },
+    promotionRequirements: ["Complete exact upstream component/notice review and corresponding-source packaging for the selected binary",
       "Review exact candidate identities and deliberately promote consumer pins/package version",
       "Qualify the public SDK/private web host and a fresh packaged consumer offline",
       "Complete selected board/platform deployment qualification before hardware support claims"],

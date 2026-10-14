@@ -1,0 +1,30 @@
+diff --git a/llvm/lib/Support/RandomNumberGenerator.cpp b/llvm/lib/Support/RandomNumberGenerator.cpp
+index d174093bb..7667813cb 100644
+--- a/llvm/lib/Support/RandomNumberGenerator.cpp
++++ b/llvm/lib/Support/RandomNumberGenerator.cpp
+@@ -21,7 +21,9 @@
+ #include "llvm/Support/Error.h"
+ #include "llvm/Support/ManagedStatic.h"
+ #include "llvm/Support/raw_ostream.h"
+-#ifdef _WIN32
++#if defined(__wasi__)
++#include <wasi/wasip1.h>
++#elif defined(_WIN32)
+ #include "llvm/Support/Windows/WindowsSupport.h"
+ #else
+ #include "Unix/Unix.h"
+@@ -63,7 +65,13 @@ RandomNumberGenerator::result_type RandomNumberGenerator::operator()() {
+ 
+ // Get random vector of specified size
+ std::error_code llvm::getRandomBytes(void *Buffer, size_t Size) {
+-#ifdef _WIN32
++#if defined(__wasi__)
++  __wasi_errno_t Result =
++      __wasi_random_get(static_cast<uint8_t *>(Buffer), Size);
++  if (Result == __WASI_ERRNO_SUCCESS)
++    return std::error_code();
++  return std::error_code(static_cast<int>(Result), std::generic_category());
++#elif defined(_WIN32)
+   HCRYPTPROV hProvider;
+   if (CryptAcquireContext(&hProvider, 0, 0, PROV_RSA_FULL,
+                            CRYPT_VERIFYCONTEXT | CRYPT_SILENT)) {

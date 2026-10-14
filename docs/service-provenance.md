@@ -35,9 +35,11 @@ LLVM's pinned [license text](https://github.com/llvm/llvm-project/blob/ca7933e47
 declares Apache-2.0 with LLVM exceptions. The upstream
 [license policy](https://llvm.org/docs/DeveloperPolicy.html#license) explains
 component notices and exceptions; this is not a license conclusion for the whole
-custom service. The pinned reference tree has no top-level license file, so the
-wrapper and patch attribution/license selection remains unresolved. This
-repository's GPL license does not automatically resolve those components.
+custom service. The pinned historical tree has no top-level license file; its
+receipt still records that historical gap. The author's subsequent confirmation
+now licenses his original contributions under GPL-3.0-only in
+[the owned source grant](service-licensing.md), with exact source hashes and
+unchanged LLVM terms. Binary distribution review remains unresolved.
 
 The original receipt omits service source/header digests, linked archive and
 generated-header identities, the merged WASI sysroot's component versions,

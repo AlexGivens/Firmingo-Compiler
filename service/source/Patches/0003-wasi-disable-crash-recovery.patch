@@ -1,0 +1,149 @@
+diff --git a/llvm/lib/Support/CrashRecoveryContext.cpp b/llvm/lib/Support/CrashRecoveryContext.cpp
+index 1ba0c2383..caa286062 100644
+--- a/llvm/lib/Support/CrashRecoveryContext.cpp
++++ b/llvm/lib/Support/CrashRecoveryContext.cpp
+@@ -13,8 +13,10 @@
+ #include "llvm/Support/Signals.h"
+ #include "llvm/Support/thread.h"
+ #include <cassert>
++#if !defined(__wasi__)
+ #include <mutex>
+ #include <setjmp.h>
++#endif
+ 
+ using namespace llvm;
+ 
+@@ -31,7 +33,9 @@ struct CrashRecoveryContextImpl {
+   const CrashRecoveryContextImpl *Next;
+ 
+   CrashRecoveryContext *CRC;
++#if !defined(__wasi__)
+   ::jmp_buf JumpBuffer;
++#endif
+   volatile unsigned Failed : 1;
+   unsigned SwitchedThread : 1;
+   unsigned ValidJumpBuffer : 1;
+@@ -73,18 +77,23 @@ public:
+     CRC->RetCode = RetCode;
+ 
+     // Jump back to the RunSafely we were called under.
+-    if (ValidJumpBuffer)
++    if (ValidJumpBuffer) {
++#if !defined(__wasi__)
+       longjmp(JumpBuffer, 1);
++#endif
++    }
+ 
+     // Otherwise let the caller decide of the outcome of the crash. Currently
+     // this occurs when using SEH on Windows with MSVC or clang-cl.
+   }
+ };
+ 
++#if !defined(__wasi__)
+ std::mutex &getCrashRecoveryContextMutex() {
+   static std::mutex CrashRecoveryContextMutex;
+   return CrashRecoveryContextMutex;
+ }
++#endif
+ 
+ static bool gCrashRecoveryEnabled = false;
+ 
+@@ -92,8 +101,10 @@ static LLVM_THREAD_LOCAL const CrashRecoveryContext *IsRecoveringFromCrash;
+ 
+ } // namespace
+ 
++#if !defined(__wasi__)
+ static void installExceptionOrSignalHandlers();
+ static void uninstallExceptionOrSignalHandlers();
++#endif
+ 
+ CrashRecoveryContextCleanup::~CrashRecoveryContextCleanup() = default;
+ 
+@@ -138,20 +149,28 @@ CrashRecoveryContext *CrashRecoveryContext::GetCurrent() {
+ }
+ 
+ void CrashRecoveryContext::Enable() {
++#if defined(__wasi__)
++  gCrashRecoveryEnabled = false;
++#else
+   std::lock_guard<std::mutex> L(getCrashRecoveryContextMutex());
+   // FIXME: Shouldn't this be a refcount or something?
+   if (gCrashRecoveryEnabled)
+     return;
+   gCrashRecoveryEnabled = true;
+   installExceptionOrSignalHandlers();
++#endif
+ }
+ 
+ void CrashRecoveryContext::Disable() {
++#if defined(__wasi__)
++  gCrashRecoveryEnabled = false;
++#else
+   std::lock_guard<std::mutex> L(getCrashRecoveryContextMutex());
+   if (!gCrashRecoveryEnabled)
+     return;
+   gCrashRecoveryEnabled = false;
+   uninstallExceptionOrSignalHandlers();
++#endif
+ }
+ 
+ void CrashRecoveryContext::registerCleanup(CrashRecoveryContextCleanup *cleanup)
+@@ -241,7 +260,14 @@ bool CrashRecoveryContext::RunSafely(function_ref<void()> Fn) {
+ 
+ #else // !_MSC_VER
+ 
+-#if defined(_WIN32)
++#if defined(__wasi__)
++
++bool CrashRecoveryContext::RunSafely(function_ref<void()> Fn) {
++  Fn();
++  return true;
++}
++
++#elif defined(_WIN32)
+ // This is a non-MSVC compiler, probably mingw gcc or clang without
+ // -fms-extensions. Use vectored exception handling (VEH).
+ //
+@@ -410,6 +436,7 @@ static void uninstallExceptionOrSignalHandlers() {
+ 
+ #endif // !_WIN32
+ 
++#if !defined(__wasi__)
+ bool CrashRecoveryContext::RunSafely(function_ref<void()> Fn) {
+   // If crash recovery is disabled, do nothing.
+   if (gCrashRecoveryEnabled) {
+@@ -426,6 +453,7 @@ bool CrashRecoveryContext::RunSafely(function_ref<void()> Fn) {
+   Fn();
+   return true;
+ }
++#endif
+ 
+ #endif // !_MSC_VER
+ 
+@@ -436,6 +464,8 @@ bool CrashRecoveryContext::RunSafely(function_ref<void()> Fn) {
+   // This value is a combination of the customer field (bit 29) and severity
+   // field (bits 30-31) in the NTSTATUS specification.
+   ::RaiseException(0xE0000000 | RetCode, 0, 0, NULL);
++#elif defined(__wasi__)
++  (void)RetCode;
+ #else
+   // On Unix we don't need to raise an exception, we go directly to
+   // HandleCrash(), then longjmp will unwind the stack for us.
+@@ -455,6 +485,8 @@ bool CrashRecoveryContext::isCrash(int RetCode) {
+   unsigned Code = ((unsigned)RetCode & 0xF0000000) >> 28;
+   if (Code != 0xC && Code != 8)
+     return false;
++#elif defined(__wasi__)
++  return false;
+ #else
+   // On Unix, signals are represented by return codes of 128 or higher.
+   // Exit code 128 is a reserved value and should not be raised as a signal.
+@@ -469,7 +501,7 @@ bool CrashRecoveryContext::throwIfCrash(int RetCode) {
+     return false;
+ #if defined(_WIN32)
+   ::RaiseException(RetCode, 0, 0, NULL);
+-#else
++#elif !defined(__wasi__)
+   llvm::sys::unregisterHandlers();
+   raise(RetCode - 128);
+ #endif

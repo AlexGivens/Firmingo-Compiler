@@ -244,6 +244,58 @@ class ServiceBuildTests(unittest.TestCase):
         self.assertEqual(env["GIT_NO_LAZY_FETCH"], "1")
         self.assertEqual(env["SOURCE_DATE_EPOCH"], "1781562833")
 
+    def owned_source_fixture(self):
+        import shutil
+        owned = self.root / "owned-service-source"
+        shutil.copytree(self.reference / sb.SERVICE_PREFIX, owned)
+        reviewed = self.root / "reviewed-fixture-grant"; reviewed.mkdir()
+        pins = sb.read_json(self.pins_path)
+        grant = {"contributionLicense": "GPL-3.0-only", "ownershipStatus": "confirmed by author",
+                 "scope": "synthetic fixture grant only; NEVER DISTRIBUTE", "origin": {"commit": pins["referenceCommit"]},
+                 "files": [{**record, "path": record["path"][len(sb.SERVICE_PREFIX):]} for record in pins["files"]]}
+        (reviewed / "manifest.json").write_bytes(sb.json_bytes(grant))
+        for name in ("SOURCE-LICENSE.md", "LICENSE", "LLVM-LICENSE.txt"):
+            (reviewed / name).write_text("synthetic grant/notice fixture; NEVER DISTRIBUTE\n")
+        for path in reviewed.iterdir():
+            shutil.copyfile(path, owned / path.name)
+        self.config.pop("referenceRoot"); self.config["serviceSourceRoot"] = str(owned); self.save_config()
+        return owned, reviewed
+
+    def test_owned_provider_needs_no_reference_checkout_and_snapshots_exact_grant(self):
+        import shutil
+        legacy = self.captured()["serviceInputs"]
+        owned, reviewed = self.owned_source_fixture()
+        shutil.rmtree(self.reference)
+        with patch.object(sb, "OWNED_SOURCE_ROOT", reviewed):
+            manifest = self.captured()
+            self.assertEqual(manifest["serviceInputs"], legacy)
+            self.assertEqual(manifest["customSourceLicense"]["contributionLicense"], "GPL-3.0-only")
+            output = self.root / "owned-provider-build"
+            sb.build_command(self.config_path, sb.identity(manifest), output, 2)
+            self.assertEqual((output / "service/LICENSE").read_bytes(), (owned / "LICENSE").read_bytes())
+            self.assertEqual((output / "llvm-source/llvm/Example.cpp").read_text(), "patched\n")
+
+    def test_owned_provider_rejects_changed_grant_source_symlink_and_ambiguous_config(self):
+        owned, reviewed = self.owned_source_fixture()
+        self.config["referenceRoot"] = str(self.reference); self.save_config()
+        with self.assertRaisesRegex(ValueError, "configuration"):
+            sb.load_configuration(self.config_path)
+        self.config.pop("referenceRoot"); self.save_config()
+        with patch.object(sb, "OWNED_SOURCE_ROOT", reviewed):
+            license_path = owned / "LICENSE"; original = license_path.read_bytes()
+            license_path.write_bytes(b"changed license")
+            with self.assertRaisesRegex(ValueError, "license grant"):
+                self.captured()
+            license_path.write_bytes(original)
+            source = owned / "Sources/ArduinoCompilerService.cpp"; original = source.read_bytes()
+            source.write_bytes(b"changed source")
+            with self.assertRaisesRegex(ValueError, "pin"):
+                self.captured()
+            outside = self.root / "external-source.cpp"; outside.write_bytes(original)
+            source.unlink(); source.symlink_to(outside)
+            with self.assertRaisesRegex(ValueError, "symlinked"):
+                self.captured()
+
 
 def shutil_which_node():
     import shutil

@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REFERENCE_PATH = ROOT / "docs/service-reference.json"
 RECIPE_PATH = ROOT / "service/recipe.json"
 TOOLCHAIN_PATH = ROOT / "service/WASIClangToolchain.cmake"
+OWNED_SOURCE_ROOT = ROOT / "service/source"
 MAX_FILE = 1024 * 1024 * 1024
 MAX_TREE_FILES = 20000
 MAX_TREE_BYTES = 4 * 1024 * 1024 * 1024
@@ -206,13 +207,15 @@ def dependency_closure(tools, inspector):
 
 def load_configuration(path):
     config = read_json(path, 65536)
-    if not isinstance(config, dict) or set(config) != {"schema", "referenceRoot", "llvmGit", "sysroot", "resourceDirectory", "cmakeModules", "pythonStandardLibrary", "components", "tools", "dependencyInspector"} or type(config["schema"]) is not int or config["schema"] != 1:
+    keys = {"schema", "llvmGit", "sysroot", "resourceDirectory", "cmakeModules", "pythonStandardLibrary", "components", "tools", "dependencyInspector"}
+    if not isinstance(config, dict) or set(config) not in (keys | {"referenceRoot"}, keys | {"serviceSourceRoot"}) or type(config["schema"]) is not int or config["schema"] != 1:
         raise ValueError("unsupported service build configuration")
     if not isinstance(config["tools"], dict) or set(config["tools"]) != set(TOOLS):
         raise ValueError("select every explicit native build tool")
     if not isinstance(config["components"], dict) or not 2 <= len(config["components"]) <= 16:
         raise ValueError("select explicit installed component roots")
-    values = [config[key] for key in ("referenceRoot", "llvmGit", "sysroot", "resourceDirectory", "cmakeModules", "pythonStandardLibrary", "dependencyInspector")]
+    source_key = "serviceSourceRoot" if "serviceSourceRoot" in config else "referenceRoot"
+    values = [config[key] for key in (source_key, "llvmGit", "sysroot", "resourceDirectory", "cmakeModules", "pythonStandardLibrary", "dependencyInspector")]
     values += list(config["tools"].values()) + list(config["components"].values())
     if any(not isinstance(value, str) or not value or len(value) > 4096 or ";" in value or any(ord(c) < 32 for c in value) for value in values):
         raise ValueError("select bounded literal local input paths without control/list characters")
@@ -242,25 +245,41 @@ def capture(config, pins=None):
     """Capture all direct source, patch, header/sysroot/resource and bootstrap inputs before any build output."""
     pins = pins or read_json(REFERENCE_PATH)
     recipe = read_json(RECIPE_PATH)
-    reference = real_directory(config["referenceRoot"])
+    owned = "serviceSourceRoot" in config
+    reference = real_directory(config["serviceSourceRoot"] if owned else config["referenceRoot"])
     llvm_git = real_directory(config["llvmGit"])
-    if git(reference, "rev-parse", "HEAD").decode().strip() != pins["referenceCommit"]:
+    if not owned and git(reference, "rev-parse", "HEAD").decode().strip() != pins["referenceCommit"]:
         raise ValueError("reference commit differs from pin")
     if git(llvm_git, "rev-parse", "--verify", recipe["llvmCommit"] + "^{commit}").decode().strip() != recipe["llvmCommit"]:
         raise ValueError("LLVM commit missing")
-    service, service_locators = [], {}
+    service, service_locators, grant_records, grant_locators = [], {}, [], {}
+    if owned:
+        # The grant is selected from this repository, not trusted from a caller's JSON.
+        for name in ("manifest.json", "SOURCE-LICENSE.md", "LICENSE", "LLVM-LICENSE.txt"):
+            source = reference / name
+            if source.is_symlink() or read_small(source, 65536) != read_small(OWNED_SOURCE_ROOT / name, 65536):
+                raise ValueError("owned source license grant differs from reviewed repository materials")
+            grant_records.append({"path": name, **file_record(source, 65536)})
+            grant_locators[name] = source
+        grant = read_json(reference / "manifest.json", 65536)
+        if grant["contributionLicense"] != "GPL-3.0-only" or grant["ownershipStatus"] != "confirmed by author" or grant["origin"]["commit"] != pins["referenceCommit"]:
+            raise ValueError("unsupported owned source license grant")
     for record in pins["files"]:
         if not record["path"].startswith(SERVICE_PREFIX) or record["role"] not in ("source", "patch"):
             continue
         name = path_name(record["path"][len(SERVICE_PREFIX):])
-        source = reference / record["path"]
-        if source.is_symlink():
+        source = reference / (name if owned else record["path"])
+        if source.is_symlink() or (owned and any(parent.is_symlink() for parent in source.parents if parent != reference and parent.is_relative_to(reference))):
             raise ValueError("symlinked reference service input")
         data = read_small(source, 524288)
-        if len(data) != record["bytes"] or sha(data) != record["sha256"] or data != git(reference, "show", pins["referenceCommit"] + ":" + record["path"]):
+        if len(data) != record["bytes"] or sha(data) != record["sha256"] or (not owned and data != git(reference, "show", pins["referenceCommit"] + ":" + record["path"])):
             raise ValueError("reference source/patch differs from pin")
         service.append({"path": name, "bytes": len(data), "sha256": sha(data), "role": record["role"]})
         service_locators[name] = source
+    if owned:
+        declared = [{key: record[key] for key in ("path", "bytes", "sha256", "role")} for record in grant["files"]]
+        if sorted(declared, key=lambda record: record["path"]) != sorted(service, key=lambda record: record["path"]):
+            raise ValueError("owned source license inventory differs from input pins")
     sources = git(llvm_git, "ls-tree", "-rz", recipe["llvmCommit"], "--", *recipe["sourcePaths"], maximum=32 * 1024 * 1024)
     objects = []
     for entry in sources.split(b"\0"):
@@ -319,7 +338,10 @@ def capture(config, pins=None):
                 "maintenanceImplementation": [{"path": str(path.relative_to(ROOT)), **file_record(path)} for path in (
                     Path(__file__), ROOT / "tools/inspect-service.mjs", ROOT / "tools/bounded-file.mjs", ROOT / "runtime/ModuleMemory.js")],
                 "distributionStatus": "unresolved", "upstreamRuntimeSourceReproduction": "not established by installed-component capture"}
-    return manifest, {"service": service_locators, "sysroot": sysroot_paths, "resources": resource_paths,
+    if owned:
+        manifest["customSourceLicense"] = {"contributionLicense": "GPL-3.0-only", "ownershipStatus": "confirmed by author",
+                                          "provider": "owned source", "materials": grant_records}
+    return manifest, {"service": service_locators, "sourceGrant": grant_locators, "sysroot": sysroot_paths, "resources": resource_paths,
                       "cmakeModules": cmake_module_paths, "pythonStandardLibrary": python_library_paths,
                       "notices": notice_paths, "bootstrap": bootstrap_paths, "llvmGit": llvm_git, "tools": tools}
 
@@ -445,6 +467,8 @@ def build_command(config_path, expected, output, jobs, configure_only=False):
         write_json(output / "source-objects.json", source_objects)
         for role, key in (("service", "serviceInputs"), ("sysroot", "sysroot"), ("resources", "resources"), ("notices", "componentRecords")):
             copy_records(output / role, manifest[key], inputs[role])
+        if "customSourceLicense" in manifest:
+            copy_records(output / "service", manifest["customSourceLicense"]["materials"], inputs["sourceGrant"])
         for role in ("cmakeModules", "pythonStandardLibrary"):
             copy_records(output / role, manifest[role], inputs[role])
         copy_records(output / "maintenance", manifest["maintenanceImplementation"],
