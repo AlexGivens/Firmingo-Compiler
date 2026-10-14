@@ -292,8 +292,12 @@ service fixtures, eleven runtime fixtures and ten source-package fixtures.
 - [x] Rebuild all 2,353 runtime files from an unpacked candidate archive and
   configure the actual service from its raw/custom sources without a Git cache.
   Record repeated archive identities, input anchors and configuration-only limits.
-- [ ] Complete the full service rebuild from the unpacked archive, exact
-  linked-file/binary-notice review and paired source/object delivery review.
+- [x] Complete the full service rebuild from the final unpacked archive. Reproduce
+  the module, all 96 archives and all 6,182 compiler dependency bytes, then run
+  actual WASM build/error/repeat checks and independent firmware capsule validation.
+  See [packaged rebuild evidence](docs/evidence/packaged-service-rebuild.md).
+- [ ] Finish final binary-notice and paired source/object delivery review before
+  consumer promotion; retain the candidate archive's historical incomplete status.
 - [x] Trace all 2,310 LLVM archive objects, runtime compile inputs, custom service
   and installed/generated headers. Preserve 232 checked notice excerpts and 30
   license/grant texts in a pinned review bundle, including internal crypt,

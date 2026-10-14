@@ -74,3 +74,9 @@ linked into this service is included, rather than treated as an OS library.
 LLVM's [license policy](https://llvm.org/docs/DeveloperPolicy.html#copyright-license-and-patents)
 requires attention to third-party/file-specific terms. The exact pinned source
 bytes and local build identities determine this review, not moving defaults.
+
+The full unpacked-source rebuild now reproduces the exact service, all 96 archives
+and the 6,182 observed compiler dependency bytes. Its normalized dependency graph
+matches the trace used for this bundle. This closes source-rebuild/input
+reconciliation; final binary documentation and paired delivery review remain
+explicitly separate. See [the completed rebuild](evidence/packaged-service-rebuild.md).

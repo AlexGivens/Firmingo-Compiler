@@ -105,5 +105,11 @@ The initial archive remains a **candidate** corresponding-source package:
 `completeCorrespondingSource: false` and `distributionStatus: "unresolved"` are
 retained pending a rebuild from the unpacked archive and exact linked-file
 notice/delivery review. See [the upstream notice review](service-upstream-notices.md).
+That is the archive's historical producer status. The later full packaged-service
+rebuild now reproduces the module, all 96 archives and all 6,182 recorded compiler
+dependency bytes, with actual WASM checks and independent firmware validation.
+The packaged runtime reproduces all 2,353 output files. See
+[completed rebuild evidence](evidence/packaged-service-rebuild.md). Final
+binary-notice/paired delivery review remains open; old archive receipts are unchanged.
 This step does not change public consumer pins, add an output-license exception,
 or qualify the public SDK/private web-host, board deployment or hardware.

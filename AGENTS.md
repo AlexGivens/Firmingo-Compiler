@@ -131,10 +131,11 @@ replace upstream terms based on the author's original-contribution grant.
 archive with both recipes' raw LLVM sources, complete pinned WASI source inputs,
 grant/notices, source headers and rebuild scripts. `llvmSourceRoot` allows both
 maintenance paths to consume verified raw snapshots without a Git cache or
-sibling checkout. Real packaged-runtime rebuild and service configuration are
-recorded separately; configuration is not compilation. Preserve unresolved
-distribution status until the remaining exact linked-file/delivery review and
-full packaged-service rebuild are supported by evidence. See
+sibling checkout. Real packaged-runtime and full service rebuilds now reproduce
+all runtime files, the module, 96 archives and 6,182 compiler dependency bytes.
+Actual WASM checks and independent firmware validation pass; see
+`docs/evidence/packaged-service-rebuild.md`. Preserve unresolved distribution
+status until the remaining final binary-notice/delivery review is supported. See
 `docs/source-package.md` and `docs/evidence/source-package.md`.
 
 `verify-service-notices [unpacked-source-root]` now checks a pinned documentation

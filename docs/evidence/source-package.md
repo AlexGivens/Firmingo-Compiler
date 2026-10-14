@@ -82,6 +82,14 @@ was bypassed, and no historical receipt was rewritten to explain the mismatch.
 
 ## Checks and remaining work
 
+The later [full packaged-service rebuild](packaged-service-rebuild.md) completes
+the compilation/relink gate described below: the module, all 96 archives and
+all 6,182 recorded compiler dependency bytes reproduce exactly. Actual WASM
+build/error/repeat checks and independent firmware capsule validation pass.
+Its conservative notice trace retains 232 excerpts and 30 license/grant texts.
+This earlier configuration-only record and the candidate archive's original
+status fields remain unchanged; final binary-notice/paired delivery review remains.
+
 Local checks passed: 136 portable tests and one optional-service skip; twelve
 service-maintenance fixtures; eleven runtime fixtures; ten source-package
 fixtures; source/recipe/vendor integrity and JavaScript syntax checks. New cases
