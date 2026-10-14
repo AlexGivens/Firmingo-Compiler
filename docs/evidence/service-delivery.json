@@ -47,5 +47,20 @@
   "legacyBinaryCleared": false,
   "published": false,
   "hardwareExecuted": false,
-  "signedPhysicalHostsQualified": false
+  "signedPhysicalHostsQualified": false,
+  "compilerCI": {
+    "implementationCommit": "453ad5c24328578fd578389873a9ba5eb721bfe8",
+    "runID": 38577296055,
+    "url": "https://github.com/AlexGivens/Firmingo-Compiler/actions/runs/38577296055",
+    "jobsPassed": 8,
+    "portablePassedPerOS": 140,
+    "portableSkippedPerOS": 1,
+    "serviceFixturesPerOS": 12,
+    "runtimeFixturesPerOS": 11,
+    "sourceArchiveFixturesPerOS": 10,
+    "pairedDeliveryFixturesPerOS": 6,
+    "actualCompilerExecutedInCI": false
+  },
+  "sdkImplementationCommit": "9ffe3849f962797d13f082ff2881d2ba1e782452",
+  "sdkRemoteCIQualified": false
 }

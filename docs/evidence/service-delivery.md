@@ -99,3 +99,20 @@ occurred. Firmware is unchanged and its pre-existing `AGENTS.md` edit is retaine
 ArduinoKit remains read-only. Remaining work is binary/release provisioning with
 paired source availability, trusted default firmware catalogue, signed/minimum-OS
 and physical wrapper qualification, and selected hardware deployment evidence.
+
+## Verified compiler CI
+
+All eight jobs in [run 38577296055](https://github.com/AlexGivens/Firmingo-Compiler/actions/runs/38577296055)
+passed at implementation commit `453ad5c24328578fd578389873a9ba5eb721bfe8`.
+Downloaded job logs show 140 portable passes/one optional historical-service skip
+on both hosts, and 12 service, 11 runtime, 10 source-archive and six paired-delivery
+fixture passes on both maintenance hosts. Mutation jobs report 4,000 JSON and
+5,000 ELF cases. Unavailable real-service CI has zero compilation passes/eight
+skips; historical memory checks have one static pass/one skip. CI never fetches
+or publishes the reviewed compiler. Actual Node/Chrome/SDK compilation remains
+the separately recorded local evidence above.
+
+The coordinated FirmingoKit implementation is committed as
+`9ffe3849f962797d13f082ff2881d2ba1e782452`, with its local checks recorded in
+`docs/compiler-delivery.md`. SDK manual CI remains unqualified without the
+provisioned Xcode runner. Firmware has no changes from this increment.
