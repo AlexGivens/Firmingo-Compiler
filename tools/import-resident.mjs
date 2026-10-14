@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { readBounded } from "./bounded-file.mjs";
 import { parseContractJSON } from "../src/json.js";
 import { validateFirmwareBuildDescriptor, firmwareBuildIdentity } from "../src/contract.js";
+import { CONTRACT_ROLES, verifyResidentContract } from "./resident-contract.mjs";
 import { NANO_BASELINE } from "../src/limits.js";
 
 const hash = bytes => createHash("sha256").update(bytes).digest("hex");
@@ -57,15 +58,16 @@ export async function importResident(directoryInput, expectedManifestSHA256) {
   if (hash(manifestBytes) !== expectedManifestSHA256) throw new Error("Resident export manifest anchor mismatch");
   const manifest = parseContractJSON(decode(manifestBytes));
   fields(manifest, ["schema", "purpose", "board", "profile", "firmwareCommit", "files", "qualification"]);
-  if (manifest.schema !== 1 || manifest.purpose !== "experimental_resident_compiler_export" || manifest.board !== NANO_BASELINE.board
+  if (![1, 2].includes(manifest.schema) || manifest.purpose !== "experimental_resident_compiler_export" || manifest.board !== NANO_BASELINE.board
       || manifest.profile !== NANO_BASELINE.profile || !/^[0-9a-f]{40}$/.test(manifest.firmwareCommit)
       || manifest.qualification !== "experimental structural/source/artifact checks; no installation or hardware qualification"
-      || !Array.isArray(manifest.files) || manifest.files.length !== 4) throw new Error("Unsupported resident export");
+      || !Array.isArray(manifest.files) || manifest.files.length !== (manifest.schema === 1 ? 4 : 11)) throw new Error("Unsupported resident export");
+  const acceptedRoles = manifest.schema === 1 ? roles : { ...roles, "contract.json": 16384, ...CONTRACT_ROLES };
   const files = {};
   for (const record of manifest.files) {
     fields(record, ["path", "bytes", "sha256"]);
-    if (!Object.hasOwn(roles, record.path) || Object.hasOwn(files, record.path) || !Number.isSafeInteger(record.bytes)
-        || record.bytes < 1 || record.bytes > roles[record.path] || !hex(record.sha256)) throw new Error("Invalid resident export inventory");
+    if (!Object.hasOwn(acceptedRoles, record.path) || Object.hasOwn(files, record.path) || !Number.isSafeInteger(record.bytes)
+        || record.bytes < 1 || record.bytes > acceptedRoles[record.path] || !hex(record.sha256)) throw new Error("Invalid resident export inventory");
     const bytes = read(record.path, record.bytes);
     if (bytes.length !== record.bytes || hash(bytes) !== record.sha256) throw new Error("Resident export artifact integrity mismatch");
     files[record.path] = bytes;
@@ -98,13 +100,15 @@ export async function importResident(directoryInput, expectedManifestSHA256) {
         "experiments/managed_sketch/firmingo_managed_resident/firmingo_managed_resident.ino", "experiments/managed_sketch/build_resident.py"].some(path => !Object.hasOwn(sources, path))) throw new Error("Invalid resident source inventory");
   if (JSON.stringify(Object.entries(sources).sort()) !== JSON.stringify(Object.entries(facts.sourceSHA256).sort())) throw new Error("Resident source inventory mismatch");
   apiFromUF2(files["resident.uf2"], facts);
+  const contract = manifest.schema === 2 ? verifyResidentContract(files, facts) : null;
   // Firmware owns observed facts; the compiler explicitly attaches only its pinned compatible recipe.
   const descriptor = validateFirmwareBuildDescriptor(Object.fromEntries(["schema", "board", "profile", "backend", "firmwareVersion", "firmwareCommit",
     "residentELFSHA256", "firmwareImageSHA256", "buildReportSHA256", "apiAddress", "residentABI", "targetID", "maximumCapsuleBytes", "qualification"]
     .map(key => [key, facts[key]]).concat([["recipeIdentifier", NANO_BASELINE.recipeIdentifier], ["recipeSHA256", NANO_BASELINE.recipeSHA256]])));
-  return { descriptor, catalogue: { schema: 1, firmwareBuilds: [descriptor] }, receipt: { schema: 1, operation: "experimental_resident_metadata_import",
+  return { descriptor, contract, catalogue: { schema: 1, firmwareBuilds: [descriptor] }, receipt: { schema: 1, operation: "experimental_resident_metadata_import",
     exportManifestSHA256: expectedManifestSHA256, firmwareBuildID: await firmwareBuildIdentity(descriptor), files: manifest.files,
     recipeIdentifier: descriptor.recipeIdentifier, recipeSHA256: descriptor.recipeSHA256, qualification: "experimental; no Clang-to-resident hardware qualification",
     apiTableSHA256: facts.apiTable.apiTableSHA256, sourceProof: "firmware export binds reported project sources to exact commit; upstream core/toolchain full reproduction remains open",
+    exportSchema: manifest.schema, contractVerified: Boolean(contract), ...(contract ? { contract } : {}),
     imagesCopied: false, defaultCatalogueChanged: false } };
 }

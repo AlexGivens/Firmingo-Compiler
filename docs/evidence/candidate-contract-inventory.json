@@ -1,0 +1,395 @@
+{
+  "schema": 1,
+  "date": "2026-10-13",
+  "qualification": "Experimental source-contract and static candidate inventory, not a distributable service or hardware qualification",
+  "firmwareSourceCommit": "4d53a285a3a39d4355253760a205fdac1a6b811c",
+  "exportManifest": {
+    "bytes": 2006,
+    "sha256": "4992c149d1b0a31c7ad6e5e3f2e43adbb19bb429bfb95e60155a04f5e17de84a"
+  },
+  "sourceContract": {
+    "apiTableBytes": 40,
+    "board": "nano_rp2040_connect",
+    "compatibility": "exact resident API address required; changed resource bytes require explicit compiler recipe review",
+    "firmwareCommit": "4d53a285a3a39d4355253760a205fdac1a6b811c",
+    "identifier": "firmingo-nano-managed-abi1-v1-experimental",
+    "image": {
+      "boardTag": 1330528590,
+      "codeOffset": 256,
+      "headerBytes": 64,
+      "magic": "FMS1",
+      "maximumCapsuleBytes": 4096,
+      "maximumCodeBytes": 3840,
+      "slotAddress": 270532608,
+      "slotBytes": 4194304,
+      "version": 1
+    },
+    "profile": "nano-managed-v1",
+    "qualification": "experimental source contract; no hardware qualification",
+    "residentABI": 1,
+    "resourceScope": "resident headers are build inputs; facade/entry/linker are native proof references, not a WASM recipe",
+    "resources": [
+      {
+        "bytes": 814,
+        "path": "contract/abi.h",
+        "role": "resident-build-input",
+        "sha256": "941fd824a765e1dc9efaa5c9bdd670d77bdb26fedef98c47d9c7969d5bb6ad2a",
+        "sourcePath": "experiments/managed_sketch/abi.h"
+      },
+      {
+        "bytes": 1399,
+        "path": "contract/image.h",
+        "role": "resident-build-input",
+        "sha256": "658ceac8716a6a6709714f2b51e2e01684a06ba87db999ee0d75cff0b9e6ffd9",
+        "sourcePath": "experiments/managed_sketch/image.h"
+      },
+      {
+        "bytes": 2236,
+        "path": "contract/facade/Arduino.h",
+        "role": "native-proof-input",
+        "sha256": "b35175c2569f4203dac411dadff9e340e562cd5a09f89f82e119e78ed4bca6b3",
+        "sourcePath": "experiments/managed_sketch/facade/Arduino.h"
+      },
+      {
+        "bytes": 248,
+        "path": "contract/module_entry.cpp",
+        "role": "native-proof-input",
+        "sha256": "cf7458999069224ada262c13f40792c5cef3b6ed3e3760e11fa8062c3c9306df",
+        "sourcePath": "experiments/managed_sketch/module_entry.cpp"
+      },
+      {
+        "bytes": 596,
+        "path": "contract/module.ld",
+        "role": "native-proof-input",
+        "sha256": "3fd5e2ba42dec5f10bfb15bc70e35faefc1b44a7de3cd68de0573ed7d6428110",
+        "sourcePath": "experiments/managed_sketch/module.ld"
+      },
+      {
+        "bytes": 35149,
+        "path": "contract/LICENSE",
+        "role": "license",
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+        "sourcePath": "LICENSE"
+      }
+    ],
+    "schema": 1
+  },
+  "mapping": {
+    "bytes": 2677,
+    "sha256": "a493ce2258411d86e769f08a6d05af46e14b21a0369819fe08c5d93c85e05596"
+  },
+  "candidateInventory": {
+    "bytes": 16702,
+    "sha256": "b8006752e969315e60b8f08ee9d3d8272f7c8e658fb6def69c9af887afd9611d"
+  },
+  "candidateOperation": {
+    "schema": 1,
+    "status": "inventoried_unpromoted_candidate",
+    "inventorySHA256": "b8006752e969315e60b8f08ee9d3d8272f7c8e658fb6def69c9af887afd9611d",
+    "serviceSHA256": "a7648688ae9e349304c576804367b66b68b22185060a847a2e292675329ca493",
+    "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+    "binaryIncluded": false,
+    "consumerPinsChanged": false,
+    "distributionStatus": "unresolved"
+  },
+  "importReceipt": {
+    "schema": 1,
+    "operation": "experimental_resident_metadata_import",
+    "exportManifestSHA256": "4992c149d1b0a31c7ad6e5e3f2e43adbb19bb429bfb95e60155a04f5e17de84a",
+    "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+    "files": [
+      {
+        "bytes": 2855072,
+        "path": "resident.elf",
+        "sha256": "5b3116cdcde28f84b86f78cfffb258591455406a1f276b35bb5fd63a6f857304"
+      },
+      {
+        "bytes": 306176,
+        "path": "resident.uf2",
+        "sha256": "35678c95c495c4e06227a992548be893305cc2375f7a6e561d0a7f66433e6983"
+      },
+      {
+        "bytes": 6101,
+        "path": "build-report.json",
+        "sha256": "db7e505a80589291481970c274e8158e32b685655dc0c246f131341c7d45bc1a"
+      },
+      {
+        "bytes": 6741,
+        "path": "resident-facts.json",
+        "sha256": "6bfc1ebacc637f276bd6f5ae543d410fd44c6656164eca8bc2615cb0785ae227"
+      },
+      {
+        "bytes": 814,
+        "path": "contract/abi.h",
+        "sha256": "941fd824a765e1dc9efaa5c9bdd670d77bdb26fedef98c47d9c7969d5bb6ad2a"
+      },
+      {
+        "bytes": 1399,
+        "path": "contract/image.h",
+        "sha256": "658ceac8716a6a6709714f2b51e2e01684a06ba87db999ee0d75cff0b9e6ffd9"
+      },
+      {
+        "bytes": 2236,
+        "path": "contract/facade/Arduino.h",
+        "sha256": "b35175c2569f4203dac411dadff9e340e562cd5a09f89f82e119e78ed4bca6b3"
+      },
+      {
+        "bytes": 248,
+        "path": "contract/module_entry.cpp",
+        "sha256": "cf7458999069224ada262c13f40792c5cef3b6ed3e3760e11fa8062c3c9306df"
+      },
+      {
+        "bytes": 596,
+        "path": "contract/module.ld",
+        "sha256": "3fd5e2ba42dec5f10bfb15bc70e35faefc1b44a7de3cd68de0573ed7d6428110"
+      },
+      {
+        "bytes": 35149,
+        "path": "contract/LICENSE",
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      {
+        "bytes": 2317,
+        "path": "contract.json",
+        "sha256": "f65ae9cee3c5229c25df4aaf64467f96f0a98b8751827db8fa6b8c4d08a32860"
+      }
+    ],
+    "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+    "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+    "qualification": "experimental; no Clang-to-resident hardware qualification",
+    "apiTableSHA256": "601872c1352b5eadb3d4fff8872c8b2a27130c4e0f780209bb573fd5fbe22a5f",
+    "sourceProof": "firmware export binds reported project sources to exact commit; upstream core/toolchain full reproduction remains open",
+    "exportSchema": 2,
+    "contractVerified": true,
+    "contract": {
+      "schema": 1,
+      "identifier": "firmingo-nano-managed-abi1-v1-experimental",
+      "contractSHA256": "f65ae9cee3c5229c25df4aaf64467f96f0a98b8751827db8fa6b8c4d08a32860",
+      "mappingSHA256": "a493ce2258411d86e769f08a6d05af46e14b21a0369819fe08c5d93c85e05596",
+      "resources": [
+        {
+          "bytes": 814,
+          "path": "contract/abi.h",
+          "role": "resident-build-input",
+          "sha256": "941fd824a765e1dc9efaa5c9bdd670d77bdb26fedef98c47d9c7969d5bb6ad2a",
+          "sourcePath": "experiments/managed_sketch/abi.h"
+        },
+        {
+          "bytes": 1399,
+          "path": "contract/image.h",
+          "role": "resident-build-input",
+          "sha256": "658ceac8716a6a6709714f2b51e2e01684a06ba87db999ee0d75cff0b9e6ffd9",
+          "sourcePath": "experiments/managed_sketch/image.h"
+        },
+        {
+          "bytes": 2236,
+          "path": "contract/facade/Arduino.h",
+          "role": "native-proof-input",
+          "sha256": "b35175c2569f4203dac411dadff9e340e562cd5a09f89f82e119e78ed4bca6b3",
+          "sourcePath": "experiments/managed_sketch/facade/Arduino.h"
+        },
+        {
+          "bytes": 248,
+          "path": "contract/module_entry.cpp",
+          "role": "native-proof-input",
+          "sha256": "cf7458999069224ada262c13f40792c5cef3b6ed3e3760e11fa8062c3c9306df",
+          "sourcePath": "experiments/managed_sketch/module_entry.cpp"
+        },
+        {
+          "bytes": 596,
+          "path": "contract/module.ld",
+          "role": "native-proof-input",
+          "sha256": "3fd5e2ba42dec5f10bfb15bc70e35faefc1b44a7de3cd68de0573ed7d6428110",
+          "sourcePath": "experiments/managed_sketch/module.ld"
+        },
+        {
+          "bytes": 35149,
+          "path": "contract/LICENSE",
+          "role": "license",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "sourcePath": "LICENSE"
+        }
+      ],
+      "compatibility": "exact resident API address required; changed resource bytes require explicit compiler recipe review",
+      "qualification": "reviewed static recipe adaptation; no Clang-to-resident hardware qualification"
+    },
+    "imagesCopied": false,
+    "defaultCatalogueChanged": false
+  },
+  "descriptorByteIdentityUnchanged": true,
+  "sourcePackageManifestSHA256": "93f149a454b1fc1c60ea21775b7b860e99b1a4031f8c810fb1f5de3bc18c4fd4",
+  "actualModuleChecks": {
+    "serviceSHA256": "a7648688ae9e349304c576804367b66b68b22185060a847a2e292675329ca493",
+    "builds": [
+      {
+        "name": "gpio",
+        "source": {
+          "filename": "Sketch.ino",
+          "revision": "gpio:review-1",
+          "text": "void setup() { pinMode(6, 1); }\nvoid loop() { digitalWrite(6, 1); delay(10); }\n"
+        },
+        "capsuleBytes": 316,
+        "capsuleSHA256": "958b861bbc18d4666ed03e6976b39b9fea4812409ad91a3501abbb9685a80d7d",
+        "linkedELFSHA256": "d729a8b6a8e353b1fde011ea62597f0bc5e14500496e018e7c5bd5c15276050d",
+        "sourceSHA256": "fdad88aa8b20b045f35362c13e56090ba85b7bd3e8f024452b3b39f87c0f2568",
+        "receipt": {
+          "receiptSchema": "firmingo-compiler-packaging-v1",
+          "operation": "independent_elf_packaging",
+          "provenanceStatus": "declared",
+          "requestSHA256": "06e645c0cd3bb74f1f38828ca135de28d1f4124abe9af706a364b40b5e9de0c0",
+          "buildID": "owned-service-gpio",
+          "sourceRevision": "gpio:review-1",
+          "sourceFilename": "Sketch.ino",
+          "sourceSHA256": "fdad88aa8b20b045f35362c13e56090ba85b7bd3e8f024452b3b39f87c0f2568",
+          "translationUnitSHA256": "eff2392687f5fc41f987c9cac60244c10a37595894876e0f115123e6a1903734",
+          "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+          "board": "nano_rp2040_connect",
+          "profile": "nano-managed-v1",
+          "provenance": {
+            "compiler": "owned LLVM 22.1.8 ABI-two development service",
+            "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+            "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+            "toolchainSHA256": "dbbd982cbe1df98e17b2003ec4bd6d0f259847e9d2d14bed70bd38f0a0a47bff"
+          },
+          "buildInputSHA256": "f44c25dfebba65e7d0e9ea20f9b0be80ac15667e94816857af9d430a5349a890",
+          "linkedELFSHA256": "d729a8b6a8e353b1fde011ea62597f0bc5e14500496e018e7c5bd5c15276050d",
+          "capsuleSHA256": "958b861bbc18d4666ed03e6976b39b9fea4812409ad91a3501abbb9685a80d7d",
+          "capsuleBytes": 316
+        },
+        "memoryBytes": 27983872,
+        "diagnostics": []
+      },
+      {
+        "name": "console",
+        "source": {
+          "filename": "Sketch.ino",
+          "revision": "console:review-1",
+          "text": "void setup() { Serial.println(\"ready\"); }\nvoid loop() { int c = Serial.read(); if (c >= 0) Serial.write(uint8_t(c)); }\n"
+        },
+        "capsuleBytes": 392,
+        "capsuleSHA256": "b372c00edf4b60c662f73055685ed8764e9f8798fe9efbbafad04302549174c0",
+        "linkedELFSHA256": "2fbdd67e4d444b20e450f3f7e82cab03c87a95635e012ee45181bd1d18ec907a",
+        "sourceSHA256": "697f9547f72d478210dd29bd66c6293e0a9ae926a1b4e8d568b10aeeab37f5a3",
+        "receipt": {
+          "receiptSchema": "firmingo-compiler-packaging-v1",
+          "operation": "independent_elf_packaging",
+          "provenanceStatus": "declared",
+          "requestSHA256": "c345b569d369ada20c84049ddb8863a69f8beef43f72777cbec4c628de06491f",
+          "buildID": "owned-service-console",
+          "sourceRevision": "console:review-1",
+          "sourceFilename": "Sketch.ino",
+          "sourceSHA256": "697f9547f72d478210dd29bd66c6293e0a9ae926a1b4e8d568b10aeeab37f5a3",
+          "translationUnitSHA256": "f03f5bab33e4189ea4559985d392083a2cf9c79370b2dd589e8afb0f2ad81f25",
+          "firmwareBuildID": "760c563a3288d9e07fbe7c501c173516736913324db760e4152640ea45dc7e8d",
+          "board": "nano_rp2040_connect",
+          "profile": "nano-managed-v1",
+          "provenance": {
+            "compiler": "owned LLVM 22.1.8 ABI-two development service",
+            "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+            "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+            "toolchainSHA256": "dbbd982cbe1df98e17b2003ec4bd6d0f259847e9d2d14bed70bd38f0a0a47bff"
+          },
+          "buildInputSHA256": "11607fb137ee558cb8d6304568182dbad5575085956caf856f106ca76cc1ae3b",
+          "linkedELFSHA256": "2fbdd67e4d444b20e450f3f7e82cab03c87a95635e012ee45181bd1d18ec907a",
+          "capsuleSHA256": "b372c00edf4b60c662f73055685ed8764e9f8798fe9efbbafad04302549174c0",
+          "capsuleBytes": 392
+        },
+        "memoryBytes": 28049408,
+        "diagnostics": []
+      }
+    ],
+    "errors": [
+      {
+        "name": "frontend",
+        "result": "rejected without artifact",
+        "expectedDiagnostic": "missingFunction"
+      },
+      {
+        "name": "mutable-storage",
+        "result": "rejected without artifact",
+        "expectedDiagnostic": "mutable storage"
+      },
+      {
+        "name": "runtime-helper",
+        "result": "rejected without artifact",
+        "expectedDiagnostic": "__aeabi_uidiv"
+      }
+    ],
+    "priorCapsulesByteIdentical": true
+  },
+  "independentFirmwareValidator": {
+    "compiler": "Apple clang 21.0.0 arm64; -std=c++17 -Wall -Wextra -Werror",
+    "driver": {
+      "bytes": 738,
+      "sha256": "bbc996719aa0f189f15dbd4dac57173eccb7532d5b8b05fc609e95a53920577c"
+    },
+    "firmwareCommit": "d42613faa1abd1f4bcbbb361e9f0855d28890824",
+    "hardwareExecuted": false,
+    "nativeValidator": {
+      "bytes": 72152,
+      "sha256": "c1aa955a6d3cb12f2b3a3d2a51c8132ebb1f4ead472aab7413acf208809b4ee8"
+    },
+    "sources": [
+      {
+        "bytes": 5935,
+        "path": "Firmingo/experiments/managed_sketch/image.cpp",
+        "sha256": "b694ed15b5c6c84b819da31e14961e48cf4ab8338bb6e1fee538f964a3501ca5"
+      },
+      {
+        "bytes": 1399,
+        "path": "Firmingo/experiments/managed_sketch/image.h",
+        "sha256": "658ceac8716a6a6709714f2b51e2e01684a06ba87db999ee0d75cff0b9e6ffd9"
+      }
+    ]
+  },
+  "independentValidation": [
+    {
+      "sketch": "gpio",
+      "apiAddress": "0x10022c9c",
+      "exitCode": 0,
+      "observed": "validator=0 capsule_bytes=316 code_bytes=60"
+    },
+    {
+      "sketch": "gpio",
+      "apiAddress": "0x10022ca0",
+      "exitCode": 1,
+      "observed": "validator=6 capsule_bytes=316 code_bytes=0"
+    },
+    {
+      "sketch": "console",
+      "apiAddress": "0x10022c9c",
+      "exitCode": 0,
+      "observed": "validator=0 capsule_bytes=392 code_bytes=136"
+    },
+    {
+      "sketch": "console",
+      "apiAddress": "0x10022ca0",
+      "exitCode": 1,
+      "observed": "validator=6 capsule_bytes=392 code_bytes=0"
+    }
+  ],
+  "localTests": {
+    "compilerTests": 133,
+    "compilerPassed": 132,
+    "compilerSkipped": 1,
+    "focusedImporterInventory": 9,
+    "firmwareNativeSanitizers": 20,
+    "finalFocusedExporterCases": 12,
+    "firmwareHostSuite": 195
+  },
+  "compatibility": "Export schema two is new; compiler retains legacy schema-one imports with contractVerified false. Build descriptor, ABI, protocol and consumer pins unchanged.",
+  "remaining": [
+    "Custom service source/patch ownership and licensing",
+    "Full upstream firmware core/toolchain reproduction",
+    "Approved binary/package promotion and public SDK/private-scheme qualification",
+    "Signed/minimum-OS, physical iOS/iPadOS and device qualification"
+  ],
+  "consumerPinsChanged": false,
+  "binaryPackaged": false,
+  "hardwareExecuted": false,
+  "distributionStatus": "unresolved",
+  "actualExportRepeat": {
+    "filesIncludingManifest": 12,
+    "byteIdentical": true
+  }
+}

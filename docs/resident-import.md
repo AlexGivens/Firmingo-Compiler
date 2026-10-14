@@ -72,3 +72,12 @@ source/provenance drift, schema/recipe injection, symlinks and CLI publication
 failure. Synthetic fixtures are NEVER DEPLOY. Ordinary tests require no real
 service, firmware export, board or sibling checkout. The default production
 catalogue remains empty pending distribution and hardware qualification.
+
+## Versioned source-contract import
+
+The importer now also accepts export schema 2: four existing resident roles plus
+`contract.json` and six exact source/license resources. It checks them against the
+reviewed Nano contract-to-recipe mapping and emits a metadata-only contract receipt.
+Legacy schema-1 import remains available with `contractVerified: false`. The new
+[candidate inventory](candidate-inventory.md) requires schema 2. No descriptor
+identity, firmware ABI, default catalogue or consumer pin changes.

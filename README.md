@@ -78,3 +78,7 @@ remains a local development asset.
 explicit source-built assets without changing public pins. Chrome and a native
 macOS WebKit maintenance host now produce identical validated artifacts; see
 [the separate evidence](docs/evidence/built-service-web.md).
+
+[Candidate package inventory](docs/candidate-inventory.md) now binds an explicit
+owned service build to the versioned firmware source contract. It records exact
+asset/component identities without copying a binary or promoting public pins.

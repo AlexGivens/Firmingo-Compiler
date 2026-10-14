@@ -83,7 +83,7 @@ See `docs/runtime.md`, `docs/evidence/wasm-runtime.md`, and the support/interfac
 
 | Dependency or limit | Current position | Next action |
 | --- | --- | --- |
-| Compiler service distribution | 27 reference files/13 patches/19 LLVM source changes audited; sysroot/archive/tool/license gaps remain | Establish owned clean repeat builds and component source/notice closure in M7 |
+| Compiler service distribution | Owned service/runtime repeat builds and Node/Chrome/WebKit execution verified; metadata-only candidate inventory implemented | Resolve custom-source licensing, complete source/notice materials and review consumer promotion in M7 |
 | Nano resident contract | Exact historical M9 export verified/imported as experimental metadata; production and installed-image evidence unqualified | Complete upstream provenance and wrapper/device qualification before a production offer |
 | Runtime portability | Local Node/WASI and Chrome/HTTP-loopback evidence exists; arbitrary wrappers remain unqualified | macOS SDK adapter passes; qualify signed/minimum-OS and physical iOS/iPadOS hosts |
 | Board and library breadth | Nano's constrained managed facade is the starting scope | Declare its restrictions; leave other boards and broader libraries unavailable until implemented |
@@ -274,7 +274,7 @@ Distribution and public SDK/private-scheme/package promotion remain open. See [r
 [owned source-build evidence](docs/evidence/owned-service-build.md).
 [CI](docs/evidence/owned-service-ci.md) passes all eight jobs at `fa35579`, with
 real-service compilation explicitly skipped there. Local ordinary tests now pass
-128 cases with one optional-service skip; separate maintenance suites pass nine
+132 cases with one optional-service skip; separate maintenance suites pass nine
 service fixtures and eleven runtime fixtures.
 
 - [ ] Resolve source, license/component, attribution, and build-provenance gaps for
@@ -294,6 +294,10 @@ service fixtures and eleven runtime fixtures.
   independent artifact validation, without promoting public consumer pins.
 - [ ] Qualify the new asset through the actual public SDK/private resource scheme
   and packaged consumer after source/license and promotion review.
+- [x] Add a metadata-only candidate inventory binding owned service receipts,
+  static module shape, unchanged source package, reviewed firmware source contracts
+  and component/notice identities; no binary distribution or pin promotion.
+  See [candidate evidence](docs/evidence/candidate-contract-inventory.md).
 - [ ] Package a bounded versioned inventory of service, runtime, recipes, resources,
   static metadata, sizes, hashes, ABI compatibility, licenses, and notices.
 - [ ] Back offered firmware descriptors with exact trusted export/build evidence;

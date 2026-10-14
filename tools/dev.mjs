@@ -19,6 +19,7 @@ import { auditService } from "./audit-service.mjs";
 import { importResident } from "./import-resident.mjs";
 import { checkBuiltService } from "./test-built-service.mjs";
 import { verifyServiceMaterials } from "./verify-service-materials.mjs";
+import { inventoryCandidate } from "./inventory-candidate.mjs";
 import { SERVICE } from "../runtime/pins.js";
 import { builtWebChecks, builtWebUnavailable, builtWebKitChecks } from "./built-web-checks.mjs";
 
@@ -57,6 +58,7 @@ async function main() {
       + "  package-declared request.json module.elf output-directory\n"
       + "  audit-service reference-root llvm-source original-receipt.json original-service.wasm new-output-directory\n"
       + "  import-resident explicit-export-directory trusted-manifest-sha256 new-output-directory\n"
+      + "  inventory-candidate build-directory trusted-build-receipt-sha256 firmware-export trusted-manifest-sha256 new-output-directory\n"
       + "  service-build capture|configure|build|compare ... (optional pinned Python maintenance host)\n"
       + "  test-service-build (owned synthetic sources/tools; no actual LLVM compilation)\n"
       + "  runtime-build capture|build|compare ... (owned WASI Preview 1 source builds)\n"
@@ -182,11 +184,16 @@ async function main() {
       capsuleBytes: artifact.bytes.length, provenanceStatus: "declared" });
     return;
   }
+  if (command === "inventory-candidate") {
+    if (argumentsList.length !== 5) throw new Error("Select explicit owned build, trusted receipt, firmware export, trusted manifest and new output directory");
+    console.log(JSON.stringify(await inventoryCandidate(...argumentsList))); return;
+  }
   if (command === "import-resident") {
     if (argumentsList.length !== 3) throw new Error("Select an explicit resident export, independently trusted manifest SHA-256 and new output directory");
     const result = await importResident(argumentsList[0], argumentsList[1]);
     writeOutput(resolve(argumentsList[2]), { "descriptor.json": JSON.stringify(result.descriptor, null, 2) + "\n",
-      "catalogue.json": JSON.stringify(result.catalogue, null, 2) + "\n", "import-receipt.json": JSON.stringify(result.receipt, null, 2) + "\n" },
+      "catalogue.json": JSON.stringify(result.catalogue, null, 2) + "\n", "import-receipt.json": JSON.stringify(result.receipt, null, 2) + "\n",
+      ...(result.contract ? { "contract-receipt.json": JSON.stringify(result.contract, null, 2) + "\n" } : {}) },
       { status: "imported_experimental_resident_metadata", firmwareBuildID: result.receipt.firmwareBuildID, imagesCopied: false,
         apiAddress: result.descriptor.apiAddress, defaultCatalogueChanged: false });
     return;

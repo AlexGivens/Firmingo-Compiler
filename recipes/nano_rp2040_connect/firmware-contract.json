@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "contractIdentifier": "firmingo-nano-managed-abi1-v1-experimental",
+  "reviewedSourceRepository": "Firmingo",
+  "reviewedSourceCommit": "d42613faa1abd1f4bcbbb361e9f0855d28890824",
+  "recipeIdentifier": "nano-stateless-clang-22.1.8-v1-experimental",
+  "recipeSHA256": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9",
+  "qualification": "reviewed static recipe adaptation; no Clang-to-resident hardware qualification",
+  "image": {
+    "boardTag": 1330528590,
+    "version": 1,
+    "slotAddress": 270532608,
+    "slotBytes": 4194304,
+    "codeOffset": 256,
+    "headerBytes": 64,
+    "magic": "FMS1",
+    "maximumCapsuleBytes": 4096,
+    "maximumCodeBytes": 3840
+  },
+  "resources": [
+    {
+      "path": "contract/abi.h",
+      "sourcePath": "experiments/managed_sketch/abi.h",
+      "role": "resident-build-input",
+      "bytes": 814,
+      "sha256": "941fd824a765e1dc9efaa5c9bdd670d77bdb26fedef98c47d9c7969d5bb6ad2a"
+    },
+    {
+      "path": "contract/image.h",
+      "sourcePath": "experiments/managed_sketch/image.h",
+      "role": "resident-build-input",
+      "bytes": 1399,
+      "sha256": "658ceac8716a6a6709714f2b51e2e01684a06ba87db999ee0d75cff0b9e6ffd9"
+    },
+    {
+      "path": "contract/facade/Arduino.h",
+      "sourcePath": "experiments/managed_sketch/facade/Arduino.h",
+      "role": "native-proof-input",
+      "bytes": 2236,
+      "sha256": "b35175c2569f4203dac411dadff9e340e562cd5a09f89f82e119e78ed4bca6b3"
+    },
+    {
+      "path": "contract/module_entry.cpp",
+      "sourcePath": "experiments/managed_sketch/module_entry.cpp",
+      "role": "native-proof-input",
+      "bytes": 248,
+      "sha256": "cf7458999069224ada262c13f40792c5cef3b6ed3e3760e11fa8062c3c9306df"
+    },
+    {
+      "path": "contract/module.ld",
+      "sourcePath": "experiments/managed_sketch/module.ld",
+      "role": "native-proof-input",
+      "bytes": 596,
+      "sha256": "3fd5e2ba42dec5f10bfb15bc70e35faefc1b44a7de3cd68de0573ed7d6428110"
+    },
+    {
+      "path": "contract/LICENSE",
+      "sourcePath": "LICENSE",
+      "role": "license",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    }
+  ],
+  "adaptationNotes": [
+    "Firmware ABI-one eight-function table and exact resident API binding retained.",
+    "The compiler owns a separately reviewed Clang facade and stricter linker; native proof sources are reference data only.",
+    "Native proof linker FLASH extent is larger than an installable capsule; the recipe and independent validators enforce 3840 code bytes.",
+    "GCC proof helper linkage does not grant compiler-runtime helper support to the WASM recipe."
+  ]
+}

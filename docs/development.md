@@ -235,3 +235,9 @@ in [owned web checks](built-service-web.md). They accept a reviewed candidate
 digest and selected resident descriptor without promoting consumer pins. The
 native WebKit executable is explicitly provisioned by the wrapper repository;
 Swift is not a compiler consumer or normal-test dependency.
+
+## Candidate asset review
+
+Use [candidate inventory](candidate-inventory.md) to bind a reviewed owned build
+receipt and schema-2 firmware export. The CLI produces bounded metadata only;
+service/component approval and consumer promotion remain separate work.

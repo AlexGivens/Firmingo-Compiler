@@ -1,11 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, writeFileSync, readFileSync, rmSync, symlinkSync, existsSync } from "node:fs";
+import { mkdtempSync, writeFileSync, readFileSync, rmSync, symlinkSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { importResident } from "../tools/import-resident.mjs";
+import { CONTRACT_MAPPING, CONTRACT_COMPATIBILITY, CONTRACT_SCOPE } from "../tools/resident-contract.mjs";
+import { inventoryCandidate } from "../tools/inventory-candidate.mjs";
 import { firmwareBuildIdentity } from "../src/contract.js";
 
 const hash = bytes => createHash("sha256").update(bytes).digest("hex");
@@ -128,4 +130,114 @@ test("resident CLI emits only metadata into new directories and fails before pub
     assert.equal(run(args).status, 1); assert.equal(existsSync(args[3]), false);
     assert.equal(run(["import-resident"]).status, 1); assert.equal(run(["audit-service"]).status, 1);
   } finally { f.close(); }
+});
+
+
+// Source-role fixtures retain exact firmware GPL resources, but the enclosing fake resident is NEVER DEPLOY.
+function schemaTwo(f) {
+  f.manifest.schema = 2;
+  for (const record of CONTRACT_MAPPING.resources) {
+    f.files[record.path] = readFileSync(new URL("./fixtures/firmware-contract/" + record.path, import.meta.url));
+    if (record.role === "resident-build-input") f.report.source_sha256[record.sourcePath] = record.sha256;
+  }
+  f.facts.sourceSHA256 = { ...f.report.source_sha256 };
+  f.files["build-report.json"] = json(f.report); f.facts.buildReportSHA256 = hash(f.files["build-report.json"]);
+  f.files["resident-facts.json"] = json(f.facts);
+  const contract = { schema: 1, identifier: CONTRACT_MAPPING.contractIdentifier, firmwareCommit: f.facts.firmwareCommit,
+    board: f.facts.board, profile: f.facts.profile, residentABI: 1, apiTableBytes: 40,
+    qualification: "experimental source contract; no hardware qualification", image: CONTRACT_MAPPING.image,
+    compatibility: CONTRACT_COMPATIBILITY, resourceScope: CONTRACT_SCOPE, resources: CONTRACT_MAPPING.resources };
+  f.files["contract.json"] = json(contract);
+  // This helper alone creates nested directories; production import is read-only.
+  for (const path of Object.keys(f.files)) if (path.includes("/")) mkdirSync(dirname(join(f.directory, path)), { recursive: true });
+  return f.save();
+}
+
+test("schema-two import verifies exact contract resources and recipe mapping while retaining descriptor identity", async () => {
+  const f = fixture();
+  try {
+    const anchor = schemaTwo(f), result = await importResident(f.directory, anchor);
+    assert.equal(result.receipt.exportSchema, 2); assert.equal(result.receipt.contractVerified, true);
+    assert.equal(result.contract.identifier, CONTRACT_MAPPING.contractIdentifier);
+    assert.equal(result.contract.resources.length, 6); assert.equal(result.contract.contractSHA256, hash(f.files["contract.json"]));
+    assert.equal(result.receipt.firmwareBuildID, await firmwareBuildIdentity(result.descriptor));
+    assert.equal(result.descriptor.recipeSHA256, f.descriptor.recipeSHA256);
+    assert.equal(result.descriptor.apiAddress, f.descriptor.apiAddress);
+    const output = join(f.directory, "schema-two-import");
+    const run = spawnSync(process.execPath, ["tools/dev.mjs", "import-resident", f.directory, anchor, output], { encoding: "utf8", timeout: 5000 });
+    assert.equal(run.status, 0, run.stderr); assert.equal(JSON.parse(readFileSync(join(output, "contract-receipt.json"))).identifier, CONTRACT_MAPPING.contractIdentifier);
+    assert.equal(existsSync(join(output, "contract")), false);
+  } finally { f.close(); }
+});
+
+test("schema-two contract drift, unsupported layout, source omission and invented qualification fail even with new anchors", async () => {
+  for (const mutate of [
+    f => { f.files["contract/abi.h"][0] ^= 1; },
+    f => { const c = JSON.parse(f.files["contract.json"]); c.image.slotBytes *= 2; f.files["contract.json"] = json(c); },
+    f => { const c = JSON.parse(f.files["contract.json"]); c.resources[0].sha256 = "0".repeat(64); f.files["contract.json"] = json(c); },
+    f => { const c = JSON.parse(f.files["contract.json"]); c.resources[0].path = "../abi.h"; f.files["contract.json"] = json(c); },
+    f => { const c = JSON.parse(f.files["contract.json"]); c.qualification = "hardware approved"; f.files["contract.json"] = json(c); },
+    f => { const c = JSON.parse(f.files["contract.json"]); c.firmwareCommit = "0".repeat(40); f.files["contract.json"] = json(c); },
+    f => { delete f.files["contract/module.ld"]; },
+    f => { delete f.report.source_sha256["experiments/managed_sketch/image.h"]; f.facts.sourceSHA256 = { ...f.report.source_sha256 };
+      f.files["build-report.json"] = json(f.report); f.facts.buildReportSHA256 = hash(f.files["build-report.json"]); f.files["resident-facts.json"] = json(f.facts); },
+  ]) {
+    const f = fixture();
+    try { schemaTwo(f); mutate(f); await assert.rejects(importResident(f.directory, f.save())); }
+    finally { f.close(); }
+  }
+});
+
+// Small static module exports only; never instantiated. Its declared receipt does not prove a real compiler build.
+function staticService() {
+  const uleb = value => { const bytes = []; do { const part = value & 127; value >>>= 7; bytes.push(part | (value ? 128 : 0)); } while (value); return bytes; };
+  const section = (id, data) => [id, ...uleb(data.length), ...data];
+  const names = JSON.parse(readFileSync("service/recipe.json")).exports.concat("_initialize", "memory");
+  return Buffer.from([0,97,115,109,1,0,0,0, ...section(1, [1,0x60,0,1,0x7f]), ...section(3, [1,0]),
+    ...section(5,[1,1,1,...uleb(4096)]), ...section(7, [names.length, ...names.flatMap(name => [name.length,...Buffer.from(name),name === "memory" ? 2 : 0,0])]),
+    ...section(10,[1,4,0,0x41,2,0x0b])]);
+}
+
+function declaredBuild(f) {
+  const build = join(f.directory, "declared-build"); mkdirSync(build);
+  const module = staticService(), inputs = Buffer.from("Synthetic input-manifest role; never LLVM source or executable proof");
+  const receipt = { schema: 1, status: "built_owned_development_service", inputManifestSHA256: hash(inputs),
+    recipeIdentifier: JSON.parse(readFileSync("service/recipe.json")).identifier, module: { path: "compiler.wasm", bytes: module.length, sha256: hash(module) },
+    linkedArchiveCount: 96, distributionStatus: "unresolved", upstreamRuntimeSourceReproduction: "not established by installed-component capture" };
+  writeFileSync(join(build, "compiler.wasm"), module); writeFileSync(join(build, "input-manifest.json"), inputs); writeFileSync(join(build, "operation.json"), json(receipt));
+  return { build, receipt, anchor: hash(json(receipt)) };
+}
+
+test("candidate inventory checks static bytes and contract then emits metadata only, without executing or promoting pins", async () => {
+  const f = fixture();
+  try {
+    const firmwareAnchor = schemaTwo(f), b = declaredBuild(f), output = join(f.directory, "inventory");
+    const result = await inventoryCandidate(b.build, b.anchor, f.directory, firmwareAnchor, output);
+    const value = JSON.parse(readFileSync(join(output, "candidate-inventory.json")));
+    assert.deepEqual(readdirSync(output).sort(), ["candidate-inventory.json", "operation.json"]);
+    assert.equal(value.serviceInstantiated, false); assert.equal(value.hardwareExecuted, false); assert.equal(value.binaryIncluded, false);
+    assert.equal(value.distributionStatus, "unresolved"); assert.equal(value.currentSourcePackage.candidateMatchesPublicPin, false);
+    assert.equal(value.currentSourcePackage.sourceRecords, 50); assert.equal(value.firmware.contract.resources.length, 6);
+    assert.equal(result.inventorySHA256, hash(readFileSync(join(output, "candidate-inventory.json"))));
+    await assert.rejects(inventoryCandidate(b.build, b.anchor, f.directory, firmwareAnchor, output), /new candidate/);
+  } finally { f.close(); }
+});
+
+test("candidate receipt, input and module corruption, approval claims and absent source contract prevent output", async () => {
+  for (const change of [
+    b => { b.anchor = "0".repeat(64); },
+    b => { writeFileSync(join(b.build, "input-manifest.json"), "changed inputs"); },
+    b => { writeFileSync(join(b.build, "compiler.wasm"), "changed module"); },
+    b => { b.receipt.distributionStatus = "approved"; writeFileSync(join(b.build, "operation.json"), json(b.receipt)); b.anchor = hash(json(b.receipt)); },
+    b => { b.receipt.module.path = "../compiler.wasm"; writeFileSync(join(b.build, "operation.json"), json(b.receipt)); b.anchor = hash(json(b.receipt)); },
+  ]) {
+    const f = fixture();
+    try { const firmwareAnchor = schemaTwo(f), b = declaredBuild(f), output = join(f.directory, "unpublished"); change(b);
+      await assert.rejects(inventoryCandidate(b.build, b.anchor, f.directory, firmwareAnchor, output)); assert.equal(existsSync(output), false); }
+    finally { f.close(); }
+  }
+  const f = fixture();
+  try { const b = declaredBuild(f), output = join(f.directory, "no-contract");
+    await assert.rejects(inventoryCandidate(b.build, b.anchor, f.directory, f.anchor, output), /requires schema-two/); assert.equal(existsSync(output), false); }
+  finally { f.close(); }
 });

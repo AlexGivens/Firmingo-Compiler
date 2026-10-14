@@ -374,3 +374,14 @@ source inspection, a mocked success, or another project's historical result.
 The service-free `PreparationController`/worker now isolates portable source preparation
 and backs both SDK preparation APIs; see `docs/service-free-preparation.md` for current
 source-package identities and actual checks. No binary is needed for that stage.
+
+## Candidate inventory and source-contract maintenance
+
+`import-resident` supports legacy schema 1 and schema 2 with six exact firmware
+source/license resources and a reviewed Nano contract-to-recipe mapping. Schema-1
+imports explicitly have no verified source contract. `inventory-candidate` requires
+schema 2 and independently anchored successful owned-build inputs; it verifies
+static service shape and recreates the unchanged source-only package, then emits
+metadata only. No candidate instance, binary package, public pin promotion or
+device operation occurs. See `docs/candidate-inventory.md` and its actual evidence.
+Keep native proof sources as pinned fixture/reference data, never another compiler.
