@@ -101,3 +101,20 @@ hardware, firmware installation or device operation occurred. ArduinoKit remains
 read-only, FirmingoKit is unchanged and the pre-existing Firmingo `AGENTS.md` edit
 is preserved. See [source packaging](../source-package.md) and
 [upstream notices](../service-upstream-notices.md).
+
+## Verified CI
+
+All eight jobs in [GitHub run 38561859552](https://github.com/AlexGivens/Firmingo-Compiler/actions/runs/38561859552)
+passed at implementation commit `98914b1b47b6a39f0e71ac6cb449a03c85584237`.
+Downloaded job logs show 136 portable passes/one optional-service skip on each
+OS, and twelve service, eleven runtime and ten source-package fixture passes
+on both macOS and Linux. Mutation jobs report 4,000 JSON and 5,000 ELF cases.
+The real-service availability suite has zero compilation passes/eight skips;
+memory maintenance has one static gate pass/one unavailable-service skip.
+Browser and candidate maintenance retain their explicit unavailable-service
+skips. These results verify the production maintenance boundaries and fixtures,
+not a native LLVM rebuild or WASM compiler execution in public CI.
+
+A fresh local consumer source-only export also reproduced its unchanged
+50-module manifest SHA-256
+`93f149a454b1fc1c60ea21775b7b860e99b1a4031f8c810fb1f5de3bc18c4fd4`.
