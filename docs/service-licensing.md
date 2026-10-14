@@ -30,8 +30,9 @@ The owned service source provider now accepts `serviceSourceRoot` in place of
 materials must match this repository. Capture records the GPL designation and
 all four grant/license material hashes; build snapshots retain them. Supplying
 both provider fields is an error. No ArduinoKit checkout is needed for custom
-service inputs, although a separately provisioned pinned upstream LLVM Git cache
-and the declared native/runtime inputs are still required for maintenance builds.
+service inputs. Upstream LLVM may come from a pinned Git cache or the verified
+raw source archive through `llvmSourceRoot`; declared native/runtime inputs
+remain explicit maintenance prerequisites.
 Ordinary tests and consumer compilation require neither source checkout.
 
 ```sh
@@ -44,11 +45,19 @@ node tools/dev.mjs export-service-materials .build/service-license-review-b
 The export creates a new deterministic source-and-selected-notice **review
 directory** with file sizes/hashes and a completion receipt. It includes the
 23 custom inputs, author grant, GPL and LLVM license texts, selected wasi-libc and
-browser shim notices, pinned recipes/source references, maintenance scripts and
+browser shim notices, the pinned file-specific notice review bundle,
+pinned recipes/source references, maintenance scripts and
 build instructions. It contains no binary or implicit download and does not
 alter public service pins. It deliberately reports
 `completeCorrespondingSource: false` and `distributionStatus: "unresolved"`.
 Repeat exports of unchanged inputs have identical bytes, independent of destination.
+
+`node tools/dev.mjs verify-service-notices` checks the committed review inventory
+and every license/excerpt byte. An optional explicit unpacked-source root also
+checks the selected whole-file hashes and reconstructs the documentation from
+exact source ranges. It does not verify the entire source archive or decide
+distribution status. The 232 excerpts include internal crypt and floating-point
+credits missed by a header-only search. See [upstream notice review](service-upstream-notices.md).
 
 The ownership/license-selection gap for these custom contributions is closed.
 Before distributing a selected binary, finish the linked-component/file-specific

@@ -294,6 +294,12 @@ service fixtures, eleven runtime fixtures and ten source-package fixtures.
   Record repeated archive identities, input anchors and configuration-only limits.
 - [ ] Complete the full service rebuild from the unpacked archive, exact
   linked-file/binary-notice review and paired source/object delivery review.
+- [x] Trace all 2,310 LLVM archive objects, runtime compile inputs, custom service
+  and installed/generated headers. Preserve 232 checked notice excerpts and 30
+  license/grant texts in a pinned review bundle, including internal crypt,
+  floating-point, Unicode and Kokkos credits; verify/export it on both CI hosts.
+  See [notice trace evidence](docs/evidence/packaged-service-rebuild.md).
+  This conservative input review does not establish final binary/delivery clearance.
 - [x] Add explicit owned capture/configure/build/compare commands and strict source,
   dependency, manifest, output and failed-phase gates; retain actual generated-header/
   link-archive inventories. Keep OS/shared-cache and upstream runtime-source gaps explicit.

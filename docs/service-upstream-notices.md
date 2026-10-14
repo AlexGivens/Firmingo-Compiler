@@ -15,9 +15,15 @@ it does not relabel the upstream tree as GPL-only.
 | LLVM xxHash | Yann Collet BSD 2-Clause notices with attribution and disclaimer | `upstream/llvm/source/llvm/lib/Support/xxhash.cpp` and `llvm/include/llvm/Support/xxhash.h` |
 | LLVM Unicode conversion | Unicode, Inc. copyright, permission, disclaimer and modification notices in addition to LLVM terms | `upstream/llvm/source/llvm/lib/Support/ConvertUTF.cpp` and associated header |
 | LLVM MD5 implementation | Alexander Peslyak public-domain declaration and fallback permissive terms; the source explicitly states its independent implementation | `upstream/llvm/source/llvm/lib/Support/MD5.cpp` |
+| LLVM SHA1/SHA256 | Retained public-domain origin and adaptation credits in addition to LLVM terms | `upstream/llvm/source/llvm/lib/Support/SHA1.cpp` and `SHA256.cpp` |
+| LLVM Unicode name mapping | Unicode 1991–2022 data-file/software permission notice and disclaimer, in addition to LLVM terms | `upstream/llvm/source/llvm/lib/Support/UnicodeNameToCodepointGenerated.cpp` |
+| libc++ Ryu/floating-point conversion | Ulf Adams and Microsoft credits, Boost Software License 1.0 and LLVM terms as recorded per file | `upstream/llvm/source/libcxx/src/include/ryu/`, `libcxx/src/ryu/` and internal `charconv.cpp` credit |
+| libc++ template headers | Unicode table notices and Sandia/NTESS Kokkos credits with retained LLVM terms | `upstream/llvm/source/libcxx/include/__format/*_table.h` and `__atomic/atomic_ref.h` |
 | wasi-libc and WASI generation sources | Upstream Apache/LLVM-exception, Apache 2.0, MIT and component-specific terms | `upstream/libc/LICENSE*`, `upstream/wasiHeaders/LICENSE*`, nested notice files and source headers |
 | cloudlibc and musl-fts | BSD 2-Clause and BSD 3-Clause respectively | `upstream/libc/libc-bottom-half/cloudlibc/LICENSE`, `upstream/libc/fts/musl-fts/COPYING` |
 | musl | Rich Felker et al. MIT text, contributor credits and listed file-specific exceptions | `upstream/libc/libc-top-half/musl/COPYRIGHT` and individual source headers |
+| musl math/complex functions | Sun, Arm, FreeBSD contributors and other individual permissive notices | Preserved per-file comments in `upstream/libc/libc-top-half/musl/src/math/` and `src/complex/` |
+| musl regex, crypt and smoothsort | Ville Laurikari BSD 2-Clause, David Burren/Solar Designer BSD 3-Clause, Poul-Henning Kamp BSD 2-Clause, public-domain crypt credits and Valentin Ochs MIT-style terms | Preserved `src/regex/`, `src/crypt/` and `src/stdlib/qsort.c` comments; MD5 crypt attribution is inside its file |
 | allocators | Doug Lea dlmalloc public-domain/CC0 declaration; emmalloc MIT header retained whether or not selected | `upstream/libc/dlmalloc/src/malloc.c`, `upstream/libc/emmalloc/emmalloc.c` |
 | LLVM source-only third-party tests/helpers | Original Boost, benchmark and googletest/googlemock notices; inclusion in source does not imply linkage | `upstream/llvm/source/third-party/` |
 
@@ -30,6 +36,28 @@ The candidate source package includes all selected source files and an inventory
 of every file whose basename starts with LICENSE, COPYING, COPYRIGHT or NOTICE.
 That inventory is a completeness check for named notice files, not a substitute
 for file-header review or retained binary documentation.
+
+The committed [notice review bundle](../third_party/service-notice-review/README.md)
+now retains 30 complete license/grant texts and 232 unchanged source-comment
+excerpts, with whole-source hashes, offsets, line ranges and excerpt identities.
+The selection covers notices identified in the observed archive/runtime compile
+inputs conservatively before section garbage collection. Source-only licenses
+are retained too; inclusion is not proof that every implementation survived linking.
+Full-file marker inspection also found the internal musl MD5 crypt notice and
+libc++ contribution credits. Counts and exact observations are recorded in
+[packaged rebuild evidence](evidence/packaged-service-rebuild.md).
+
+```sh
+node tools/dev.mjs verify-service-notices
+node tools/dev.mjs verify-service-notices EXPLICIT_UNPACKED_SOURCE_ROOT
+node tools/dev.mjs export-service-materials NEW_REVIEW_DIRECTORY
+```
+
+The first command checks the independently committed manifest pin and every
+review payload; ordinary checks run it too. The second checks only selected
+source files against the pinned source manifest and reconstructs both text
+documents exactly. Use `source-package verify` separately for full archive
+integrity. Neither command executes a compiler or grants binary clearance.
 
 Before distributing the exact candidate service, finish the linked-file review,
 collect the required license/credit text in its binary delivery materials and

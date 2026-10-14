@@ -59,8 +59,10 @@ jobs:
           node tools/dev.mjs check 2>&1 | tee .build/logs/check.log
       - name: Production contracts, licensed-source review export, packaging and worker lifecycle
         run: node tools/dev.mjs test 2>&1 | tee .build/logs/test.log
-      - name: Export custom source and selected notices for review
-        run: node tools/dev.mjs export-service-materials .build/service-license-review 2>&1 | tee .build/logs/service-license-review.log
+      - name: Verify file-specific notices and export source review materials
+        run: |
+          node tools/dev.mjs verify-service-notices 2>&1 | tee .build/logs/service-notice-review.log
+          node tools/dev.mjs export-service-materials .build/service-license-review 2>&1 | tee .build/logs/service-license-review.log
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0; same pin as firmware
         if: always()
         with:

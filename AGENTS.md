@@ -137,6 +137,14 @@ distribution status until the remaining exact linked-file/delivery review and
 full packaged-service rebuild are supported by evidence. See
 `docs/source-package.md` and `docs/evidence/source-package.md`.
 
+`verify-service-notices [unpacked-source-root]` now checks a pinned documentation
+bundle with 232 source-comment excerpts and 30 license/grant texts. The optional
+root verifies selected whole-source identities and reconstructs the notice texts;
+it is not full archive verification. Normal tests and the deterministic review
+export include the bundle. Treat conservative compiled-input coverage separately
+from final binary/delivery clearance; see `docs/service-upstream-notices.md` and
+`docs/evidence/packaged-service-rebuild.md`.
+
 ## Working across the repositories
 
 The user has authorized this coding agent to work across Firmingo-Compiler,

@@ -20,6 +20,10 @@ The owned custom source provider and deterministic source-and-selected-notice
 review export are documented in [service licensing](service-licensing.md).
 Normal `check`/`test` verify the author's grant, all 23 unchanged custom inputs
 and retained upstream license identities without a sibling checkout or binary.
+`verify-service-notices [unpacked-source-root]` checks the conservative compiled-input
+notice bundle, optionally reconstructing its exact source selections. Normal tests
+exercise integrity, unexpected-file and symlink rejection; CI verifies/exports the
+bundle separately on both hosts. See [upstream notices](service-upstream-notices.md).
 `node tools/dev.mjs source-package build|verify` assembles an anchored source-only
 candidate archive and verifies every payload without execution. The separate
 `test-source-package` suite exercises raw source snapshots, archive integrity and

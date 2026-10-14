@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { join, resolve, dirname } from "node:path";
 import { parseContractJSON } from "../src/index.js";
 import { readBounded } from "./bounded-file.mjs";
+import { verifyServiceNoticeReview } from "./service-notice-review.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const prefix = "Tools/ArduinoDirectWASM/CompilerService/";
@@ -69,6 +70,7 @@ export function verifyOwnedServiceSources(sourceRoot = join(root, "service/sourc
 export function exportServiceMaterials(output) {
   const owned = verifyOwnedServiceSources();
   const files = new Map([...owned.materials].map(([name, bytes]) => ["service/source/" + name, bytes]));
+  for (const [name, bytes] of verifyServiceNoticeReview().materials) files.set("third_party/service-notice-review/" + name, bytes);
   const notices = json(regular(root, "third_party/service-runtime-notices/wasi-libc32/manifest.json", 65536));
   const shim = json(regular(root, "third_party/browser_wasi_shim/receipt.json", 65536));
   const add = (name, pin) => {
