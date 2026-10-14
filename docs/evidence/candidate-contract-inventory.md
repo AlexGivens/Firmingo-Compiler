@@ -75,3 +75,27 @@ records that association. Source licensing/notice closure, full upstream firmwar
 provenance, approved binary/package promotion, public SDK/private resource scheme,
 signed/physical hosts and hardware qualification remain separate work. No new
 local firmware build, device operation or service distribution occurred.
+
+## Subsequent CI and fresh export validation
+
+All eight [compiler jobs](https://github.com/AlexGivens/Firmingo-Compiler/actions/runs/38501649424)
+at `4fd59f5` and all ten [firmware jobs](https://github.com/AlexGivens/Firmingo/actions/runs/38501655101)
+at `e0a79d1` are inspected passing. Actual logs confirm 132 compiler contract
+passes/one optional-service skip per macOS/Linux host, nine service and eleven
+runtime maintenance fixtures per host, 4,000 JSON and 5,000 ELF mutations, and
+explicit real-service absence. Firmware logs confirm twenty sanitizer native
+cases, 195 host cases, four bounded fuzz paths, seven board/profile builds and
+four native proof modules; these are compile/test outcomes, not hardware evidence.
+
+The downloaded exact experimental firmware artifact contains all six nested
+source/license resources plus `contract.json`. Its schema-2 manifest anchor,
+observed in the exporter log, is
+`9246a7da31b3b4237d1783feb195a7e7719d65c6f4165f440d05de5daea876e4`.
+Compiler import and candidate inventory pass using that anchor. The new descriptor
+build ID is `c44d25efe774eb47b163bc082906cf48b59b6e3dd1d0e19c7822925e6ba8275f`;
+its firmware commit changes deliberately while actual resident ELF/UF2 and API
+address remain identical. Two actual WASM builds against the fresh descriptor
+produce the same capsules, reject three unsupported builds and pass independent
+correct/wrong-binding firmware validation. The JSON record preserves these new
+identities separately from the historical export above. No default catalogue,
+consumer pin or device state changes.
