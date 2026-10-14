@@ -83,3 +83,41 @@ protocol and its pre-existing `AGENTS.md` edit are untouched; only integration
 documentation changes there. ArduinoKit is untouched. Signed/minimum-OS/physical
 hosts, installed-image evidence and hardware behavior remain unqualified. These
 are local results; remote CI is recorded only after inspecting the relevant run.
+
+## Final package-context regressions
+
+Prepared snapshot `da2d257…` initially found two service-free adapter tests that
+unnecessarily expected absent compiler bytes. Their source/ELF parity assertions
+already passed. Removing those unrelated availability assertions keeps availability
+coverage in the dedicated resource suite; its source-only absent-service case
+explicitly skips for a prepared bundle. Actual compiler identity checks remain.
+
+Corrected clean SDK commit `3927416e726cdd78d8f54d64f57c88c522d9d85a` prepares
+261 records with manifest SHA-256
+`ba8d63b3742c8cc78022e56c364483ed030dca927c1d31c866b1bf31dfe5480e`.
+Its full native suite reports 152 test functions passing, with ten explicit skips:
+nine opt-in compiler cases and the source-only absent-service case. Present binary
+bytes are verified by the resource suite. Sixteen focused adapter/resource functions
+pass in the normal service-free checkout. No failed invocation counts as a pass.
+
+The final source-checkout adapter command again passes all 152 reported functions
+with nine unavailable-service skips and three SDK maintenance cases. A separate
+explicit-service run from the corrected prepared SDK passes all nine real WebKit
+cases, using its own local bundled service file. That run verifies the test's
+present-service copy path, both public build overloads, diagnostics, busy/cancel/
+deadline handling and fresh-state reentry. Local logs are
+`prepared-nano-sdk-r3-tests.log`, `prepared-nano-sdk-r3-webkit.log` and
+`consumer-package-final-sdk-tests.log` under SDK `.build/`. Final native DocC
+also succeeds without warnings; these are local Apple-host results, not SDK CI.
+
+## Verified compiler CI
+
+All eight jobs in [run 38653887252](https://github.com/AlexGivens/Firmingo-Compiler/actions/runs/38653887252)
+pass at `21ae9f7f4208e03d20aa816af366398ef341cc71`. Downloaded logs confirm 144 portable
+passes/one optional historical-service skip on each host, including four package
+boundary cases; maintenance passes 12 service, 11 runtime, ten source-archive, six
+delivery and nine transport cases per host. Mutation jobs complete 4,000 JSON and
+5,000 ELF cases. Real-runtime CI has zero compiler passes/eight skips; memory checks
+have one static pass/one skip. Chrome 154.0.8037.97 passes three service-free cases
+with six compiler skips; owned-candidate web checks skip nine. CI provisions no
+compiler; actual package/default-WebKit compilation remains local evidence.
