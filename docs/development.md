@@ -20,6 +20,10 @@ The owned custom source provider and deterministic source-and-selected-notice
 review export are documented in [service licensing](service-licensing.md).
 Normal `check`/`test` verify the author's grant, all 23 unchanged custom inputs
 and retained upstream license identities without a sibling checkout or binary.
+`node tools/dev.mjs source-package build|verify` assembles an anchored source-only
+candidate archive and verifies every payload without execution. The separate
+`test-source-package` suite exercises raw source snapshots, archive integrity and
+license/grant closure on both CI hosts. See [source packaging](source-package.md).
 
 From the repository root:
 

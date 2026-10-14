@@ -26,11 +26,12 @@ jobs:
       - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0; same firmware pin
         with:
           python-version: ${{ matrix.python }}
-      - name: Owned source-provider grant gates and synthetic service/runtime build boundaries
+      - name: Packaged source, archive integrity and synthetic service/runtime build boundaries
         run: |
           mkdir -p .build/logs
           node tools/dev.mjs test-service-build 2>&1 | tee .build/logs/service-maintenance.log
           node tools/dev.mjs test-runtime-build 2>&1 | tee .build/logs/runtime-maintenance.log
+          node tools/dev.mjs test-source-package 2>&1 | tee .build/logs/source-package.log
           echo "Actual LLVM and WASI source builds are local opt-in maintenance; distribution review remains unresolved." >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         if: always()

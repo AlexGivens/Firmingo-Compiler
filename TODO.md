@@ -274,8 +274,8 @@ Distribution and public SDK/private-scheme/package promotion remain open. See [r
 [owned source-build evidence](docs/evidence/owned-service-build.md).
 [CI](docs/evidence/owned-service-ci.md) passes all eight jobs at `fa35579`, with
 real-service compilation explicitly skipped there. Local ordinary tests now pass
-136 cases with one optional-service skip; separate maintenance suites pass eleven
-service fixtures and eleven runtime fixtures.
+136 cases with one optional-service skip; separate maintenance suites pass twelve
+service fixtures, eleven runtime fixtures and ten source-package fixtures.
 
 - [ ] Resolve source, license/component, attribution, and build-provenance gaps for
   the service and every shipped dependency. Record the outcome and any exclusions.
@@ -285,6 +285,15 @@ service fixtures and eleven runtime fixtures.
   source-and-selected-notice review export. See [licensing](docs/service-licensing.md).
 - [ ] Add reproducible service/asset maintenance commands, pinned sources/tools,
   identifiable patches, and source/notice materials required by the reviewed assets.
+- [x] Assemble and verify a source-only candidate archive containing both recipes'
+  raw upstream source selections, complete pinned WASI sources, GPL grant, notices,
+  source headers and rebuild scripts. Add bounded raw-snapshot providers and
+  archive integrity checks. See [source package](docs/source-package.md).
+- [x] Rebuild all 2,353 runtime files from an unpacked candidate archive and
+  configure the actual service from its raw/custom sources without a Git cache.
+  Record repeated archive identities, input anchors and configuration-only limits.
+- [ ] Complete the full service rebuild from the unpacked archive, exact
+  linked-file/binary-notice review and paired source/object delivery review.
 - [x] Add explicit owned capture/configure/build/compare commands and strict source,
   dependency, manifest, output and failed-phase gates; retain actual generated-header/
   link-archive inventories. Keep OS/shared-cache and upstream runtime-source gaps explicit.

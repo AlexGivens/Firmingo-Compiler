@@ -127,6 +127,16 @@ Corresponding Source or binary distribution approval. See
 `docs/service-licensing.md`. Do not add a generated-output license exception or
 replace upstream terms based on the author's original-contribution grant.
 
+`source-package build|verify` now assembles an anchored source-only candidate
+archive with both recipes' raw LLVM sources, complete pinned WASI source inputs,
+grant/notices, source headers and rebuild scripts. `llvmSourceRoot` allows both
+maintenance paths to consume verified raw snapshots without a Git cache or
+sibling checkout. Real packaged-runtime rebuild and service configuration are
+recorded separately; configuration is not compilation. Preserve unresolved
+distribution status until the remaining exact linked-file/delivery review and
+full packaged-service rebuild are supported by evidence. See
+`docs/source-package.md` and `docs/evidence/source-package.md`.
+
 ## Working across the repositories
 
 The user has authorized this coding agent to work across Firmingo-Compiler,

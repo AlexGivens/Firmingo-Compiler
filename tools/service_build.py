@@ -75,7 +75,14 @@ def real_directory(path):
 
 def read_small(path, maximum):
     record = file_record(path, maximum)
-    data = Path(path).read_bytes()
+    descriptor = os.open(path, os.O_RDONLY | os.O_NONBLOCK)
+    try:
+        if not stat.S_ISREG(os.fstat(descriptor).st_mode):
+            raise ValueError("input is not a bounded regular file")
+        with os.fdopen(descriptor, "rb", closefd=False) as source:
+            data = source.read(record["bytes"] + 1)
+    finally:
+        os.close(descriptor)
     if len(data) != record["bytes"] or sha(data) != record["sha256"]:
         raise ValueError("input changed during capture")
     return data
@@ -207,15 +214,17 @@ def dependency_closure(tools, inspector):
 
 def load_configuration(path):
     config = read_json(path, 65536)
-    keys = {"schema", "llvmGit", "sysroot", "resourceDirectory", "cmakeModules", "pythonStandardLibrary", "components", "tools", "dependencyInspector"}
-    if not isinstance(config, dict) or set(config) not in (keys | {"referenceRoot"}, keys | {"serviceSourceRoot"}) or type(config["schema"]) is not int or config["schema"] != 1:
+    keys = {"schema", "sysroot", "resourceDirectory", "cmakeModules", "pythonStandardLibrary", "components", "tools", "dependencyInspector"}
+    allowed = [keys | {custom, upstream} for custom in ("referenceRoot", "serviceSourceRoot") for upstream in ("llvmGit", "llvmSourceRoot")]
+    if not isinstance(config, dict) or set(config) not in allowed or type(config["schema"]) is not int or config["schema"] != 1:
         raise ValueError("unsupported service build configuration")
     if not isinstance(config["tools"], dict) or set(config["tools"]) != set(TOOLS):
         raise ValueError("select every explicit native build tool")
     if not isinstance(config["components"], dict) or not 2 <= len(config["components"]) <= 16:
         raise ValueError("select explicit installed component roots")
     source_key = "serviceSourceRoot" if "serviceSourceRoot" in config else "referenceRoot"
-    values = [config[key] for key in (source_key, "llvmGit", "sysroot", "resourceDirectory", "cmakeModules", "pythonStandardLibrary", "dependencyInspector")]
+    upstream_key = "llvmSourceRoot" if "llvmSourceRoot" in config else "llvmGit"
+    values = [config[key] for key in (source_key, upstream_key, "sysroot", "resourceDirectory", "cmakeModules", "pythonStandardLibrary", "dependencyInspector")]
     values += list(config["tools"].values()) + list(config["components"].values())
     if any(not isinstance(value, str) or not value or len(value) > 4096 or ";" in value or any(ord(c) < 32 for c in value) for value in values):
         raise ValueError("select bounded literal local input paths without control/list characters")
@@ -241,17 +250,107 @@ def cmake_module_directory(executable):
     return Path(result[len(prefix):]).resolve(strict=True)
 
 
+def llvm_source_inputs(config, recipe):
+    """Select pinned Git objects or an anchored package's raw source snapshot; never a working tree."""
+    if "llvmSourceRoot" not in config:
+        root = real_directory(config["llvmGit"])
+        if git(root, "rev-parse", "--verify", recipe["llvmCommit"] + "^{commit}").decode().strip() != recipe["llvmCommit"]:
+            raise ValueError("pinned LLVM source commit missing")
+        entries = git(root, "ls-tree", "-rz", recipe["llvmCommit"], "--", *recipe["sourcePaths"], maximum=32*1024*1024)
+        objects = []
+        for entry in entries.split(b"\0"):
+            if not entry:
+                continue
+            header, name = entry.split(b"\t", 1); mode, kind, oid = header.decode().split()
+            if kind != "blob" or mode not in ("100644", "100755", "120000"):
+                raise ValueError("unsupported committed source object")
+            objects.append({"path": path_name(name.decode()), "mode": mode, "gitBlob": oid})
+        provider = {"git": root}
+    else:
+        root = real_directory(config["llvmSourceRoot"])
+        if (root / "manifest.json").is_symlink():
+            raise ValueError("symlinked LLVM snapshot inventory")
+        manifest = read_json(root / "manifest.json", 64*1024*1024)
+        if set(manifest) != {"schema", "llvmCommit", "files"} or type(manifest["schema"]) is not int or manifest["schema"] != 1 or manifest["llvmCommit"] != recipe["llvmCommit"] or not isinstance(manifest["files"], list) or not 1 <= len(manifest["files"]) <= 150000:
+            raise ValueError("unsupported LLVM source snapshot")
+        selected, names, total = [], set(), 0
+        for record in manifest["files"]:
+            if not isinstance(record, dict) or set(record) != {"path", "mode", "gitBlob", "bytes", "sha256"} or record["mode"] not in ("100644", "100755", "120000") or not isinstance(record["gitBlob"], str) or not re.fullmatch(r"[0-9a-f]{40}", record["gitBlob"]) or not isinstance(record["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", record["sha256"]) or type(record["bytes"]) is not int or not 0 <= record["bytes"] <= 32*1024*1024:
+                raise ValueError("unsupported LLVM snapshot record")
+            name = path_name(record["path"]); total += record["bytes"]
+            if name in names or total > 8*1024*1024*1024:
+                raise ValueError("duplicate or excessive LLVM snapshot")
+            names.add(name)
+            if any(name == prefix or name.startswith(prefix + "/") for prefix in recipe["sourcePaths"]):
+                selected.append(record)
+        selected_names = {record["path"] for record in selected}
+        for record in selected:
+            snapshot_blob(root, record, selected_names)
+        objects = [{key: record[key] for key in ("path", "mode", "gitBlob")} for record in selected]
+        provider = {"snapshot": root, "records": selected, "manifest": file_record(root / "manifest.json", 64*1024*1024)}
+    if not 1 <= len(objects) <= 150000:
+        raise ValueError("LLVM source count outside bound")
+    return objects, provider
+
+
+def snapshot_blob(root, record, names):
+    """Read one bounded raw Git blob, including literal safe link targets, without parent aliases."""
+    path = root / "source" / record["path"]
+    for parent in path.parents:
+        if parent == root:
+            break
+        if parent.is_symlink():
+            raise ValueError("symlinked LLVM snapshot parent")
+    if record["mode"] == "120000":
+        if not path.is_symlink():
+            raise ValueError("LLVM snapshot link mode mismatch")
+        target = os.readlink(path)
+        name = path_name(os.path.normpath(str(PurePosixPath(record["path"]).parent / target)))
+        if Path(target).is_absolute() or name not in names or not path.resolve(strict=True).is_relative_to(root / "source"):
+            raise ValueError("LLVM snapshot link escapes selected sources")
+        data = target.encode()
+    else:
+        if path.is_symlink() or bool(path.stat().st_mode & 0o111) != (record["mode"] == "100755"):
+            raise ValueError("LLVM snapshot file mode mismatch")
+        data = read_small(path, 32*1024*1024)
+    if len(data) != record["bytes"] or sha(data) != record["sha256"] or hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest() != record["gitBlob"]:
+        raise ValueError("LLVM snapshot bytes differ from recorded Git blob")
+    return data
+
+
+def snapshot_llvm(provider, recipe, output, objects):
+    if "git" in provider:
+        return export_git(provider["git"], recipe, output, objects)
+    output.mkdir()
+    records = provider["records"]; names = {record["path"] for record in records}
+    links = []
+    for record in records:
+        data = snapshot_blob(provider["snapshot"], record, names)
+        path = output / record["path"]; path.parent.mkdir(parents=True, exist_ok=True)
+        if record["mode"] == "120000":
+            links.append((path, data.decode()))
+        else:
+            with path.open("xb") as target:
+                target.write(data)
+            path.chmod(0o755 if record["mode"] == "100755" else 0o644)
+    for path, target in links:
+        path.symlink_to(target)
+    for path, _ in links:
+        if not path.resolve(strict=True).is_relative_to(output):
+            raise ValueError("LLVM snapshot link escapes owned output")
+    if file_record(provider["snapshot"] / "manifest.json", 64*1024*1024) != provider["manifest"]:
+        raise ValueError("LLVM snapshot inventory changed during copy")
+    return records
+
+
 def capture(config, pins=None):
     """Capture all direct source, patch, header/sysroot/resource and bootstrap inputs before any build output."""
     pins = pins or read_json(REFERENCE_PATH)
     recipe = read_json(RECIPE_PATH)
     owned = "serviceSourceRoot" in config
     reference = real_directory(config["serviceSourceRoot"] if owned else config["referenceRoot"])
-    llvm_git = real_directory(config["llvmGit"])
     if not owned and git(reference, "rev-parse", "HEAD").decode().strip() != pins["referenceCommit"]:
         raise ValueError("reference commit differs from pin")
-    if git(llvm_git, "rev-parse", "--verify", recipe["llvmCommit"] + "^{commit}").decode().strip() != recipe["llvmCommit"]:
-        raise ValueError("LLVM commit missing")
     service, service_locators, grant_records, grant_locators = [], {}, [], {}
     if owned:
         # The grant is selected from this repository, not trusted from a caller's JSON.
@@ -280,19 +379,7 @@ def capture(config, pins=None):
         declared = [{key: record[key] for key in ("path", "bytes", "sha256", "role")} for record in grant["files"]]
         if sorted(declared, key=lambda record: record["path"]) != sorted(service, key=lambda record: record["path"]):
             raise ValueError("owned source license inventory differs from input pins")
-    sources = git(llvm_git, "ls-tree", "-rz", recipe["llvmCommit"], "--", *recipe["sourcePaths"], maximum=32 * 1024 * 1024)
-    objects = []
-    for entry in sources.split(b"\0"):
-        if not entry:
-            continue
-        header, name = entry.split(b"\t", 1)
-        mode, kind, oid = header.decode().split()
-        name = path_name(name.decode("utf-8"))
-        if kind != "blob" or mode not in ("100644", "100755", "120000"):
-            raise ValueError("unsupported committed source object")
-        objects.append({"path": name, "mode": mode, "gitBlob": oid})
-    if not objects or len(objects) > 150000:
-        raise ValueError("LLVM source count outside bound")
+    objects, llvm_provider = llvm_source_inputs(config, recipe)
     components = {key: real_directory(path) for key, path in config["components"].items()}
     if Path(config["pythonStandardLibrary"]).resolve() != python_library_directory():
         raise ValueError("Python standard-library selection differs from the actual isolated interpreter")
@@ -341,9 +428,11 @@ def capture(config, pins=None):
     if owned:
         manifest["customSourceLicense"] = {"contributionLicense": "GPL-3.0-only", "ownershipStatus": "confirmed by author",
                                           "provider": "owned source", "materials": grant_records}
+    if "snapshot" in llvm_provider:
+        manifest["llvmSourceSnapshot"] = llvm_provider["manifest"]
     return manifest, {"service": service_locators, "sourceGrant": grant_locators, "sysroot": sysroot_paths, "resources": resource_paths,
                       "cmakeModules": cmake_module_paths, "pythonStandardLibrary": python_library_paths,
-                      "notices": notice_paths, "bootstrap": bootstrap_paths, "llvmGit": llvm_git, "tools": tools}
+                      "notices": notice_paths, "bootstrap": bootstrap_paths, "llvmProvider": llvm_provider, "tools": tools}
 
 
 def write_json(path, value):
@@ -463,7 +552,7 @@ def build_command(config_path, expected, output, jobs, configure_only=False):
     try:
         source = output / "llvm-source"
         recipe = manifest["recipe"]
-        source_objects = export_git(inputs["llvmGit"], recipe, source, manifest["llvmSources"])
+        source_objects = snapshot_llvm(inputs["llvmProvider"], recipe, source, manifest["llvmSources"])
         write_json(output / "source-objects.json", source_objects)
         for role, key in (("service", "serviceInputs"), ("sysroot", "sysroot"), ("resources", "resources"), ("notices", "componentRecords")):
             copy_records(output / role, manifest[key], inputs[role])

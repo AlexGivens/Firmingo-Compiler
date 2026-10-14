@@ -148,6 +148,7 @@ class RuntimeBuildTests(unittest.TestCase):
             raise ValueError("fixture phase failed")
         def export(*args):
             args[2].mkdir(); return []
+        locators["llvmProvider"] = {"git": config["llvmGit"]}
         with patch.object(rb, "capture", return_value=(manifest, locators)), \
                 patch.object(sb, "export_git", side_effect=export), patch.object(sb, "execute", side_effect=fail):
             with self.assertRaisesRegex(ValueError, "fixture phase"):

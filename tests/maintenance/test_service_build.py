@@ -296,6 +296,22 @@ class ServiceBuildTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "symlinked"):
                 self.captured()
 
+    def test_packaged_upstream_provider_builds_without_git_cache_and_applies_patch_once(self):
+        import shutil
+        legacy = self.captured()["llvmSources"]
+        recipe = sb.read_json(self.recipe_path)
+        packaged = self.root / "packaged-llvm"; packaged.mkdir()
+        records = sb.export_git(self.llvm, recipe, packaged / "source", legacy)
+        sb.write_json(packaged / "manifest.json", {"schema": 1, "llvmCommit": recipe["llvmCommit"], "files": records})
+        shutil.rmtree(self.llvm)
+        self.config.pop("llvmGit"); self.config["llvmSourceRoot"] = str(packaged); self.save_config()
+        manifest = self.captured(); self.assertEqual(manifest["llvmSources"], legacy)
+        self.assertEqual(manifest["llvmSourceSnapshot"], sb.file_record(packaged / "manifest.json"))
+        output = self.root / "packaged-upstream-build"
+        sb.build_command(self.config_path, sb.identity(manifest), output, 2)
+        self.assertEqual((output / "llvm-source/llvm/Example.cpp").read_text(), "patched\n")
+        self.assertEqual((packaged / "source/llvm/Example.cpp").read_text(), "base\n")
+
 
 def shutil_which_node():
     import shutil

@@ -56,9 +56,9 @@ def unpack(archive, pin, output):
 
 def configuration(path):
     config = sb.read_json(path)
-    keys = {"schema", "llvmGit", "archives", "nativeResourceDirectory", "cmakeModules",
+    keys = {"schema", "archives", "nativeResourceDirectory", "cmakeModules",
             "pythonStandardLibrary", "components", "tools", "dependencyInspector"}
-    if not isinstance(config, dict) or set(config) != keys or type(config["schema"]) is not int or config["schema"] != 1:
+    if not isinstance(config, dict) or set(config) not in (keys | {"llvmGit"}, keys | {"llvmSourceRoot"}) or type(config["schema"]) is not int or config["schema"] != 1:
         raise ValueError("unsupported runtime build configuration")
     if not isinstance(config["tools"], dict) or not isinstance(config["archives"], dict) or set(config["tools"]) != set(TOOLS) or set(config["archives"]) != {"libc", "wasiHeaders"}:
         raise ValueError("select all explicit tools and pinned archives")
@@ -67,7 +67,7 @@ def configuration(path):
     for name in config["components"]:
         if not re.fullmatch(r"[a-z][a-z0-9-]{0,39}", name):
             raise ValueError("invalid component label")
-    paths = [config[name] for name in keys - {"schema", "archives", "components", "tools"}]
+    paths = [config[name] for name in set(config) - {"schema", "archives", "components", "tools"}]
     paths += list(config["tools"].values()) + list(config["components"].values()) + list(config["archives"].values())
     if any(not isinstance(path, str) or len(path) > 4096 or ";" in path or not Path(path).is_absolute() or any(ord(c) < 32 for c in path) for path in paths):
         raise ValueError("select absolute explicit input locators")
@@ -77,19 +77,7 @@ def configuration(path):
 def capture(config):
     recipe = sb.read_json(RECIPE)
     components = {key: sb.real_directory(path) for key, path in config["components"].items()}
-    llvm = sb.real_directory(config["llvmGit"])
-    if sb.git(llvm, "rev-parse", "--verify", recipe["llvmCommit"] + "^{commit}").decode().strip() != recipe["llvmCommit"]:
-        raise ValueError("pinned LLVM source commit missing")
-    objects = []
-    for entry in sb.git(llvm, "ls-tree", "-rz", recipe["llvmCommit"], "--", *recipe["sourcePaths"], maximum=32*1024*1024).split(b"\0"):
-        if not entry:
-            continue
-        header, name = entry.split(b"\t", 1); mode, kind, oid = header.decode().split()
-        if mode not in ("100644", "100755", "120000") or kind != "blob":
-            raise ValueError("unsupported runtime source object")
-        objects.append({"path": sb.path_name(name.decode()), "mode": mode, "gitBlob": oid})
-    if not 1 <= len(objects) <= 150000:
-        raise ValueError("runtime source count outside bound")
+    objects, llvm_provider = sb.llvm_source_inputs(config, recipe)
     archives = {key: sb.file_record(path, MAX_ARCHIVE) for key, path in config["archives"].items()}
     if any(archives[key]["sha256"] != pin["sha256"] for key, pin in recipe["archives"].items()):
         raise ValueError("source archive differs from pin")
@@ -115,7 +103,9 @@ def capture(config):
                 "maintenancePython": {"version": sb.platform.python_version(), **sb.file_record(sys.executable)},
                 "maintenance": [{"path": "tools/" + name, **sb.file_record(sb.ROOT / "tools" / name)} for name in ("runtime_build.py", "service_build.py")],
                 "distributionStatus": "unresolved", "headerGeneration": "pinned pre-generated libc headers; WASI source staged but Rust generator not executed"}
-    locators = {"bootstrap": bootstrap_paths}
+    if "snapshot" in llvm_provider:
+        manifest["llvmSourceSnapshot"] = llvm_provider["manifest"]
+    locators = {"bootstrap": bootstrap_paths, "llvmProvider": llvm_provider}
     for role, root in (("nativeHeaders", Path(config["nativeResourceDirectory"]) / "include"),
                        ("cmakeModules", config["cmakeModules"]), ("pythonStandardLibrary", config["pythonStandardLibrary"])):
         manifest[role], locators[role] = sb.tree_records(root, components, ("site-packages",))
@@ -194,7 +184,7 @@ def build(config, expected, output, jobs):
     commands = []
     try:
         source = output / "llvm-source"
-        objects = sb.export_git(config["llvmGit"], manifest["recipe"], source, manifest["llvmSources"])
+        objects = sb.snapshot_llvm(locators["llvmProvider"], manifest["recipe"], source, manifest["llvmSources"])
         sb.write_json(output / "llvm-source-objects.json", objects)
         for key, pin in manifest["recipe"]["archives"].items():
             records = unpack(config["archives"][key], pin, output / key)
