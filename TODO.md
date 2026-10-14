@@ -300,6 +300,10 @@ service fixtures, eleven runtime fixtures and ten source-package fixtures.
   delivery, with nine checked payloads and scoped review. Deliberately promote
   its consumer pin; preserve historical archive flags and legacy binary status.
   See [delivery maintenance](docs/service-delivery.md).
+- [x] Prepare deterministic local service transport and an independently anchored
+  release inventory. Verify bounded fixed-role extraction, complete paired source
+  and notices, and actual SDK consumption after transfer. No hosted publication.
+  See [transport](docs/service-release.md) and [evidence](docs/evidence/service-release.md).
 - [x] Trace all 2,310 LLVM archive objects, runtime compile inputs, custom service
   and installed/generated headers. Preserve 232 checked notice excerpts and 30
   license/grant texts in a pinned review bundle, including internal crypt,
@@ -328,7 +332,7 @@ service fixtures, eleven runtime fixtures and ten source-package fixtures.
 - [ ] Package a bounded versioned inventory of service, runtime, recipes, resources,
   static metadata, sizes, hashes, ABI compatibility, licenses, and notices.
   Service/source/notice delivery is implemented; a complete default bundled
-  consumer plus reviewed firmware catalogue/release transport remains open.
+  consumer plus reviewed firmware catalogue and hosted provisioning remain open.
 - [ ] Back offered firmware descriptors with exact trusted export/build evidence;
   exclude synthetic resident metadata and test-only assets from production packages.
 - [ ] Test corrupt/missing/truncated assets, unsafe paths, incompatible manifests,
@@ -359,6 +363,10 @@ validation. The stale historical address is rejected. No hardware qualification.
 
 Status: not started. Depends on real artifacts from M4 and wrapper integration;
 public release claims also require M7.
+
+The [qualification gate plan](docs/release-qualification.md) records concrete host,
+resident and device evidence required next. Existing local macOS wrapper tests are
+recorded separately; signed/minimum-OS/physical/device results remain open.
 
 - [ ] Select concrete web/wrapper environments and versions to test; create a matrix
   separating portable runtime behavior, wrapper sandbox support, and device behavior.

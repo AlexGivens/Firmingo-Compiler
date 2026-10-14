@@ -48,7 +48,7 @@ function writeOutput(path, files, summary) {
 /** Development entry point only; no native subprocess dependency exists in src/. */
 async function main() {
   const [command, ...argumentsList] = process.argv.slice(2);
-  if (!command || command === "--help" || (argumentsList.includes("--help") && !["service-build", "runtime-build", "source-package", "service-package"].includes(command))) {
+  if (!command || command === "--help" || (argumentsList.includes("--help") && !["service-build", "runtime-build", "source-package", "service-package", "service-release"].includes(command))) {
     console.log("Usage: node tools/dev.mjs doctor|test|check|fuzz|fuzz-elf\n"
       + "  validate-request <request.json>\n  prepare-request <request.json> <new-output-directory>\n"
       + "  package-elf <request.json> <linked.elf> <provenance.json> <new-output-directory>\n"
@@ -69,6 +69,8 @@ async function main() {
       + "  source-package build|verify ... (anchored source-only candidate archive)\n"
       + "  service-package build|verify ... (reviewed binary/source/notice delivery; no publication)\n"
       + "  test-service-package (paired-delivery rejection fixtures)\n"
+      + "  service-release build|verify|extract ... (deterministic local transport; no publication)\n"
+      + "  test-service-release (transport integrity and extraction boundaries)\n"
       + "  test-source-package (owned source/archive boundary fixtures)\n"
       + "  test-runtime-build (bounded source archives and runtime receipt checks)\n"
       + "  test-built-service explicit-built.wasm trusted-module-sha256 resident-descriptor.json new-output-directory\n"
@@ -108,11 +110,11 @@ async function main() {
       errorsRejected: result.errorChecks.length, serviceSHA256: result.serviceSHA256, hardwareExecuted: false }));
     return;
   }
-  if (["service-build", "test-service-build", "runtime-build", "test-runtime-build", "source-package", "test-source-package", "service-package", "test-service-package"].includes(command)) {
+  if (["service-build", "test-service-build", "runtime-build", "test-runtime-build", "source-package", "test-source-package", "service-package", "test-service-package", "service-release", "test-service-release"].includes(command)) {
     const test = command.startsWith("test-");
     if (test && argumentsList.length) throw new Error(`${command} takes no arguments`);
     const python = process.env.FIRMINGO_SERVICE_BUILD_PYTHON || "python3";
-    const stem = command.endsWith("service-package") ? "service_delivery" : command.includes("package") ? "source_package" : command.includes("runtime") ? "runtime_build" : "service_build";
+    const stem = command.endsWith("service-release") ? "service_release" : command.endsWith("service-package") ? "service_delivery" : command.includes("package") ? "source_package" : command.includes("runtime") ? "runtime_build" : "service_build";
     const result = spawnSync(python, ["-I", "-S", "-B", test ? `tests/maintenance/test_${stem}.py` : `tools/${stem}.py`, ...argumentsList],
     { cwd: root, stdio: "inherit", timeout: test ? 60000 : 3 * 60 * 60 * 1000 });
     if (result.error || result.signal || result.status !== 0) throw new Error("Service maintenance failed; use the documented explicit Python host and retained phase logs");

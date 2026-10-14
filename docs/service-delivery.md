@@ -37,6 +37,10 @@ inventory independently, rejects missing/extra/duplicate/unsafe roles, checks al
 payloads and every source member, then rechecks bytes after the longer archive pass.
 Synthetic tests use tiny non-executable inputs; they do not qualify a compiler.
 
+[Service transport](service-release.md) adds a deterministic ZIP and independently
+anchored release inventory, with bounded verification/extraction into a new local
+delivery. It prepares downloadable bytes without fetching or publishing them.
+
 The nine payload roles are `compiler.wasm`, `compiler-source.tar.gz`, `LICENSE`,
 `LICENSES.txt`, `FILE-NOTICES.txt`, `source-notices.json`, `delivery-review.json`,
 `README.md` and `BUILDING.md`. The fixed service basename is retained. The source

@@ -7,6 +7,10 @@ service passes actual Node, Chrome, SDK private-WebKit and fresh SwiftPM consume
 checks. Default binary provisioning, firmware catalogue and physical-host/device
 qualification remain separate work.
 
+[Local service transport](docs/service-release.md) packages those reviewed bytes
+with a trusted release inventory and safe extraction. [Qualification gates](docs/release-qualification.md)
+separate provisioning, signed/physical hosting and selected device deployment.
+
 A portable WASM compiler project focused on Firmingo managed sketches, with
 conventional Arduino firmware compilation as a secondary goal.
 

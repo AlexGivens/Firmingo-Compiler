@@ -158,6 +158,13 @@ consumer checks are tracked in `docs/evidence/service-delivery.md`. No service i
 committed or bundled, no production descriptors are added and hardware remains
 unqualified. Do not describe this scoped review as permission for arbitrary assets.
 
+`service-release build|verify|extract` now prepares deterministic stored-ZIP
+transport with an independently anchored release inventory. It verifies the paired
+delivery and every source member, bounds archive parsing/extraction and rechecks
+transport identities after source verification. It never downloads or publishes.
+See `docs/service-release.md` and `docs/release-qualification.md`; keep binary
+provisioning, trusted resident catalogue and signed/physical/device claims separate.
+
 The user has authorized this coding agent to work across Firmingo-Compiler,
 FirmingoKit, and Firmingo. Earlier sibling guidance treating Firmingo as read-only
 or assigning compilation to FirmingoKit is superseded by that ownership decision
