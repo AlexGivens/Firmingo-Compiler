@@ -394,7 +394,8 @@ recorded separately; additional hosts, minimum OS and device deployment remain o
 - [ ] Obtain/select a trusted exact Nano resident and compatible descriptor, compile
   two different supported sketches through the real runtime, and independently
   validate artifacts before a separately authorized deployment workflow.
-- [x] Prepare the SDK-owned Nano hardware test host and pinned resident inputs without board access. The SDK's `docs/nano-hardware-preparation.json` records fourteen checked evidence roles, test plan `861e0089…`, guarded one-shot deployment actions, query-only restored records, signed macOS offline compilation with both known capsules and complete macOS/iOS Release builds. The resident-only image preserves the managed slot; selected initial ROM/slot/readback setup and every hardware action remain open.
+- [x] Prepare the SDK-owned Nano hardware test host and pinned resident inputs without board access. The SDK's `docs/nano-hardware-preparation.json` records fourteen checked evidence roles, test plan `861e0089…`, guarded one-shot deployment actions, query-only restored records, signed macOS offline compilation with both known capsules and complete macOS/iOS Release builds.
+- [x] Complete selected initial Nano setup through Firmware: exact resident plus SDK GPIO capsule in a fully verified ROM composite, then matching macOS hello. SDK `docs/nano-hardware-initial.json` also records signed iOS host installation/launch on iPad over Wi-Fi. SDK managed deployment, startup, GPIO/console behavior and actual Apple USB qualification remain pending; no compiler pin/recipe change follows from initial setup.
 - [ ] Deploy through the wrapper, verify startup, exact expected console bytes and
   timing/GPIO behavior, then replace the sketch. Record the limits of exercised APIs.
 - [ ] Check relevant cancellation, interrupted operations, reconnect, and stale

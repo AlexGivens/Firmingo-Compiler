@@ -222,9 +222,13 @@ recipes, SDK implementation and timers are unchanged.
 FirmingoKit now also prepares a separate Nano hardware-qualification app and
 fourteen resident-evidence roles from this exact consumer package. Its
 `docs/nano-hardware-preparation.json` records signed macOS offline compilation
-with the same known capsules and complete macOS/iOS Release builds; no board
-connection, flash or upload has occurred. The resident-only UF2 preserves the
-managed slot, so selected ROM/slot/readback setup remains a physical prerequisite.
+with the same known capsules and complete macOS/iOS Release builds. A separately
+selected Firmware-owned initial composite now combines the exact exported
+resident with the SDK GPIO capsule, initializes the first managed sector, passes
+full ROM verification before boot and answers a matching macOS hello. The signed
+iOS host is installed/launched on iPad over Wi-Fi; SDK managed upload/startup/
+behavior and physical Apple USB qualification remain open. See Firmware's
+`docs/evidence/nano-sdk-initial.json` and SDK `docs/nano-hardware-initial.json`.
 Compiler assets, descriptor identities and recipe claims are unchanged.
 
 The user has authorized this coding agent to work across Firmingo-Compiler,

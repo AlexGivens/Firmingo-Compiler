@@ -149,12 +149,16 @@ to prepare this next gate. Its `docs/nano-hardware-preparation.json` records the
 exact consumer-derived resident test inputs, guarded inspect/association/RAM-stage/
 one-shot-commit/reconcile actions, and actual signed macOS offline compilation of
 both known capsules. Complete macOS/iOS Release builds and native policy/source
-checks pass; the iOS app has not been signed/installed/run. This adds no compiler
-assets or recipe identities and no hardware qualification. The selected resident-
-only UF2 preserves the existing managed slot. A concrete recoverable Nano and
-reviewed ROM/slot/readback setup are required before initial flashing; device
-hello cannot establish that installed-image association. The host never grants
-write permission from preparation, restored records or launch alone.
+checks pass. The SDK's separate `docs/nano-hardware-initial.json` now records the
+signed iOS host installed/launched wirelessly on iPad. Firmware's
+`docs/evidence/nano-sdk-initial.json` records selected initial ROM setup: exact
+exported resident plus known SDK GPIO capsule, full initial UF2 verification
+before reboot and a matching macOS hello. The entire first managed sector is
+initialized, avoiding preserved unknown sketch contents. This adds no compiler
+assets or recipe identities. SDK managed staging/commit/startup/useful behavior
+and physical Apple USB qualification remain pending. Device hello cannot
+establish installed-image association. The host never grants write permission
+from preparation, restored records or launch alone.
 
 Keep synthetic compiler fixtures, test descriptors and generated parser capsules
 out of deployment. Record unavailable hosts/boards as untested, and report failures
