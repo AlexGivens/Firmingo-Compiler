@@ -29,7 +29,8 @@ it is not a second policy file or authorization to implement the entire roadmap.
 - [x] Exercise real WASM stateful compilation, independent firmware host validation and bounded ELF mutations for both profiles.
 - [x] Export both recipe resource sets and coordinate SDK native validation/target-two upload handling.
 - [x] Record signed macOS FMS2 compilation and the exact Nano/iPad two-sketch upload, in-boot replacement, state/echo and manual-reboot pass through the SDK. See [scoped evidence](docs/stateful-adoption.md#selected-nanoipad-hardware-result); other host and production gates remain separate.
-- [ ] Qualify this exact candidate through signed macOS/iPad/iPhone hosts and selected-board replacement/reboot/interruption/recovery tests before promoting FMS2 into the default catalogue.
+- [x] Repeat actual compilation, two same-boot uploads/state/echo checks and manual RESET on iPhone through the identical signed SDK host. [Separate physical record](docs/stateful-adoption.md#iphone-follow-through).
+- [ ] Complete remaining minimum-OS, broader host/device, interruption/recovery and production-delivery gates before promoting FMS2 into the default catalogue.
 
 Evidence and exact input/command identities: [FMS2 adoption](docs/stateful-adoption.md).
 

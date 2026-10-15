@@ -2,9 +2,9 @@
 
 The explicit `nano-managed-v2` profile compiles through the existing pinned
 Clang/LLD WASM service. ABI-one requests, recipe bytes, FMS1 artifacts and the
-previous resident catalogue remain separate. The selected Nano/iPad combination
-now has the scoped hardware evidence recorded below. Firmware owns initialization, validation and upload semantics; the
-compiler performs no device I/O.
+previous resident catalogue remain separate. The selected Nano/iPad and iPhone
+combinations now have the scoped hardware evidence recorded below. Firmware owns
+initialization, validation and upload semantics; the compiler performs no device I/O.
 
 ## Reviewed inputs and versions
 
@@ -153,3 +153,21 @@ general Arduino/library support, complete SDK installation, minimum OS, Internet
 cold-attachment, aggregate memory, power-loss, rollback or recovery qualification.
 Other physical hosts require their own records. Compiler assets, recipes,
 consumer pins and device-I/O ownership remain unchanged by these observations.
+
+### iPhone follow-through
+
+The identical signed NanoStateful app separately passes the same sequence on
+iPhone 15 Pro Max/iOS 27.0 (24A437). The SDK's
+[iPhone record](https://github.com/AlexGivens/FirmingoKit/blob/main/docs/nano-fms2-iphone.json)
+pins its independent 31-event journal, actual capsule/build-report bytes and
+both transactions. State B and State A upload in the same boot with one host
+commit attempt and fresh boot-confirmed result each; both state/echo checks and
+manual D13 on/off observations pass. Manual RESET then changes boot identity
+and again passes State A initialization/progress. D2 is removed after completion.
+First inspection succeeds in 1.963 seconds with an inactive-overlay event;
+permission timing is not independently established. Firmware's
+[combined record](https://github.com/AlexGivens/Firmingo/blob/main/docs/evidence/nano-fms2-hardware.md)
+keeps these exact-candidate hardware results separate from production gates.
+Snapshots observe the selected initialized data/BSS loop counters; native
+validation separately covers the full arena. No compiler asset, recipe,
+catalogue or SDK implementation changes follow from this qualification.
