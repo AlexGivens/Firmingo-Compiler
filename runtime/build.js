@@ -5,7 +5,7 @@ import { parseELF } from "../src/elf.js";
 import { PipelineError, snapshotBytes } from "../src/pipeline-error.js";
 import { canonicalJSON, dataIdentity } from "../src/hash.js";
 import { compileModule, ManagedService } from "./ManagedService.js";
-import { SERVICE, SHIM, RECIPE_ASSETS } from "./pins.js";
+import { SERVICE, SHIM, RECIPE_ASSETS, STATEFUL_RECIPE_ASSETS } from "./pins.js";
 
 /** Owns all build bytes before suspension; only the pinned resource set can be used. */
 export function snapshotResources(value) {
@@ -33,7 +33,7 @@ export async function executionProvenance(request) {
 export async function compilationReceipt(packagingReceipt) {
   const { linkedELFSHA256, capsuleSHA256, capsuleBytes, buildInputSHA256: _packagingInput, ...input } = packagingReceipt;
   const fields = { ...input, receiptSchema: "firmingo-compiler-build-v1", operation: "wasm_compile_link_package",
-    provenanceStatus: "pinned_assets_executed", interfaceVersion: 1, service: SERVICE, wasiShim: SHIM, toolchainManifest: { schema: 1, service: SERVICE }, recipeAssets: RECIPE_ASSETS };
+    provenanceStatus: "pinned_assets_executed", interfaceVersion: 1, service: SERVICE, wasiShim: SHIM, toolchainManifest: { schema: 1, service: SERVICE }, recipeAssets: input.profile === "nano-managed-v2" ? STATEFUL_RECIPE_ASSETS : RECIPE_ASSETS };
   const receipt = { ...fields, buildInputSHA256: await dataIdentity(fields), linkedELFSHA256, capsuleSHA256, capsuleBytes };
   const freeze = value => { if (value && typeof value === "object") { for (const item of Object.values(value)) freeze(item); Object.freeze(value); } return value; };
   return freeze(receipt);
@@ -47,6 +47,8 @@ export async function executeBuild(requestInput, resourcesInput, progress = () =
     const request = validateBuildRequest(requestInput), resources = snapshotResources(resourcesInput);
     phase("verifying");
     const recipe = await verifyNanoRecipe(resources.recipeManifest, resources.recipeAssets);
+    if (recipe.recipeIdentifier !== request.target.recipeIdentifier) throw new PipelineError("invalid_recipe", "verifying", "Recipe resources do not match the selected profile");
+    const binding = staticTarget(request);
     const module = await compileModule(resources.serviceBytes, SERVICE);
     phase("preprocessing");
     const { prepared } = await createNanoJobs(request);
@@ -54,7 +56,7 @@ export async function executeBuild(requestInput, resourcesInput, progress = () =
       .map(name => [name, recipe.assets["Recipe/" + name]])));
     const result = service.run({ schema: 1, recipe: request.target.recipeIdentifier, board: request.target.board,
       profile: request.target.profile, filename: request.source.filename, translationUnit: prepared.translationUnit,
-      apiAddress: staticTarget(request).apiAddress }, phase);
+      apiAddress: binding.apiAddress, ...(binding.residentABI === 2 ? { stateAddress: binding.stateAddress, stateCapacityBytes: binding.stateCapacityBytes } : {}) }, phase);
     // Physical generated-file lines are mapped by the service; original #line filenames are already logical.
     for (const diagnostic of result.diagnostics) {
       if (diagnostic.filename === request.source.filename && diagnostic.line === 1 && diagnostic.column !== null)
@@ -62,7 +64,7 @@ export async function executeBuild(requestInput, resourcesInput, progress = () =
     }
     if (!result.succeeded) throw new PipelineError(stage === "linking" ? "link_failed" : "compile_failed", stage,
       "Compiler service rejected the sketch", result.diagnostics);
-    phase("validating"); parseELF(result.elf);
+    phase("validating"); parseELF(result.elf, binding.residentABI === 2 ? { state: binding } : {});
     phase("packaging");
     const artifact = await packageELF(result.elf, request, await executionProvenance(request));
     return { linkedELF: result.elf, capsuleBytes: artifact.bytes, reportJSON: artifact.reportJSON,

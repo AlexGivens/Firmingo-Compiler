@@ -165,6 +165,130 @@
               }
             }
           }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "board",
+            "profile",
+            "recipeIdentifier",
+            "recipeSHA256",
+            "firmwareBuild"
+          ],
+          "properties": {
+            "board": {
+              "const": "nano_rp2040_connect"
+            },
+            "profile": {
+              "const": "nano-managed-v2"
+            },
+            "recipeIdentifier": {
+              "const": "nano-stateful-clang-22.1.8-v1-experimental"
+            },
+            "recipeSHA256": {
+              "const": "25def36c701dd5e527ba128215deb3f87c158e1c6eb6eb2fa7fd106b5f543868"
+            },
+            "firmwareBuild": {
+              "$ref": "#/$defs/firmwareBuildV2"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "board",
+            "profile",
+            "recipeIdentifier",
+            "recipeSHA256",
+            "residentBinding"
+          ],
+          "properties": {
+            "board": {
+              "const": "nano_rp2040_connect"
+            },
+            "profile": {
+              "const": "nano-managed-v2"
+            },
+            "recipeIdentifier": {
+              "const": "nano-stateful-clang-22.1.8-v1-experimental"
+            },
+            "recipeSHA256": {
+              "const": "25def36c701dd5e527ba128215deb3f87c158e1c6eb6eb2fa7fd106b5f543868"
+            },
+            "residentBinding": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "schema",
+                "board",
+                "profile",
+                "residentELFSHA256",
+                "firmwareImageSHA256",
+                "apiAddress",
+                "residentABI",
+                "targetID",
+                "maximumCapsuleBytes",
+                "stateAddress",
+                "stateCapacityBytes",
+                "compilerContractSHA256"
+              ],
+              "properties": {
+                "schema": {
+                  "const": 2
+                },
+                "board": {
+                  "const": "nano_rp2040_connect"
+                },
+                "profile": {
+                  "const": "nano-managed-v2"
+                },
+                "residentELFSHA256": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "firmwareImageSHA256": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "apiAddress": {
+                  "type": "integer",
+                  "minimum": 268435456,
+                  "maximum": 270532604,
+                  "multipleOf": 4
+                },
+                "residentABI": {
+                  "const": 2
+                },
+                "targetID": {
+                  "const": 2
+                },
+                "maximumCapsuleBytes": {
+                  "const": 4096
+                },
+                "stateAddress": {
+                  "type": "integer",
+                  "minimum": 536870912,
+                  "maximum": 537141244,
+                  "multipleOf": 4
+                },
+                "stateCapacityBytes": {
+                  "type": "integer",
+                  "minimum": 4,
+                  "maximum": 4096,
+                  "multipleOf": 4
+                },
+                "compilerContractSHA256": {
+                  "const": "bd57a4db74bcdc5d592d3217957a7975124c6fe84481a5afbd38509c1e20c082"
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -271,6 +395,114 @@
           "minimum": 268435456,
           "maximum": 270532604,
           "multipleOf": 4
+        }
+      }
+    },
+    "firmwareBuildV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "board",
+        "profile",
+        "recipeIdentifier",
+        "recipeSHA256",
+        "residentABI",
+        "targetID",
+        "maximumCapsuleBytes",
+        "schema",
+        "backend",
+        "qualification",
+        "firmwareVersion",
+        "firmwareCommit",
+        "residentELFSHA256",
+        "firmwareImageSHA256",
+        "buildReportSHA256",
+        "apiAddress",
+        "stateAddress",
+        "stateCapacityBytes",
+        "compilerContractSHA256"
+      ],
+      "properties": {
+        "board": {
+          "const": "nano_rp2040_connect"
+        },
+        "profile": {
+          "const": "nano-managed-v2"
+        },
+        "recipeIdentifier": {
+          "const": "nano-stateful-clang-22.1.8-v1-experimental"
+        },
+        "recipeSHA256": {
+          "const": "25def36c701dd5e527ba128215deb3f87c158e1c6eb6eb2fa7fd106b5f543868"
+        },
+        "residentABI": {
+          "const": 2
+        },
+        "targetID": {
+          "const": 2
+        },
+        "maximumCapsuleBytes": {
+          "const": 4096
+        },
+        "schema": {
+          "const": 2
+        },
+        "backend": {
+          "const": "application"
+        },
+        "qualification": {
+          "const": "experimental"
+        },
+        "firmwareVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9._-]+$"
+        },
+        "firmwareCommit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "residentELFSHA256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "firmwareImageSHA256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "buildReportSHA256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "apiAddress": {
+          "type": "integer",
+          "minimum": 268435456,
+          "maximum": 270532604,
+          "multipleOf": 4
+        },
+        "stateAddress": {
+          "type": "integer",
+          "minimum": 536870912,
+          "maximum": 537141244,
+          "multipleOf": 4
+        },
+        "stateCapacityBytes": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 4096,
+          "multipleOf": 4
+        },
+        "compilerContractSHA256": {
+          "const": "bd57a4db74bcdc5d592d3217957a7975124c6fe84481a5afbd38509c1e20c082"
         }
       }
     }

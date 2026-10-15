@@ -1,3 +1,4 @@
+import { validateStatefulCapsule, createStatefulCapsule } from "./stateful-capsule.js";
 import { validateBuildRequest, validateDeclaredPackagingRequest, staticTarget, validateStaticTarget } from "./contract.js";
 import { prepareSketch, preparePackagingSketch } from "./preprocess.js";
 import { parseELF, CODE_ADDRESS, MAXIMUM_ELF_BYTES } from "./elf.js";
@@ -29,6 +30,7 @@ export async function validateCapsule(input, descriptorInput, { signal } = {}) {
 }
 
 async function validateBoundCapsule(input, descriptor, signal) {
+  if (descriptor.residentABI === 2) return validateStatefulCapsule(input, descriptor, signal);
   const bytes = snapshotBytes(input, 257, descriptor.maximumCapsuleBytes, "validating", "invalid_capsule");
   const view = new DataView(bytes.buffer);
   const u16 = offset => view.getUint16(offset, true), u32 = offset => view.getUint32(offset, true);
@@ -63,20 +65,22 @@ export async function packageDeclaredELF(input, requestInput, { signal } = {}) {
 async function packageValidatedELF(input, request, provenance, signal, declared) {
   const binding = staticTarget(request);
   const elfBytes = snapshotBytes(input, 52, MAXIMUM_ELF_BYTES, "validating", "invalid_elf");
-  const image = parseELF(elfBytes, { signal });
+  const image = parseELF(elfBytes, { signal, ...(binding.residentABI === 2 ? { state: binding } : {}) });
   const prepared = await (declared ? preparePackagingSketch : prepareSketch)(request, { signal });
   const code = image.code;
   const [codeSHA256, linkedELFSHA256, firmwareBuildID] = await Promise.all([
     sha256(code), sha256(elfBytes), dataIdentity(binding),
   ]);
   checkCancellation(signal, "packaging");
-  const bytes = new Uint8Array(256 + code.length), view = new DataView(bytes.buffer);
+  const bytes = binding.residentABI === 2 ? await createStatefulCapsule(image, binding, signal) : new Uint8Array(256 + code.length), view = new DataView(bytes.buffer);
+  if (binding.residentABI === 1) {
   bytes.set([70, 77, 83, 49]);
   view.setUint16(4, 1, true); view.setUint16(6, 64, true);
   for (const [offset, value] of [[8, 0x4f4e414e], [12, binding.apiAddress], [16, CODE_ADDRESS],
     [20, code.length], [24, image.setupAddress], [28, image.loopAddress]]) view.setUint32(offset, value, true);
   bytes.set(Uint8Array.from(codeSHA256.match(/../g), pair => parseInt(pair, 16)), 32);
   bytes.set(code, 256);
+  }
   const checked = await validateBoundCapsule(bytes, binding, signal);
   const report = Object.freeze({
     status: "structurally validated packaging; compiler/source association is host supplied; no hardware proof",
@@ -85,6 +89,9 @@ async function packageValidatedELF(input, request, provenance, signal, declared)
     api_address: address(binding.apiAddress), resident_elf_sha256: binding.residentELFSHA256,
     setup_address: address(image.setupAddress), loop_address: address(image.loopAddress),
     code_bytes: code.length, code_sha256: codeSHA256, capsule_bytes: bytes.length, capsule_sha256: checked.capsuleSHA256,
+    ...(binding.residentABI === 2 ? { state_address: address(binding.stateAddress), state_capacity_bytes: binding.stateCapacityBytes,
+      data_bytes: checked.dataBytes, bss_bytes: checked.bssBytes, payload_sha256: checked.payloadSHA256,
+      header_sha256: checked.headerSHA256, compiler_contract_sha256: binding.compilerContractSHA256 } : {}),
     source_sha256: Object.freeze({ [`sketch/${request.source.filename}`]: prepared.sourceSHA256,
       "generated/Sketch.cpp": prepared.translationUnitSHA256, "recipe/manifest.json": provenance.recipeSHA256,
       "toolchain/manifest.json": provenance.toolchainSHA256 }),

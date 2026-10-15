@@ -184,7 +184,10 @@
           ],
           "properties": {
             "format": {
-              "const": "nano-managed-v1"
+              "enum": [
+                "nano-managed-v1",
+                "nano-managed-v2"
+              ]
             },
             "filename": {
               "type": "string",

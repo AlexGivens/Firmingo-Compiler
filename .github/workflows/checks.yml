@@ -59,7 +59,7 @@ jobs:
           mkdir -p .build/logs
           node tools/dev.mjs doctor 2>&1 | tee .build/logs/doctor.log
           node tools/dev.mjs check 2>&1 | tee .build/logs/check.log
-      - name: Production contracts, consumer-package boundaries, source review and worker lifecycle
+      - name: Production contracts, FMS1/FMS2 packaging, consumer-package boundaries and worker lifecycle
         run: node tools/dev.mjs test 2>&1 | tee .build/logs/test.log
       - name: Verify file-specific notices and export source review materials
         run: |
@@ -86,7 +86,7 @@ jobs:
         with:
           node-version-file: .node-version
           package-manager-cache: false
-      - name: Separate bounded ELF parser mutation job
+      - name: Separate bounded FMS1 and FMS2 ELF parser mutation job
         run: |
           mkdir -p .build/logs
           node tools/dev.mjs fuzz-elf 2>&1 | tee .build/logs/elf-fuzz.log
@@ -129,7 +129,7 @@ jobs:
           mkdir -p .build/logs
           node tools/dev.mjs test-runtime 2>&1 | tee .build/logs/real-runtime.log
           node tools/dev.mjs test-memory 2>&1 | tee .build/logs/memory-maintenance.log
-          echo "Actual Nano compile/link tests are skipped: the reviewed service has no provisioned CI binary. Historical memory-transform checks still require the separately pinned original." >> "$GITHUB_STEP_SUMMARY"
+          echo "Actual ABI-one and FMS2 compile/link tests are skipped: the reviewed service has no provisioned CI binary. Historical memory-transform checks still require the separately pinned original." >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         if: always()
         with:

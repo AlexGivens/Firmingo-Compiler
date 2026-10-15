@@ -1,3 +1,4 @@
+import { nanoBaseline } from "../src/contract.js";
 import { Worker } from "node:worker_threads";
 import { readFileSync } from "node:fs";
 import { CompilerController } from "../runtime/controller.js";
@@ -30,8 +31,9 @@ export function createNodePackager() {
 }
 
 /** Reads this package's tiny pinned recipe; an explicit bounded service reader is supplied by the CLI/tests. */
-export function localResources(serviceBytes) {
-  const root = new URL("../recipes/nano_rp2040_connect/", import.meta.url);
+export function localResources(serviceBytes, profile = "nano-managed-v1") {
+  const baseline = nanoBaseline(profile);
+  const root = new URL(baseline.residentABI === 2 ? "../recipes/nano_rp2040_connect_v2/" : "../recipes/nano_rp2040_connect/", import.meta.url);
   return { serviceBytes, recipeManifest: new Uint8Array(readFileSync(new URL("manifest.json", root))),
     recipeAssets: Object.fromEntries(["Recipe/Arduino.h", "Recipe/Entry.cpp", "Recipe/Module.ld", "Sources/ManagedRecipe.js"]
       .map(path => [path, new Uint8Array(readFileSync(new URL(path, root)))])) };

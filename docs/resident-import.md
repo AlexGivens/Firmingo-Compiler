@@ -1,5 +1,7 @@
 # Experimental resident metadata import
 
+Current explicit ABI-two profile and schema-three import: [FMS2 adoption](stateful-adoption.md). ABI-one contracts remain supported.
+
 Firmingo owns derivation of firmware facts from its actual resident ELF, UF2,
 build report and committed project inputs. Its non-flashing
 `experiments/managed_sketch/export_resident.py` now exports schema 1:

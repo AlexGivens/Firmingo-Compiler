@@ -1,5 +1,7 @@
 # Portable interface — version one draft
 
+Current explicit ABI-two profile and schema-three import: [FMS2 adoption](stateful-adoption.md). ABI-one contracts remain supported.
+
 Status: build inputs, portable stages and the isolated real WASM lifecycle are
 implemented. Local Node/WASI and standard Chrome/HTTP-loopback module-worker
 execution and the macOS FirmingoKit adapter are evidenced; other web hosts, service distribution

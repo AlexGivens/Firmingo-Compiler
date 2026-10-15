@@ -1,11 +1,34 @@
 import { ContractError } from "./errors.js";
-import { LIMITS, NANO_BASELINE } from "./limits.js";
+import { LIMITS, NANO_BASELINE, NANO_STATEFUL } from "./limits.js";
 import { parseContractJSON } from "./json.js";
 import { dataIdentity } from "./hash.js";
 
 const descriptorFields = ["schema", "board", "profile", "backend", "firmwareVersion", "firmwareCommit",
   "residentELFSHA256", "firmwareImageSHA256", "buildReportSHA256", "apiAddress", "residentABI", "targetID",
   "maximumCapsuleBytes", "recipeIdentifier", "recipeSHA256", "qualification"];
+
+/** Selects an explicit versioned recipe; unknown profiles cannot fall back to ABI one. */
+export function nanoBaseline(profile) {
+  if (profile === NANO_BASELINE.profile) return NANO_BASELINE;
+  if (profile === NANO_STATEFUL.profile) return NANO_STATEFUL;
+  reject("unsupported_target", "$.target.profile", "Unsupported Nano profile");
+}
+
+/** Reads the discriminant without invoking accessors on untrusted descriptor objects. */
+function dataProfile(value, path) {
+  if (!value || typeof value !== "object" || ![Object.prototype, null].includes(Object.getPrototypeOf(value))) reject("invalid_input", path, "Expected contract data");
+  const field = Object.getOwnPropertyDescriptor(value, "profile");
+  if (!field || !Object.hasOwn(field, "value") || !field.enumerable) reject("invalid_input", path, "Expected a profile data field");
+  return field.value;
+}
+
+const stateFields = ["stateAddress", "stateCapacityBytes", "compilerContractSHA256"];
+function stateBinding(value, path) {
+  integer(value.stateCapacityBytes, 4, 4096, `${path}.stateCapacityBytes`);
+  integer(value.stateAddress, 0x20000000, 0x20042000 - value.stateCapacityBytes, `${path}.stateAddress`);
+  if (value.stateAddress % 4 || value.stateCapacityBytes % 4) reject("invalid_input", path, "Unaligned resident state arena");
+  equal(value.compilerContractSHA256, NANO_STATEFUL.compilerContractSHA256, `${path}.compilerContractSHA256`, "unsupported_target");
+}
 
 function reject(code, path, message) { throw new ContractError(code, path, message); }
 
@@ -48,12 +71,15 @@ export function validateFirmwareBuildDescriptor(value) {
 
 function firmwareDescriptor(value, declared) {
   const path = "$.target.firmwareBuild";
-  object(value, descriptorFields, path);
-  equal(value.schema, 1, `${path}.schema`, "unsupported_version");
+  const baseline = nanoBaseline(dataProfile(value, path));
+  const names = baseline.residentABI === 2 ? [...descriptorFields, ...stateFields] : descriptorFields;
+  object(value, names, path);
+  equal(value.schema, baseline.residentABI === 2 ? 2 : 1, `${path}.schema`, "unsupported_version");
   for (const key of ["board", "profile", "residentABI", "targetID", "maximumCapsuleBytes"]) {
-    equal(value[key], NANO_BASELINE[key], `${path}.${key}`, "unsupported_target");
+    equal(value[key], baseline[key], `${path}.${key}`, "unsupported_target");
   }
   recipeDeclaration(value, path, declared);
+  if (baseline.residentABI === 2) stateBinding(value, path);
   equal(value.backend, "application", `${path}.backend`, "unsupported_target");
   equal(value.qualification, "experimental", `${path}.qualification`, "unsupported_target");
   text(value.firmwareVersion, 64, `${path}.firmwareVersion`, /^[A-Za-z0-9._-]+$/);
@@ -63,7 +89,7 @@ function firmwareDescriptor(value, declared) {
   }
   integer(value.apiAddress, 0x10000000, 0x101ffffc, `${path}.apiAddress`);
   if (value.apiAddress % 4 !== 0) reject("invalid_input", `${path}.apiAddress`, "Unaligned resident API address");
-  return Object.freeze(Object.fromEntries(descriptorFields.map(key => [key, value[key]])));
+  return Object.freeze(Object.fromEntries(names.map(key => [key, value[key]])));
 }
 
 function recipeDeclaration(value, path, declared) {
@@ -71,7 +97,7 @@ function recipeDeclaration(value, path, declared) {
     text(value.recipeIdentifier, 96, `${path}.recipeIdentifier`, /^[A-Za-z0-9._:-]+$/);
     text(value.recipeSHA256, 64, `${path}.recipeSHA256`, /^[0-9a-f]{64}$/);
   } else {
-    for (const key of ["recipeIdentifier", "recipeSHA256"]) equal(value[key], NANO_BASELINE[key], `${path}.${key}`, "unsupported_target");
+    for (const key of ["recipeIdentifier", "recipeSHA256"]) equal(value[key], nanoBaseline(value.profile)[key], `${path}.${key}`, "unsupported_target");
   }
 }
 
@@ -97,15 +123,16 @@ export function validateBuildRequest(value) {
   const source = sourceSnapshot(value.source);
   const bindingKey = value.target && typeof value.target === "object" && Object.hasOwn(value.target, "residentBinding") ? "residentBinding" : "firmwareBuild";
   object(value.target, ["board", "profile", "recipeIdentifier", "recipeSHA256", bindingKey], "$.target");
+  const baseline = nanoBaseline(value.target.profile);
   for (const key of ["board", "profile", "recipeIdentifier", "recipeSHA256"]) {
-    equal(value.target[key], NANO_BASELINE[key], `$.target.${key}`, "unsupported_target");
+    equal(value.target[key], baseline[key], `$.target.${key}`, "unsupported_target");
   }
   const binding = bindingKey === "firmwareBuild" ? validateFirmwareBuildDescriptor(value.target.firmwareBuild) : validateResidentBinding(value.target.residentBinding);
   object(value.options, ["deadlineMilliseconds"], "$.options");
   integer(value.options.deadlineMilliseconds, 1, LIMITS.deadlineMilliseconds, "$.options.deadlineMilliseconds");
   return Object.freeze({ interfaceVersion: 1, kind: "build", buildID: value.buildID,
     source: Object.freeze({ filename: source.filename, revision: source.revision, text: source.text }),
-    target: Object.freeze({ ...nanoTarget(), [bindingKey]: binding }),
+    target: Object.freeze({ ...nanoTarget(baseline), [bindingKey]: binding }),
     options: Object.freeze({ deadlineMilliseconds: value.options.deadlineMilliseconds }) });
 }
 
@@ -115,7 +142,7 @@ export function validateDeclaredPackagingRequest(value) {
   const source = sourceSnapshot(value.source);
   const bindingKey = value.target && typeof value.target === "object" && Object.hasOwn(value.target, "residentBinding") ? "residentBinding" : "firmwareBuild";
   object(value.target, ["board", "profile", "recipeIdentifier", "recipeSHA256", bindingKey], "$.target");
-  for (const key of ["board", "profile"]) equal(value.target[key], NANO_BASELINE[key], `$.target.${key}`, "unsupported_target");
+  for (const key of ["board", "profile"]) equal(value.target[key], nanoBaseline(value.target.profile)[key], `$.target.${key}`, "unsupported_target");
   recipeDeclaration(value.target, "$.target", true);
   const binding = bindingKey === "firmwareBuild" ? firmwareDescriptor(value.target.firmwareBuild, true) : validateResidentBinding(value.target.residentBinding);
   if (bindingKey === "firmwareBuild") for (const key of ["recipeIdentifier", "recipeSHA256"]) equal(value.target[key], binding[key], `$.target.${key}`, "invalid_provenance");
@@ -138,8 +165,8 @@ export function parseDeclaredPackagingRequest(json) { return validateDeclaredPac
 /** Exact validated packaging input identity, independent of linked ELF and capsule output hashes. */
 export function declaredPackagingIdentity(request) { return dataIdentity(validateDeclaredPackagingRequest(request)); }
 
-function nanoTarget() {
-  const { board, profile, recipeIdentifier, recipeSHA256 } = NANO_BASELINE;
+function nanoTarget(baseline) {
+  const { board, profile, recipeIdentifier, recipeSHA256 } = baseline;
   return { board, profile, recipeIdentifier, recipeSHA256 };
 }
 
@@ -163,9 +190,12 @@ export async function firmwareBuildIdentity(descriptor) { return dataIdentity(va
 export function validateResidentBinding(value) {
   const path = "$.target.residentBinding";
   const fields = ["schema", "board", "profile", "residentELFSHA256", "firmwareImageSHA256", "apiAddress", "residentABI", "targetID", "maximumCapsuleBytes"];
+  const baseline = nanoBaseline(dataProfile(value, path));
+  if (baseline.residentABI === 2) fields.push(...stateFields);
   object(value, fields, path);
-  equal(value.schema, 1, `${path}.schema`, "unsupported_version");
-  for (const key of ["board", "profile", "residentABI", "targetID", "maximumCapsuleBytes"]) equal(value[key], NANO_BASELINE[key], `${path}.${key}`, "unsupported_target");
+  equal(value.schema, baseline.residentABI === 2 ? 2 : 1, `${path}.schema`, "unsupported_version");
+  if (baseline.residentABI === 2) stateBinding(value, path);
+  for (const key of ["board", "profile", "residentABI", "targetID", "maximumCapsuleBytes"]) equal(value[key], baseline[key], `${path}.${key}`, "unsupported_target");
   for (const key of ["residentELFSHA256", "firmwareImageSHA256"]) text(value[key], 64, `${path}.${key}`, /^[0-9a-f]{64}$/);
   integer(value.apiAddress, 0x10000000, 0x101ffffc, `${path}.apiAddress`);
   if (value.apiAddress % 4) reject("invalid_input", `${path}.apiAddress`, "Unaligned resident API address");

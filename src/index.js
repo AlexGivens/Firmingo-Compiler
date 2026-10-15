@@ -1,5 +1,5 @@
 export { ContractError } from "./errors.js";
-export { LIMITS, NANO_BASELINE } from "./limits.js";
+export { LIMITS, NANO_BASELINE, NANO_STATEFUL } from "./limits.js";
 export { parseContractJSON } from "./json.js";
 export {
   validateBuildRequest, parseBuildRequest, validateCancelRequest,

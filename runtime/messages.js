@@ -71,7 +71,7 @@ export function validateRuntimeEvent(value) {
     if (!fields(value, [...common, "outcome", "artifact"])) fail();
     const artifact = value.artifact;
     if (!fields(artifact, ["format", "filename", "bytes", "sha256", "reportJSON", "receipt"])
-        || artifact.format !== "nano-managed-v1" || !bounded(artifact.filename, 96) || !/^[A-Za-z0-9_][A-Za-z0-9_. -]*\.fms$/.test(artifact.filename)
+        || !["nano-managed-v1", "nano-managed-v2"].includes(artifact.format) || !bounded(artifact.filename, 96) || !/^[A-Za-z0-9_][A-Za-z0-9_. -]*\.fms$/.test(artifact.filename)
         || artifact.filename.includes("..") || !(artifact.bytes instanceof Uint8Array) || artifact.bytes.length < 260 || artifact.bytes.length > 4096
         || artifact.bytes.length % 4 || !/^[0-9a-f]{64}$/.test(artifact.sha256) || !bounded(artifact.reportJSON, 16384)) fail();
     validateReceiptData(artifact.receipt);

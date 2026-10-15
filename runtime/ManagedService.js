@@ -1,6 +1,7 @@
 import { sha256 } from "../src/hash.js";
 import { WASI, Fd, wasi } from "../third_party/browser_wasi_shim/dist/index.js";
 import { Workspace, OutputCapture } from "./Workspace.js";
+import { makeJobs as makeStatefulJobs } from "../recipes/nano_rp2040_connect_v2/Sources/ManagedRecipe.js";
 import { contract, makeJobs } from "../recipes/nano_rp2040_connect/Sources/ManagedRecipe.js";
 import { requireBoundedMemory } from "./ModuleMemory.js";
 
@@ -117,7 +118,7 @@ export class ManagedService {
   run(input, progress = () => {}) {
     if (this.consumed) { throw new Error("Service instance already consumed; create a fresh build workspace"); }
     this.consumed = true;
-    const jobs = makeJobs(input); const encoder = new TextEncoder();
+    const jobs = (input.profile === "nano-managed-v2" ? makeStatefulJobs : makeJobs)(input); const encoder = new TextEncoder();
     this.workspace.insert("Sketch.cpp", encoder.encode(input.translationUnit));
     for (const job of jobs) { this.workspace.insert(job.path.slice("/workspace/".length), job.bytes); }
     const timings = []; const messages = []; let canRunAgain = true; let stage = "compiling";

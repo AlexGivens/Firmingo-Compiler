@@ -128,6 +128,119 @@
         "sourceFilename",
         "sourceSHA256",
         "translationUnitSHA256",
+        "firmwareBuildID",
+        "board",
+        "profile",
+        "provenance",
+        "buildInputSHA256",
+        "linkedELFSHA256",
+        "capsuleSHA256",
+        "capsuleBytes"
+      ],
+      "properties": {
+        "receiptSchema": {
+          "const": "firmingo-compiler-packaging-v1"
+        },
+        "operation": {
+          "const": "independent_elf_packaging"
+        },
+        "provenanceStatus": {
+          "const": "declared"
+        },
+        "requestSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "buildID": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "sourceRevision": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "sourceFilename": {
+          "type": "string"
+        },
+        "sourceSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "translationUnitSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "firmwareBuildID": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "board": {
+          "const": "nano_rp2040_connect"
+        },
+        "profile": {
+          "const": "nano-managed-v2"
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "compiler",
+            "recipeIdentifier",
+            "recipeSHA256",
+            "toolchainSHA256"
+          ],
+          "properties": {
+            "compiler": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "x-maximumUtf8Bytes": 256
+            },
+            "recipeIdentifier": {
+              "const": "nano-stateful-clang-22.1.8-v1-experimental"
+            },
+            "recipeSHA256": {
+              "const": "25def36c701dd5e527ba128215deb3f87c158e1c6eb6eb2fa7fd106b5f543868"
+            },
+            "toolchainSHA256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        "buildInputSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "linkedELFSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "capsuleSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "capsuleBytes": {
+          "type": "integer",
+          "minimum": 260,
+          "maximum": 4096,
+          "multipleOf": 4
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "receiptSchema",
+        "operation",
+        "provenanceStatus",
+        "requestSHA256",
+        "buildID",
+        "sourceRevision",
+        "sourceFilename",
+        "sourceSHA256",
+        "translationUnitSHA256",
         "residentBindingID",
         "board",
         "profile",
@@ -197,6 +310,119 @@
             },
             "recipeSHA256": {
               "const": "b7869f6fc863e1905deb6974408c6e7dc63943a1fb3e342a357fdf757b1e23d9"
+            },
+            "toolchainSHA256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        "buildInputSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "linkedELFSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "capsuleSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "capsuleBytes": {
+          "type": "integer",
+          "minimum": 260,
+          "maximum": 4096,
+          "multipleOf": 4
+        },
+        "residentBindingID": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "receiptSchema",
+        "operation",
+        "provenanceStatus",
+        "requestSHA256",
+        "buildID",
+        "sourceRevision",
+        "sourceFilename",
+        "sourceSHA256",
+        "translationUnitSHA256",
+        "residentBindingID",
+        "board",
+        "profile",
+        "provenance",
+        "buildInputSHA256",
+        "linkedELFSHA256",
+        "capsuleSHA256",
+        "capsuleBytes"
+      ],
+      "properties": {
+        "receiptSchema": {
+          "const": "firmingo-compiler-packaging-v1"
+        },
+        "operation": {
+          "const": "independent_elf_packaging"
+        },
+        "provenanceStatus": {
+          "const": "declared"
+        },
+        "requestSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "buildID": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "sourceRevision": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "sourceFilename": {
+          "type": "string"
+        },
+        "sourceSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "translationUnitSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "board": {
+          "const": "nano_rp2040_connect"
+        },
+        "profile": {
+          "const": "nano-managed-v2"
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "compiler",
+            "recipeIdentifier",
+            "recipeSHA256",
+            "toolchainSHA256"
+          ],
+          "properties": {
+            "compiler": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "x-maximumUtf8Bytes": 256
+            },
+            "recipeIdentifier": {
+              "const": "nano-stateful-clang-22.1.8-v1-experimental"
+            },
+            "recipeSHA256": {
+              "const": "25def36c701dd5e527ba128215deb3f87c158e1c6eb6eb2fa7fd106b5f543868"
             },
             "toolchainSHA256": {
               "type": "string",

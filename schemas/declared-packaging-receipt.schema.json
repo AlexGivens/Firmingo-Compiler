@@ -65,7 +65,10 @@
           "const": "nano_rp2040_connect"
         },
         "profile": {
-          "const": "nano-managed-v1"
+          "enum": [
+            "nano-managed-v1",
+            "nano-managed-v2"
+          ]
         },
         "provenance": {
           "type": "object",
@@ -178,7 +181,10 @@
           "const": "nano_rp2040_connect"
         },
         "profile": {
-          "const": "nano-managed-v1"
+          "enum": [
+            "nano-managed-v1",
+            "nano-managed-v2"
+          ]
         },
         "provenance": {
           "type": "object",

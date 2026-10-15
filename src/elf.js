@@ -7,7 +7,11 @@ const overlaps = (a, b) => a.start < b.end && b.start < a.end;
 const aligned = value => value === 0 || value <= 65536 && (value & (value - 1)) === 0;
 
 /** Parses only the pinned stateless ARM ELF subset; architecture headers do not attest instruction/ABI behavior. */
-export function parseELF(input, { signal } = {}) {
+export function parseELF(input, { signal, state } = {}) {
+  if (state && (!Number.isInteger(state.stateAddress) || !Number.isInteger(state.stateCapacityBytes)
+      || state.stateAddress % 4 || state.stateCapacityBytes % 4 || state.stateCapacityBytes < 4 || state.stateCapacityBytes > 4096
+      || state.stateAddress < 0x20000000 || state.stateAddress > 0x20042000 - state.stateCapacityBytes))
+    throw new PipelineError("invalid_elf", "validating", "Invalid explicit resident state arena");
   checkCancellation(signal, "validating");
   const bytes = snapshotBytes(input, 52, MAXIMUM_ELF_BYTES, "validating", "invalid_elf");
   const fail = message => { throw new PipelineError("invalid_elf", "validating", message); };
@@ -56,17 +60,24 @@ export function parseELF(input, { signal } = {}) {
     catch { fail("Invalid UTF-8 ELF name"); }
   };
   const names = stringTable(sections[namesIndex]);
-  let textIndex = null, symbolIndex = null;
+  let textIndex = null, symbolIndex = null, dataIndex = null, bssIndex = null;
   for (let index = 1; index < shCount; index++) {
     const section = sections[index], name = string(names, section.name);
     if (!aligned(section.alignment)) fail("Invalid ELF section alignment");
     if (section.type !== 8) range(section.offset, section.size);
     if ([4, 6, 9, 11, 14, 15, 16].includes(section.type) && section.size) fail("Relocations, dynamic linkage and initializers are unavailable");
     if ((section.flags & 2) && section.size) {
-      if (name !== ".text" || section.type !== 1 || ![6, 0x36].includes(section.flags)
-          || section.address !== CODE_ADDRESS || section.size > MAXIMUM_CODE_BYTES || section.size % 4
-          || textIndex !== null || section.address % Math.max(section.alignment, 1)) fail("Require one readonly stateless .text at the fixed Nano address");
-      textIndex = index;
+      if (state && [".data", ".bss"].includes(name)) {
+        if (section.type !== (name === ".data" ? 1 : 8) || section.flags !== 3 || section.size % 4
+            || section.address % 4 || section.address % Math.max(section.alignment, 1)) fail("Invalid state section");
+        if (name === ".data") { if (dataIndex !== null) fail("Duplicate .data"); dataIndex = index; }
+        else { if (bssIndex !== null) fail("Duplicate .bss"); bssIndex = index; }
+      } else {
+        if (name !== ".text" || section.type !== 1 || ![6, 0x36].includes(section.flags)
+            || section.address !== CODE_ADDRESS || section.size > MAXIMUM_CODE_BYTES || section.size % 4
+            || textIndex !== null || section.address % Math.max(section.alignment, 1)) fail("Require one readonly .text and only explicitly supported state sections");
+        textIndex = index;
+      }
     }
     if (section.type === 2) {
       if (symbolIndex !== null || section.flags || section.entrySize !== 16 || !section.size || section.size % 16
@@ -82,13 +93,35 @@ export function parseELF(input, { signal } = {}) {
     const section = sections[index];
     if (index !== textIndex && section.type !== 8 && section.size && overlaps(codeRange, range(section.offset, section.size))) fail("Code overlaps another section");
   }
+  const data = dataIndex === null ? null : sections[dataIndex], bss = bssIndex === null ? null : sections[bssIndex];
+  const dataBytes = data?.size ?? 0, bssBytes = bss?.size ?? 0;
+  if (state && (dataBytes + bssBytes > state.stateCapacityBytes || text.size + dataBytes > MAXIMUM_CODE_BYTES
+      || data && data.address !== state.stateAddress || bss && bss.address !== state.stateAddress + dataBytes)) fail("State exceeds or disagrees with exact resident arena");
+  if (data) {
+    const extent = range(data.offset, data.size);
+    if (data.offset < 52 || overlaps(extent, programTable) || overlaps(extent, sectionTable)) fail("Data overlaps ELF metadata");
+    for (let index = 0; index < shCount; index++) {
+      const section = sections[index];
+      if (index !== dataIndex && section.type !== 8 && section.size && overlaps(extent, range(section.offset, section.size))) fail("Data overlaps another section");
+    }
+  }
   const loads = [];
+  let stateMapped = false;
   let mapped = false;
   for (let index = 0; index < phCount; index++) {
     checkCancellation(signal, "validating");
     const offset = phOffset + index * 32;
     const [type, fileOffset, address, physical, fileSize, memorySize, flags, alignment] = Array.from({ length: 8 }, (_, field) => u32(offset + field * 4));
     if (type === 0 || type === 0x6474e551 && !fileSize && !memorySize && !(flags & 1)) continue;
+    if (state) {
+      if (type !== 1 || !aligned(alignment) || alignment && fileOffset % alignment !== address % alignment) fail("Unsupported stateful program header");
+      range(fileOffset, fileSize);
+      if (flags === 5 && address === text.address && physical === text.address && fileOffset === text.offset
+          && fileSize === text.size && memorySize === text.size && !mapped) { mapped = true; continue; }
+      if (flags === 6 && address === state.stateAddress && physical === codeEnd && fileSize === dataBytes
+          && memorySize === dataBytes + bssBytes && (!data || fileOffset === data.offset) && !stateMapped) { stateMapped = true; continue; }
+      fail("LOAD mapping must match exact code/data/BSS, including flash load address");
+    }
     if (![1, 6].includes(type) || memorySize !== fileSize || !fileSize || address !== physical || ![4, 5].includes(flags)
         || address < CODE_ADDRESS - 256 || address + fileSize > codeEnd || !aligned(alignment)
         || alignment && fileOffset % alignment !== address % alignment) fail("Unsupported program header, writable memory or load range");
@@ -105,6 +138,7 @@ export function parseELF(input, { signal } = {}) {
       mapped = true;
     }
   }
+  if (state && dataBytes + bssBytes && !stateMapped) fail("Missing state LOAD mapping");
   if (!mapped) fail("Code has no executable LOAD mapping");
   const symbols = sections[symbolIndex], strings = stringTable(sections[symbols.link]);
   if (!bytes.subarray(symbols.offset, symbols.offset + 16).every(value => value === 0)) fail("Invalid null ELF symbol");
@@ -126,5 +160,5 @@ export function parseELF(input, { signal } = {}) {
   if (setupAddress === undefined || loopAddress === undefined || u32(24) !== setupAddress) fail("Missing wrappers or mismatched ELF setup entry");
   checkCancellation(signal, "validating");
   const code = bytes.slice(codeRange.start, codeRange.end);
-  return Object.freeze({ get code() { return code.slice(); }, codeBytes: code.length, setupAddress, loopAddress });
+  return Object.freeze({ get code() { return code.slice(); }, ...(state ? { get data() { return data ? bytes.slice(data.offset, data.offset + data.size) : new Uint8Array(); }, dataBytes, bssBytes } : {}), codeBytes: code.length, setupAddress, loopAddress });
 }

@@ -1,5 +1,7 @@
 # Firmingo-Compiler
 
+Current explicit ABI-two profile and schema-three import: [FMS2 adoption](docs/stateful-adoption.md). ABI-one contracts remain supported.
+
 The reproduced WASM service now has an exact source/notice and paired-delivery
 review. [Service delivery](docs/service-delivery.md) stages the compiler, source
 archive and notices locally; no binary is committed or published. The promoted

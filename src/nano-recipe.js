@@ -1,9 +1,10 @@
-import { staticTarget } from "./contract.js";
-import { NANO_BASELINE } from "./limits.js";
+import { staticTarget, nanoBaseline } from "./contract.js";
+import { NANO_BASELINE, NANO_STATEFUL } from "./limits.js";
 import { parseContractJSON } from "./json.js";
 import { sha256 } from "./hash.js";
 import { PipelineError, snapshotBytes, checkCancellation } from "./pipeline-error.js";
 import { prepareSketch } from "./preprocess.js";
+import { makeJobs as makeStatefulJobs } from "../recipes/nano_rp2040_connect_v2/Sources/ManagedRecipe.js";
 import { makeJobs } from "../recipes/nano_rp2040_connect/Sources/ManagedRecipe.js";
 
 const paths = ["Recipe/Arduino.h", "Recipe/Entry.cpp", "Recipe/Module.ld", "Sources/ManagedRecipe.js"];
@@ -18,10 +19,13 @@ export async function verifyNanoRecipe(manifestInput, assetInput, { signal } = {
   const descriptors = Object.getOwnPropertyDescriptors(assetInput);
   if (paths.some(path => !Object.hasOwn(descriptors, path) || !Object.hasOwn(descriptors[path], "value"))) fail();
   const snapshots = Object.fromEntries(paths.map(path => [path, snapshotBytes(assetInput[path], 1, 65536, "verifying", "invalid_recipe")]));
-  if (await sha256(manifest) !== NANO_BASELINE.recipeSHA256) fail();
+  const manifestHash = await sha256(manifest);
+  if (![NANO_BASELINE.recipeSHA256, NANO_STATEFUL.recipeSHA256].includes(manifestHash)) fail();
   const metadata = parseContractJSON(new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(manifest));
-  if (metadata.schema !== 1 || metadata.serviceABI !== 2 || metadata.recipe !== NANO_BASELINE.recipeIdentifier
-      || metadata.board !== NANO_BASELINE.board || metadata.profile !== NANO_BASELINE.profile
+  const baseline = nanoBaseline(metadata.profile);
+  if (await sha256(manifest) !== baseline.recipeSHA256) fail();
+  if (metadata.schema !== 1 || metadata.serviceABI !== 2 || metadata.recipe !== baseline.recipeIdentifier
+      || metadata.board !== baseline.board || metadata.profile !== baseline.profile
       || metadata.maximumCodeBytes !== 3840 || metadata.assets.length !== paths.length) fail();
   const verified = {};
   for (const asset of metadata.assets) {
@@ -30,7 +34,7 @@ export async function verifyNanoRecipe(manifestInput, assetInput, { signal } = {
     Object.defineProperty(verified, asset.path, { enumerable: true, get: () => bytes.slice() });
   }
   checkCancellation(signal, "verifying");
-  return Object.freeze({ recipeIdentifier: metadata.recipe, recipeSHA256: NANO_BASELINE.recipeSHA256,
+  return Object.freeze({ recipeIdentifier: metadata.recipe, recipeSHA256: baseline.recipeSHA256,
     serviceABI: metadata.serviceABI, assets: Object.freeze(verified) });
 }
 
@@ -38,9 +42,10 @@ export async function verifyNanoRecipe(manifestInput, assetInput, { signal } = {
 export async function createNanoJobs(request, options = {}) {
   const prepared = await prepareSketch(request, options);
   const { board, profile, recipeIdentifier } = prepared.request.target;
-  const jobs = makeJobs({ schema: 1, recipe: recipeIdentifier, board, profile,
+  const binding = staticTarget(prepared.request);
+  const jobs = (binding.residentABI === 2 ? makeStatefulJobs : makeJobs)({ schema: 1, recipe: recipeIdentifier, board, profile,
     filename: prepared.request.source.filename, translationUnit: prepared.translationUnit,
-    apiAddress: staticTarget(prepared.request).apiAddress });
+    apiAddress: binding.apiAddress, ...(binding.residentABI === 2 ? { stateAddress: binding.stateAddress, stateCapacityBytes: binding.stateCapacityBytes } : {}) });
   return Object.freeze({ prepared, jobs: Object.freeze(jobs.map(job => {
     const bytes = Uint8Array.from(job.bytes);
     return Object.freeze({ phase: job.phase, path: job.path, get bytes() { return bytes.slice(); } });

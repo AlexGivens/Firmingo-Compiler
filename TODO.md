@@ -22,6 +22,16 @@ it is not a second policy file or authorization to implement the entire roadmap.
 - Deferred work remains deferred until selected. This checklist does not authorize
   publication, flashing, or destructive hardware checks.
 
+## FMS2 adoption — 2026-10-15
+
+- [x] Import the pinned schema-three firmware contract and actual API/RAM/upload facts.
+- [x] Add explicit schema-two descriptors/bindings, ABI-two WASM recipe, strict ELF/FMS2 packaging and receipts while preserving ABI one.
+- [x] Exercise real WASM stateful compilation, independent firmware host validation and bounded ELF mutations for both profiles.
+- [x] Export both recipe resource sets and coordinate SDK native validation/target-two upload handling.
+- [ ] Qualify this exact candidate through signed macOS/iPad/iPhone hosts and selected-board replacement/reboot/interruption/recovery tests before promoting FMS2 into the default catalogue.
+
+Evidence and exact input/command identities: [FMS2 adoption](docs/stateful-adoption.md).
+
 ## Starting point — inspected 2026-10-12
 
 - [x] Inspect the new repository's README, license, and working state.

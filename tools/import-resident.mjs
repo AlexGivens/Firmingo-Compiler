@@ -1,3 +1,4 @@
+import { importStatefulResident } from "./import-stateful-resident.mjs";
 import { lstatSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { createHash } from "node:crypto";
@@ -57,6 +58,7 @@ export async function importResident(directoryInput, expectedManifestSHA256) {
   const manifestBytes = read("manifest.json", 16384);
   if (hash(manifestBytes) !== expectedManifestSHA256) throw new Error("Resident export manifest anchor mismatch");
   const manifest = parseContractJSON(decode(manifestBytes));
+  if (manifest.schema === 3) return importStatefulResident(directory, expectedManifestSHA256, manifest);
   fields(manifest, ["schema", "purpose", "board", "profile", "firmwareCommit", "files", "qualification"]);
   if (![1, 2].includes(manifest.schema) || manifest.purpose !== "experimental_resident_compiler_export" || manifest.board !== NANO_BASELINE.board
       || manifest.profile !== NANO_BASELINE.profile || !/^[0-9a-f]{40}$/.test(manifest.firmwareCommit)

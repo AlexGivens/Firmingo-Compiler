@@ -180,7 +180,7 @@ async function main() {
   if (command === "test-runtime") {
     if (argumentsList.length > 1) throw new Error("test-runtime takes at most one explicit service path");
     verifyVendor(); await verifyRecipe();
-    run(["--test", "tests/real-runtime.test.mjs"], { timeout: 180000,
+    run(["--test", "tests/real-runtime.test.mjs", "tests/stateful.test.mjs"], { timeout: 180000,
       env: { ...process.env, FIRMINGO_COMPILER_SERVICE: argumentsList[0] ? resolve(argumentsList[0]) : "" } });
     return;
   }
@@ -188,7 +188,7 @@ async function main() {
     if (argumentsList.length !== 3) throw new Error("build requires an explicit request, pinned local service and new output directory");
     const request = parseBuildRequest(decode(readBounded(resolve(argumentsList[0]))));
     verifyVendor({ quiet: true });
-    const resources = localResources(readBounded(resolve(argumentsList[1]), SERVICE.bytes));
+    const resources = localResources(readBounded(resolve(argumentsList[1]), SERVICE.bytes), request.target.profile);
     const controller = createNodeCompiler(), cancellation = new AbortController();
     const interrupt = () => cancellation.abort(); process.once("SIGINT", interrupt);
     let artifact;

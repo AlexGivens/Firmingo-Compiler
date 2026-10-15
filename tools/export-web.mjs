@@ -5,7 +5,7 @@ import { createHash } from "node:crypto";
 import { bundle } from "./bundle.mjs";
 import { verifyRecipe } from "./verify-recipe.mjs";
 import { verifyVendor } from "./verify-vendor.mjs";
-import { RECIPE_ASSETS, SERVICE } from "../runtime/pins.js";
+import { RECIPE_ASSETS, STATEFUL_RECIPE_ASSETS, SERVICE } from "../runtime/pins.js";
 
 /** Exports deterministic classic-worker compiler assets with source/notice identity; no host bridge or service binary. */
 export async function exportWeb(directory) {
@@ -16,11 +16,14 @@ export async function exportWeb(directory) {
   const recipeManifest = readFileSync(join(root, "recipes/nano_rp2040_connect/manifest.json"));
   const resources = { recipeManifest: [...recipeManifest], recipeAssets: Object.fromEntries(RECIPE_ASSETS.map(item =>
     [item.path, [...readFileSync(join(root, "recipes/nano_rp2040_connect/", item.path))]])) };
+  resources.profiles = { "nano-managed-v2": { recipeManifest: [...readFileSync(join(root, "recipes/nano_rp2040_connect_v2/manifest.json"))],
+    recipeAssets: Object.fromEntries(STATEFUL_RECIPE_ASSETS.map(item => [item.path, [...readFileSync(join(root, "recipes/nano_rp2040_connect_v2/", item.path))]])) } };
   const sources = new Map([...page.inputs, ...worker.inputs, ...preparation.inputs].map(item => [item.path, item.bytes]));
   // Include the exact recipe, vendor inventory and maintenance sources needed to recreate this export.
   const vendor = JSON.parse(readFileSync(join(root, "third_party/browser_wasi_shim/receipt.json")));
   const additional = ["package.json", "LICENSE", ".node-version", "tools/export-web.mjs", "tools/bundle.mjs",
     "tools/verify-recipe.mjs", "tools/verify-vendor.mjs", "recipes/nano_rp2040_connect/manifest.json",
+    "recipes/nano_rp2040_connect_v2/manifest.json", ...STATEFUL_RECIPE_ASSETS.map(item => "recipes/nano_rp2040_connect_v2/" + item.path),
     ...RECIPE_ASSETS.map(item => "recipes/nano_rp2040_connect/" + item.path),
     "third_party/browser_wasi_shim/receipt.json", ...vendor.files.map(item => "third_party/browser_wasi_shim/" + item.path)];
   for (const path of additional) sources.set(path, readFileSync(join(root, path)));

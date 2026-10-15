@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "serviceABI": 2,
+  "recipe": "nano-stateful-clang-22.1.8-v1-experimental",
+  "board": "nano_rp2040_connect",
+  "profile": "nano-managed-v2",
+  "target": "armv6m-none-eabi",
+  "status": "Experimental development recipe; no hardware qualification",
+  "cpu": "cortex-m0plus",
+  "abi": "AAPCS base/soft float, 32-bit pointers, stateful resident ABI two",
+  "maximumCodeBytes": 3840,
+  "libraries": [],
+  "sysroot": null,
+  "restrictions": [
+    "Single prepared .ino; bounded initialized data and BSS",
+    "No constructors, heap, TLS, unwind, external libraries or runtime helpers",
+    "Setup/loop must return"
+  ],
+  "assets": [
+    {
+      "path": "Recipe/Arduino.h",
+      "bytes": 5396,
+      "sha256": "95123ec4bb7bc5ba023e84fb420f84d8805da3927d4f8be7857f082a21d0e039"
+    },
+    {
+      "path": "Recipe/Entry.cpp",
+      "bytes": 572,
+      "sha256": "80e5f48e6512d61f247d61e6637c40abeb25a2b9c84093e81390ee8aeed6d88d"
+    },
+    {
+      "path": "Recipe/Module.ld",
+      "bytes": 1333,
+      "sha256": "1d4cf45f05a0eed3242f475e6e11facae8c131182e980e73fd5551532c64829c"
+    },
+    {
+      "path": "Sources/ManagedRecipe.js",
+      "bytes": 4011,
+      "sha256": "5984a4c859d2104841aaab2e199362c8049d13148a8b8ae351beb25daf1f9e0d"
+    }
+  ]
+}

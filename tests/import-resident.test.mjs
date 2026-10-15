@@ -217,7 +217,7 @@ test("candidate inventory checks static bytes and contract then emits metadata o
     assert.deepEqual(readdirSync(output).sort(), ["candidate-inventory.json", "operation.json"]);
     assert.equal(value.serviceInstantiated, false); assert.equal(value.hardwareExecuted, false); assert.equal(value.binaryIncluded, false);
     assert.equal(value.distributionStatus, "unresolved"); assert.equal(value.currentSourcePackage.candidateMatchesPublicPin, false);
-    assert.equal(value.currentSourcePackage.sourceRecords, 50); assert.equal(value.firmware.contract.resources.length, 6);
+    assert.equal(value.currentSourcePackage.sourceRecords, 56); assert.equal(value.firmware.contract.resources.length, 6);
     assert.equal(result.inventorySHA256, hash(readFileSync(join(output, "candidate-inventory.json"))));
     await assert.rejects(inventoryCandidate(b.build, b.anchor, f.directory, firmwareAnchor, output), /new candidate/);
   } finally { f.close(); }
