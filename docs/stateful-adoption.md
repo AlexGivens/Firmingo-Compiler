@@ -2,8 +2,8 @@
 
 The explicit `nano-managed-v2` profile compiles through the existing pinned
 Clang/LLD WASM service. ABI-one requests, recipe bytes, FMS1 artifacts and the
-previous resident catalogue remain separate. No hardware has executed this FMS2
-candidate. Firmware owns initialization, validation and upload semantics; the
+previous resident catalogue remain separate. The selected Nano/iPad combination
+now has the scoped hardware evidence recorded below. Firmware owns initialization, validation and upload semantics; the
 compiler performs no device I/O.
 
 ## Reviewed inputs and versions
@@ -90,10 +90,9 @@ receipt tampering and ABI-one compatibility. The bounded parser job now runs
 486/463 accepted structural layouts. Missing-service CI records explicit skips.
 
 FirmingoKit separately validates FMS2/report bytes and FMGO target-two upload
-selection. Physical FMS2 installation, state reset/persistence behavior across
-real replacement/reboot, console/GPIO behavior, interruptions and recovery remain
-qualification work on an explicitly selected board. Existing ABI-one hardware
-results cannot establish these outcomes.
+selection. Physical qualification uses its own exact-package/resident evidence,
+separate from ABI-one results. Broader host coverage, interruptions and recovery
+remain qualification work on explicitly selected boards.
 
 ## Browser and wrapper follow-through
 
@@ -120,3 +119,37 @@ Actual Chrome 154.0.8037.93/macOS checks after correction:
 including FMS2; `test-web` passed three with seven explicit compilation skips.
 No external application requests or protocol faults were reported. The initial
 failure is retained as a failed run, not recast as a compiler or hardware pass.
+
+## Selected Nano/iPad hardware result
+
+FirmingoKit's signed NanoStateful host at `84acce66b2f2b2dc1f9aeeeab148b24109dde328`
+uses prepared SDK `e0bed3602b515c71f171971ab7f8a8f5ae3bea1f`, the consumer/source
+anchors above and explicit catalogue
+`8b8f1432d40b42502acca728083e5045f09ed493014bbde1786d3fa8aeed13cd`.
+Its signed sandboxed macOS run and physical iPad Pro 11-inch (3rd generation),
+iPadOS 27.0.1 run compile two fixed state/echo sources through the default SDK
+WASM path. The 544-byte State A capsule is
+`537ce260fc33d4b23b2f8829aee6a9b12653236db6baad4c317040dbf087fd89`;
+the 548-byte State B capsule is
+`505c723804addf218e9018375c1f63fd036c2e0bf19d0173ae189b04418aa9b0`.
+Both have four initialized data bytes and 20 BSS bytes, and pass Firmware's
+independent production native validator. The sources are maintained in the SDK's
+qualification host; no device harness or Swift dependency is added here.
+
+Firmware's [initial ROM record](https://github.com/AlexGivens/Firmingo/blob/main/docs/evidence/nano-fms2-initial.json)
+pins resident-only UF2 `1ef76622…`, checked initial composite and full included
+resident/managed-sector readback before reboot. The SDK's
+[physical iPad record](https://github.com/AlexGivens/FirmingoKit/blob/main/docs/nano-fms2-ipad.json)
+pins actual capsule/build-report bytes, a 30-event journal and both transaction
+records. Both target-2 uploads occur in the same boot, each with one host commit
+attempt and fresh boot-confirmed status. State B initializes to 23 and State A
+to 7; both report zero startup BSS, advancing counters and exact 256-byte echoes.
+The user observes the corresponding D13 high/low states. A separate manual RESET
+changes the boot identity and passes State A initialization/progress again.
+The upload arm is removed after completion.
+
+These are constrained experimental Nano/iPad results, not catalogue promotion,
+general Arduino/library support, complete SDK installation, minimum OS, Internet/
+cold-attachment, aggregate memory, power-loss, rollback or recovery qualification.
+Other physical hosts require their own records. Compiler assets, recipes,
+consumer pins and device-I/O ownership remain unchanged by these observations.
