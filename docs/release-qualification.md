@@ -62,6 +62,17 @@ rejected; the completed same-process snapshot passes without relaunch. This does
 not establish OS suspension, background compilation or real memory-pressure
 recovery. No compiler asset or board claim changes.
 
+The SDK's build-6 host now also passes an explicit **host-policy** cancellation
+test on both devices. On scene inactivity it cancels the pending public SDK call;
+both calls last reported `verifying`, settle with `CancellationError` without an
+artifact in 11.3/4.6 ms, then accept fresh known console builds after actual
+background/active return. Its `docs/compiler-host-active-lifecycle.json` pins the
+source/signature, exact launch PID/context, attempts, scene events and exported
+capsules. This is scoped SDK-call verification-phase evidence. Interruption
+inside worker compilation/linking, OS suspension, real pressure and any automatic
+SDK lifecycle policy remain unqualified. Compiler inputs and board claims stay
+unchanged.
+
 For additional host checks, select an exact app signing/sandbox configuration
 and record entitlements, OS, architecture, Xcode/Swift/WebKit versions, SDK commit,
 source-only runtime manifest, release inventory, service/source/review hashes,

@@ -190,6 +190,11 @@ The SDK's build-4 host also passes one actual manual idle background/return chec
 on each physical device, with the same launch PID/context and known exported
 capsules before/after. See its `docs/compiler-host-lifecycle.json`. Scene events
 do not establish OS suspension, active-build interruption or pressure recovery.
+The SDK's build-6 host adds explicit cancellation on inactivity while a public SDK
+call is pending. Both physical devices pass with last reported progress `verifying`,
+no returned artifact and known fresh console bytes after background/return. See
+its `docs/compiler-host-active-lifecycle.json`. Worker compile/link interruption,
+real pressure and automatic SDK lifecycle policy are not qualified by these passes.
 
 The user has authorized this coding agent to work across Firmingo-Compiler,
 FirmingoKit, and Firmingo. Earlier sibling guidance treating Firmingo as read-only
