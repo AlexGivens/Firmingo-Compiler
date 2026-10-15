@@ -391,13 +391,16 @@ recorded separately; additional hosts, minimum OS and device deployment remain o
   separating portable runtime behavior, wrapper sandbox support, and device behavior.
 - [ ] Qualify actual FirmingoKit hosting on intended macOS and physical iOS/iPadOS
   environments. Simulator/device-target builds are separate evidence.
-- [ ] Obtain/select a trusted exact Nano resident and compatible descriptor, compile
+- [x] Select the exact experimental Nano resident and compatible descriptor, compile
   two different supported sketches through the real runtime, and independently
   validate artifacts before a separately authorized deployment workflow.
 - [x] Prepare the SDK-owned Nano hardware test host and pinned resident inputs without board access. The SDK's `docs/nano-hardware-preparation.json` records fourteen checked evidence roles, test plan `861e0089…`, guarded one-shot deployment actions, query-only restored records, signed macOS offline compilation with both known capsules and complete macOS/iOS Release builds.
-- [x] Complete selected initial Nano setup through Firmware: exact resident plus SDK GPIO capsule in a fully verified ROM composite, then matching macOS hello. SDK `docs/nano-hardware-initial.json` also records signed iOS host installation/launch on iPad over Wi-Fi. SDK managed deployment, startup, GPIO/console behavior and actual Apple USB qualification remain pending; no compiler pin/recipe change follows from initial setup.
-- [ ] Deploy through the wrapper, verify startup, exact expected console bytes and
-  timing/GPIO behavior, then replace the sketch. Record the limits of exercised APIs.
+- [x] Complete selected initial Nano setup through Firmware: exact resident plus SDK GPIO capsule in a fully verified ROM composite, then matching macOS hello. SDK `docs/nano-hardware-initial.json` also records signed iOS host installation/launch on iPad over Wi-Fi. Those initial records do not establish managed deployment, startup, GPIO/console behavior or actual Apple USB qualification; later results are recorded below. No compiler pin/recipe change follows from initial setup.
+- [x] Deploy both known capsules through the wrapper, verify startup, exact expected
+  console bytes and manual GPIO behavior, then replace the sketch on the selected
+  iPad and iPhone. Timing/electrical measurements remain unqualified.
+- [x] Record the scoped physical iPad two-sketch SDK deployment in `../FirmingoKit/docs/nano-hardware-ipad.json`: both actual capsule identities, reviewed association, verified RAM stage, one host commit attempt and fresh boot-confirmed status per sketch, exact 256-byte console echo and manual D13 off-to-on observation after RESET. Keep prior network/prerequisite failures visible; this does not qualify timing, minimum OS, Internet routing or the authorization/cold-attachment matrix. Equivalent iPhone results are recorded separately below.
+- [x] Record the equivalent physical iPhone 15 Pro Max/iOS 27.0 result in `../FirmingoKit/docs/nano-hardware-iphone.json`: identical signed app and capsules, separate console/GPIO stage/commit/startup outcomes, exact 256-byte echo and manual off-to-on observation after RESET. Preserve initial access-prompt Network-is-down failure and explicit read-only retry; upload arm removed after completion.
 - [ ] Check relevant cancellation, interrupted operations, reconnect, and stale
   source/selection gates at their owning layer; separate compiler failures from
   firmware/network/upload failures.
@@ -410,8 +413,9 @@ and behavior; unsupported or untested combinations remain explicit.
 Evidence: FirmingoKit's `docs/compiler-host-qualification.md`,
 `docs/compiler-host-macos.json`, `docs/compiler-host-ipad.json` and
 `docs/compiler-host-iphone.json` record measured signed macOS and physical iPad/iPhone
-results. Minimum OS, total memory, installed-image evidence and board deployment
-remain pending.
+results. SDK `docs/nano-hardware-ipad.json` adds the scoped Nano two-sketch
+managed-deployment result. Minimum OS, aggregate memory, installed-image
+attestation and broader platform/device qualification remain pending.
 
 ### M9 — Exercise board extensibility and broaden Firmingo sketches
 

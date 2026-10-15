@@ -13,7 +13,7 @@ records provisioning separately.
 | Provision exact compiler | Compiler: deterministic transport, independent inventory anchor, all source/notices, fresh extraction and actual wrapper compile | Local transport; no hosted binary release or automatic downloader |
 | Select static resident contract | Firmware: exact build/export hashes, source contract, board/profile/layout and independent capsule validator; Compiler imports only a trusted anchored export | One exact experimental descriptor is packaged; installed-image evidence and broader firmware provenance remain open |
 | Qualify wrapper host | FirmingoKit: actual compiler through the host's private origin/sandbox, integrity failures, cold/warm builds, errors, busy/cancel/deadline cleanup, fresh reentry | Development-signed ARM64 macOS 27.0 and recorded physical iPad/iPhone Release hosts pass six checks and scoped first-source deadline recovery below; both physical devices also pass inactivity cancellation. Minimum OS, other model/OS combinations and aggregate memory remain open |
-| Qualify device deployment | Firmware and FirmingoKit: selected recoverable board, exact installed resident evidence, capability recheck, two actual sketches, upload reconciliation, startup and measured bytes/GPIO | No device operation or hardware qualification from compiler tests |
+| Qualify device deployment | Firmware and FirmingoKit: selected recoverable board, exact installed resident evidence, capability recheck, two actual sketches, upload reconciliation, startup and measured bytes/GPIO | Scoped Nano/iPadOS 27.0.1 and iOS 27.0 build-3 SDK console/GPIO workflows pass below; earlier failures retained. Timing, Internet routing and broader authorization/cold-attachment checks remain open |
 
 The first signed macOS host check now passes with an exact prepared SDK, Apple
 Development signing, app sandbox and hardened runtime. FirmingoKit records source,
@@ -156,9 +156,37 @@ exported resident plus known SDK GPIO capsule, full initial UF2 verification
 before reboot and a matching macOS hello. The entire first managed sector is
 initialized, avoiding preserved unknown sketch contents. This adds no compiler
 assets or recipe identities. SDK managed staging/commit/startup/useful behavior
-and physical Apple USB qualification remain pending. Device hello cannot
+and physical Apple USB qualification were separate pending gates at that initial
+snapshot; later scoped results are recorded below. Device hello cannot
 establish installed-image association. The host never grants write permission
 from preparation, restored records or launch alone.
+
+The SDK's `docs/nano-hardware-ipad.json` now adds actual two-sketch deployment on
+the selected Nano from the development-signed build-3 iPad host (iPadOS 27.0.1).
+Both actual capsule byte files match the known vectors and production firmware
+validation. Each reviewed association/RAM stage leads to one host commit attempt,
+`committing` reply and fresh `boot_confirmed` reconciliation with `error=none` and
+`slotTouched=true`. The console returns all 256 byte values exactly. After an
+explicit next operation and RESET, a fresh boot/association precedes GPIO upload;
+the user observes D13 change from off to on. Reports, per-boot transaction records,
+source/signature provenance and earlier network/prerequisite failures are pinned.
+The intermediate installed state was not separately sampled; GPIO is manual, and
+no timing, throughput/soak, first-authorization/cold-attachment matrix, Internet
+routing, minimum-OS, power-loss or physical iPhone managed result follows. This
+qualifies that scoped experimental combination without changing compiler assets,
+recipe/descriptor identities, firmware ABI or device ownership.
+
+The identical signed app now also completes the equivalent console and GPIO
+workflows on iPhone 15 Pro Max/iOS 27.0 (24A437). SDK
+`docs/nano-hardware-iphone.json` retains its actual capsule bytes, 22-event final
+journal, two per-boot transaction records and user-observed off-to-on LED baseline.
+The first inspection failed around the reported access prompt; an explicit
+read-only retry passed without reset/reconnect, and the original failure remains.
+Both uploads have verified RAM, one host commit attempt, fresh boot-confirmed
+status and the separate expected behavior. Final own-run retrieval remains over
+`localNetwork` with Nano on USB; uncached Internet was not tested. The user removed
+the D2 arm at completion. PCB revision/cable details, broader authorization/cold
+attachment, timing/soak, minimum OS and power loss remain open.
 
 Keep synthetic compiler fixtures, test descriptors and generated parser capsules
 out of deployment. Record unavailable hosts/boards as untested, and report failures

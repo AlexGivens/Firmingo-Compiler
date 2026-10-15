@@ -5,7 +5,7 @@ review. [Service delivery](docs/service-delivery.md) stages the compiler, source
 archive and notices locally; no binary is committed or published. The promoted
 service passes actual Node, Chrome, SDK private-WebKit and fresh SwiftPM consumer
 checks. Default binary provisioning, firmware catalogue and physical-host/device
-qualification remain separate work.
+qualification have separate evidence and limits in the qualification guide below.
 
 [Local service transport](docs/service-release.md) packages those reviewed bytes
 with a trusted release inventory and safe extraction. [Qualification gates](docs/release-qualification.md)
@@ -22,7 +22,10 @@ JSON, source preprocessing/mapping, strict Nano ELF/FMS1 validation, independent
 ELF packaging with report/receipt, and verified fixed Nano recipes/jobs. The
 isolated WASI worker now compiles and links through an explicit pinned local service,
 with diagnostics, cancellation/deadlines, independent output checks and execution receipts. No service
-binary is bundled and no board/runtime combination is hardware-qualified.
+binary is bundled in Git. The exact experimental Nano/prepared-SDK/iPad and iPhone
+combinations now pass scoped two-sketch upload/startup/console/GPIO workflows;
+see [qualification gates and evidence](docs/release-qualification.md). This does
+not qualify arbitrary Arduino libraries, production firmware or other boards.
 
 Firmingo supplies device contracts and verified firmware facts. This repository
 owns portable compilation, recipes, packaging, diagnostics and static metadata.
@@ -58,8 +61,10 @@ See [foundation evidence](docs/evidence/foundation.md) and
 
 The actual browser-worker path also passes nine headless Chrome checks on the
 recorded macOS host. The [FirmingoKit adapter](docs/sdk-adapter.md) also passes nine real macOS WebKit cases;
-physical iOS/iPadOS, other wrappers and hardware remain unqualified;
-see [browser evidence](docs/evidence/web-host.md). No compiler service is bundled.
+signed macOS and recorded physical iPad/iPhone compiler-host checks are separately
+recorded in [qualification evidence](docs/release-qualification.md). Selected Nano
+device deployment has its own narrow result there; other wrappers and boards
+remain unqualified. See [browser evidence](docs/evidence/web-host.md).
 
 SDK standalone runtime/recipe/vendor copies are now retired after replacement tests;
 see [retirement evidence](docs/sdk-retirement.md). Compiler-owned service memory

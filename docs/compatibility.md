@@ -1,5 +1,25 @@
 # Selected baseline and support status
 
+## Current scoped qualification — 2026-10-15
+
+The reviewed reproduced service `a7648688…`, experimental consumer package
+`d042dc7d…`, Firmware `e0a79d1…` and descriptor `c44d25ef…` supersede the starting
+binary/source facts below for the prepared Nano consumer. See
+[the current qualification record](release-qualification.md) and its linked
+Compiler/FirmingoKit evidence for full identities and limitations.
+
+| Combination | Current scoped result |
+| --- | --- |
+| Prepared SDK compiler hosting | Signed macOS 27.0 and recorded physical iPadOS 27.0.1/iOS 27.0 hosts pass actual compilation and separate cancellation/deadline/reentry checks; minimum OS and aggregate memory remain open |
+| Nano / iPadOS 27.0.1 / signed Nano host build 3 | Two known WASM capsules independently validated, RAM-staged and committed through SDK with fresh boot-confirmed status; exact 256-byte console echo and manual D13 off-to-on transition pass; earlier failed attempts retained |
+| Nano / iOS 27.0 / identical signed Nano host build 3 | Equivalent console/GPIO stage/commit/startup, exact echo and manual LED transition pass; initial permission-prompt Network-is-down failure and explicit retry retained |
+| Pico / additional boards / broader libraries / conventional Arduino images | No added recipe or hardware support |
+| Consumer delivery | Explicit anchored local provisioning with paired source/notices; no hosted binary release or automatic downloader |
+
+The inventory and matrix below preserve the **2026-10-12 starting snapshot**.
+Their unresolved review/host/device statements describe that historical stage;
+they must not override current promotion or scoped qualification evidence.
+
 Selected 2026-10-12. [baseline.json](baseline.json) records exact reference paths,
 sizes/hashes and service identities. Its 24 source/resource records match the
 earlier migration inventory. Source commits are Firmingo
@@ -48,7 +68,7 @@ contract ZIP has documentation/parser vectors, not the complete build facts need
 for a production descriptor. Keep real production selections unavailable until
 such facts are verified; schema validation of synthetic hashes proves no build.
 
-## Evidence matrix
+## Historical initial evidence matrix
 
 | Target/operation | Status in this repository |
 | --- | --- |

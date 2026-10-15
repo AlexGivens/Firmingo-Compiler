@@ -226,10 +226,26 @@ with the same known capsules and complete macOS/iOS Release builds. A separately
 selected Firmware-owned initial composite now combines the exact exported
 resident with the SDK GPIO capsule, initializes the first managed sector, passes
 full ROM verification before boot and answers a matching macOS hello. The signed
-iOS host is installed/launched on iPad over Wi-Fi; SDK managed upload/startup/
-behavior and physical Apple USB qualification remain open. See Firmware's
+iOS host is installed/launched on iPad over Wi-Fi; that initial setup alone does
+not qualify SDK upload/startup/behavior or physical Apple USB operation. See Firmware's
 `docs/evidence/nano-sdk-initial.json` and SDK `docs/nano-hardware-initial.json`.
 Compiler assets, descriptor identities and recipe claims are unchanged.
+SDK `docs/nano-hardware-ipad.json` now records the scoped physical iPad two-sketch
+pass through that exact package: actual exported capsule bytes, reviewed resident
+association, verified RAM stage, one host commit attempt and fresh boot-confirmed
+status per sketch, exact 256-byte console echo, and a manual D13 off-to-on GPIO
+transition after a RESET baseline. Both saved per-boot transaction records and
+earlier failures remain pinned. This is experimental iPadOS 27.0.1/build-3 evidence,
+not minimum OS, general Arduino, timing, cold-attachment/authorization matrix,
+Internet routing or power-loss qualification. The iPhone has separate evidence
+below. The compiler gains no device
+I/O or installation responsibility from the wrapper result.
+The same signed build 3 now passes the equivalent two-sketch workflow on iPhone
+15 Pro Max/iOS 27.0, pinned in SDK `docs/nano-hardware-iphone.json`. Its initial
+access-prompt inspection failed with Network is down; a later explicit read-only
+retry passed, and the failure remains recorded. Both independent final journals
+and per-boot records confirm the scoped outcomes; the D2 upload arm was removed
+after completion. No compiler service/recipe/descriptor/ABI change was required.
 
 The user has authorized this coding agent to work across Firmingo-Compiler,
 FirmingoKit, and Firmingo. Earlier sibling guidance treating Firmingo as read-only
