@@ -368,12 +368,13 @@ validation. The stale historical address is rejected. No hardware qualification.
 
 ### M8 — Qualify the initial Nano path through real wrapper environments
 
-Status: not started. Depends on real artifacts from M4 and wrapper integration;
-public release claims also require M7.
+Status: partial host evidence. A development-signed macOS 27.0 ARM64 Release app
+passes six sandbox checks. Physical hosts, minimum OS, total memory and Nano
+deployment remain open; M7 provisioning stays the active delivery milestone.
 
 The [qualification gate plan](docs/release-qualification.md) records concrete host,
 resident and device evidence required next. Existing local macOS wrapper tests are
-recorded separately; signed/minimum-OS/physical/device results remain open.
+recorded separately; minimum-OS/physical/device results remain open.
 
 - [ ] Select concrete web/wrapper environments and versions to test; create a matrix
   separating portable runtime behavior, wrapper sandbox support, and device behavior.
@@ -393,7 +394,9 @@ recorded separately; signed/minimum-OS/physical/device results remain open.
 Acceptance: each claimed combination has evidence from real compilation and useful
 hardware behavior. Results distinguish artifact validity, installation, startup,
 and behavior; unsupported or untested combinations remain explicit.
-Evidence: pending. No hardware or wrapper-platform checks have run here.
+Evidence: FirmingoKit's `docs/compiler-host-qualification.md` and
+`docs/compiler-host-macos.json` record measured signed macOS results. Physical
+iPad/iPhone, installed-image evidence and board deployment remain pending.
 
 ### M9 — Exercise board extensibility and broaden Firmingo sketches
 
@@ -476,8 +479,9 @@ User decisions recorded on 2026-10-12:
 Initial ledger creation involved documentation checks only. The foundation increment
 now has input/CLI tests and bounded JSON mutation evidence. M1–M4 are complete for
 local development execution; M5's maintained service-free CI scope is verified.
-Standard Chrome and macOS SDK hosting are exercised. Signed/physical wrapper
-hosts, trusted production firmware exports and hardware remain unqualified. See
+Standard Chrome and macOS SDK hosting are exercised; the scoped development-signed
+macOS host now passes six checks. Other signed/physical hosts, trusted production
+firmware exports and hardware remain unqualified. See
 `docs/evidence/foundation.md`, `docs/evidence/portable-pipeline.md` and
 `docs/evidence/wasm-runtime.md` and `docs/evidence/web-host.md` for the separate
 increment records.

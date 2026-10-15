@@ -11,11 +11,18 @@ records provisioning separately.
 | Gate | Owner and required evidence | Current boundary |
 | --- | --- | --- |
 | Provision exact compiler | Compiler: deterministic transport, independent inventory anchor, all source/notices, fresh extraction and actual wrapper compile | Local transport; no hosted binary release or automatic downloader |
-| Select static resident contract | Firmware: exact build/export hashes, source contract, board/profile/layout and independent capsule validator; Compiler imports only a trusted anchored export | Experimental exports exist; default production catalogue stays empty |
-| Qualify wrapper host | FirmingoKit: actual compiler through the host's private origin/sandbox, integrity failures, cold/warm builds, errors, busy/cancel/deadline cleanup, fresh reentry | macOS local test host passes; signing, minimum OS and physical iOS/iPadOS remain open |
+| Select static resident contract | Firmware: exact build/export hashes, source contract, board/profile/layout and independent capsule validator; Compiler imports only a trusted anchored export | One exact experimental descriptor is packaged; installed-image evidence and broader firmware provenance remain open |
+| Qualify wrapper host | FirmingoKit: actual compiler through the host's private origin/sandbox, integrity failures, cold/warm builds, errors, busy/cancel/deadline cleanup, fresh reentry | Development-signed ARM64 macOS 27.0 Release app passes six sandbox checks; minimum OS, total memory, forced deadline and physical iOS/iPadOS remain open |
 | Qualify device deployment | Firmware and FirmingoKit: selected recoverable board, exact installed resident evidence, capability recheck, two actual sketches, upload reconciliation, startup and measured bytes/GPIO | No device operation or hardware qualification from compiler tests |
 
-For the next host check, select an exact macOS app signing/sandbox configuration
+The first signed macOS host check now passes with an exact prepared SDK, Apple
+Development signing, app sandbox and hardened runtime. FirmingoKit records source,
+signature, measured journal and CI boundaries in `docs/compiler-host-qualification.md`
+and `docs/compiler-host-macos.json`. These wrapper-owned records change no compiler
+pins or hardware claims. The selected next physical host is an iPad; connection
+facilitation is requested.
+
+For additional host checks, select an exact app signing/sandbox configuration
 and record entitlements, OS, architecture, Xcode/Swift/WebKit versions, SDK commit,
 source-only runtime manifest, release inventory, service/source/review hashes,
 recipe and resident binding. Run actual SDK build APIs with the extracted service.
