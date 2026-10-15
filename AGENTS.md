@@ -176,8 +176,11 @@ FirmingoKit's minimal development-signed ARM64 Release host now passes six actua
 compiler checks on macOS 27.0 and in two physical iPad Pro (11-inch, 3rd generation)
 launches on iPadOS 27.0.1. The SDK owns `docs/compiler-host-qualification.md` and
 `docs/compiler-host-ipad.json`, including signing/provenance, measured reports and
-independent validation of exported capsules. These are scoped wrapper results;
-minimum OS, iPhone, total memory, forced deadline and board deployment remain open.
+independent validation of exported capsules. The identical signed app also passes
+two physical iPhone 15 Pro Max launches on iOS 27.0; the SDK records exact reports
+and exported capsule validation in `docs/compiler-host-iphone.json`. These are
+scoped wrapper results; minimum OS, other model/OS combinations, total memory,
+forced deadline and board deployment remain open.
 
 The user has authorized this coding agent to work across Firmingo-Compiler,
 FirmingoKit, and Firmingo. Earlier sibling guidance treating Firmingo as read-only

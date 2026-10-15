@@ -369,15 +369,17 @@ validation. The stale historical address is rejected. No hardware qualification.
 ### M8 — Qualify the initial Nano path through real wrapper environments
 
 Status: partial host evidence. Development-signed ARM64 Release hosts pass six
-checks on macOS 27.0 and a physical 11-inch iPad Pro (3rd generation), iPadOS
-27.0.1. Minimum OS, physical iPhone, total memory and Nano deployment remain open;
-M7 provisioning stays the active delivery milestone.
+checks on macOS 27.0, a physical 11-inch iPad Pro (3rd generation), iPadOS
+27.0.1, and an iPhone 15 Pro Max, iOS 27.0. Minimum OS, other model/OS combinations,
+total memory and Nano deployment remain open. M7 provisioning stays the active
+delivery milestone.
 
 The [qualification gate plan](docs/release-qualification.md) records concrete host,
 resident and device evidence required next. Existing local macOS wrapper tests are
 recorded separately; additional hosts, minimum OS and device deployment remain open.
 
 - [x] Exercise the exact prepared SDK/default compiler in a signed minimal physical iPad host: two fresh app launches pass resources, GPIO/console compilation, diagnostics, busy/cancellation and fresh reentry; exported capsules match desktop bytes and independent firmware validation. This does not qualify the demo, other OS/models or deployment.
+- [x] Repeat all six checks in two fresh physical iPhone launches with the identical signed app and existing profile; record measured reports and independently validated exported capsules in the SDK's `docs/compiler-host-iphone.json`. This does not qualify memory/lifecycle, minimum OS or deployment.
 
 - [ ] Select concrete web/wrapper environments and versions to test; create a matrix
   separating portable runtime behavior, wrapper sandbox support, and device behavior.
@@ -397,10 +399,11 @@ recorded separately; additional hosts, minimum OS and device deployment remain o
 Acceptance: each claimed combination has evidence from real compilation and useful
 hardware behavior. Results distinguish artifact validity, installation, startup,
 and behavior; unsupported or untested combinations remain explicit.
-Evidence: FirmingoKit's `docs/compiler-host-qualification.md` and
-`docs/compiler-host-macos.json` and `docs/compiler-host-ipad.json` record measured
-signed macOS and physical iPad results. Physical iPhone, minimum OS, installed-image
-evidence and board deployment remain pending.
+Evidence: FirmingoKit's `docs/compiler-host-qualification.md`,
+`docs/compiler-host-macos.json`, `docs/compiler-host-ipad.json` and
+`docs/compiler-host-iphone.json` record measured signed macOS and physical iPad/iPhone
+results. Minimum OS, total memory, installed-image evidence and board deployment
+remain pending.
 
 ### M9 — Exercise board extensibility and broaden Firmingo sketches
 
@@ -484,7 +487,7 @@ Initial ledger creation involved documentation checks only. The foundation incre
 now has input/CLI tests and bounded JSON mutation evidence. M1–M4 are complete for
 local development execution; M5's maintained service-free CI scope is verified.
 Standard Chrome and macOS SDK hosting are exercised; the scoped development-signed
-macOS and physical iPad hosts now pass six checks. Other signed/physical hosts,
+macOS and physical iPad/iPhone hosts now pass six checks. Other signed/physical hosts,
 trusted production firmware exports and hardware remain unqualified. See
 `docs/evidence/foundation.md`, `docs/evidence/portable-pipeline.md` and
 `docs/evidence/wasm-runtime.md` and `docs/evidence/web-host.md` for the separate

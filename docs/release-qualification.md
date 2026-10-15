@@ -12,7 +12,7 @@ records provisioning separately.
 | --- | --- | --- |
 | Provision exact compiler | Compiler: deterministic transport, independent inventory anchor, all source/notices, fresh extraction and actual wrapper compile | Local transport; no hosted binary release or automatic downloader |
 | Select static resident contract | Firmware: exact build/export hashes, source contract, board/profile/layout and independent capsule validator; Compiler imports only a trusted anchored export | One exact experimental descriptor is packaged; installed-image evidence and broader firmware provenance remain open |
-| Qualify wrapper host | FirmingoKit: actual compiler through the host's private origin/sandbox, integrity failures, cold/warm builds, errors, busy/cancel/deadline cleanup, fresh reentry | Development-signed ARM64 macOS 27.0 and physical iPad Pro/iPadOS 27.0.1 Release apps pass six checks; minimum OS, physical iPhone, total memory and forced deadline remain open |
+| Qualify wrapper host | FirmingoKit: actual compiler through the host's private origin/sandbox, integrity failures, cold/warm builds, errors, busy/cancel/deadline cleanup, fresh reentry | Development-signed ARM64 macOS 27.0, physical iPad Pro/iPadOS 27.0.1 and iPhone 15 Pro Max/iOS 27.0 Release hosts pass six checks; minimum OS, other model/OS combinations, total memory and forced deadline remain open |
 | Qualify device deployment | Firmware and FirmingoKit: selected recoverable board, exact installed resident evidence, capability recheck, two actual sketches, upload reconciliation, startup and measured bytes/GPIO | No device operation or hardware qualification from compiler tests |
 
 The first signed macOS host check now passes with an exact prepared SDK, Apple
@@ -24,7 +24,16 @@ iPadOS 27.0.1 now pass the same six checks. The SDK's `docs/compiler-host-ipad.j
 records actual signing/profile, reports, times and exported capsule bytes. Both
 capsules match desktop output and pass independent firmware image validation for
 the selected API, with the stale address rejected. No board communication or
-deployment occurred; this is one host/model/OS combination.
+deployment occurred; this is one iPad/model/OS combination.
+
+The identical signed app also passes all six checks in two fresh iPhone 15 Pro
+Max launches on iOS 27.0 (24A437), using the existing profile without rebuilding
+or provisioning changes. The SDK's `docs/compiler-host-iphone.json` records both
+reports, exact source/signature context and exported capsule bytes. First-launch
+GPIO/console times are 0.858/0.663 seconds. Both capsules match the iPad/desktop
+vectors and independently validate for the selected API, with the stale address
+rejected. This adds one iPhone/model/OS combination, without a board operation or
+total-memory/lifecycle qualification.
 
 For additional host checks, select an exact app signing/sandbox configuration
 and record entitlements, OS, architecture, Xcode/Swift/WebKit versions, SDK commit,
