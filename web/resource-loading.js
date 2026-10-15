@@ -28,8 +28,9 @@ export async function fetchBytes(path, maximum) {
 }
 
 /** Loads exact package recipe bytes; no library discovery or arbitrary asset URLs exist. */
-export async function loadRecipe() {
-  const base = "/recipes/nano_rp2040_connect/";
+export async function loadRecipe(profile = "nano-managed-v1") {
+  if (!["nano-managed-v1", "nano-managed-v2"].includes(profile)) throw new Error("Unsupported explicit recipe profile");
+  const base = profile === "nano-managed-v2" ? "/recipes/nano_rp2040_connect_v2/" : "/recipes/nano_rp2040_connect/";
   const paths = ["Recipe/Arduino.h", "Recipe/Entry.cpp", "Recipe/Module.ld", "Sources/ManagedRecipe.js"];
   const [recipeManifest, ...bytes] = await Promise.all([fetchBytes(base + "manifest.json", 16384), ...paths.map(path => fetchBytes(base + path, 65536))]);
   const recipeAssets = Object.fromEntries(paths.map((path, index) => [path, bytes[index]]));

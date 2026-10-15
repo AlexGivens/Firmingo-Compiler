@@ -29,3 +29,16 @@ test("explicit missing browser/service paths fail without launching or silently 
   assert.throws(() => findChromium("/nonexistent/explicit-chromium"), { code: "ENOENT" });
   await assert.rejects(harnessResources("/nonexistent/explicit-service.wasm"), { code: "ENOENT" });
 });
+
+
+test("every served module's static dependencies resolve through the exact readonly route inventory", async () => {
+  const resources = await harnessResources();
+  for (const [path, resource] of resources) {
+    if (!path.endsWith(".js")) continue;
+    const source = new TextDecoder().decode(resource.bytes);
+    for (const match of source.matchAll(/(?:^|\n)(?:import|export)[^;]*?from ["']([^"']+)["'];/g)) {
+      const dependency = new URL(match[1], "http://127.0.0.1" + path).pathname;
+      assert(resources.has(dependency), `${path} imports unserved ${dependency}`);
+    }
+  }
+});

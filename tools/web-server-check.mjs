@@ -13,6 +13,10 @@ export async function checkWebServer(host) {
   const worker = await fetchLocal("/runtime/browser-worker.js", { method: "HEAD" });
   assert.equal(worker.status, 200); assert(worker.headers.get("content-type").startsWith("text/javascript"));
   assert(Number(worker.headers.get("content-length")) > 0); assert.equal((await worker.arrayBuffer()).byteLength, 0);
+  for (const directory of ["nano_rp2040_connect", "nano_rp2040_connect_v2"]) {
+    const response = await fetchLocal(`/recipes/${directory}/Sources/ManagedRecipe.js`);
+    assert.equal(response.status, 200); assert(response.headers.get("content-type").startsWith("text/javascript"));
+  }
   for (const [path, options] of [["/.git/config", {}], ["/.build/logs/web-results.json", {}], ["/source.json", {}], ["/runtime/browser-worker.js?alias=1", {}],
     ["/", { method: "POST", body: "No source is accepted" }], ["/", { headers: { origin: "https://other.invalid" } }]]) {
     const response = await fetchLocal(path, options); assert.equal(response.status, 404, JSON.stringify({ path, options })); assert.equal((await response.arrayBuffer()).byteLength, 0);

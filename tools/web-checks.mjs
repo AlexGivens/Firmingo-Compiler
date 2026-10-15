@@ -11,7 +11,7 @@ export async function webChecks({ servicePath, browserPath } = {}) {
   const logs = fileURLToPath(new URL("../.build/logs/", import.meta.url)); mkdirSync(logs, { recursive: true });
   if (!browser) {
     if (servicePath) await harnessResources(servicePath); // Explicit bad service inputs must fail, even without a browser.
-    const report = { schema: 1, status: "skipped", passed: 0, failed: 0, skipped: 9, actualCompilerPasses: 0,
+    const report = { schema: 1, status: "skipped", passed: 0, failed: 0, skipped: 10, actualCompilerPasses: 0,
       reason: "Provision Chromium or select --browser explicitly; no automatic installation" };
     writeFileSync(resolve(logs, "web-results.json"), JSON.stringify(report, null, 2) + "\n");
     console.log(JSON.stringify(report)); return;

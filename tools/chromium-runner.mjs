@@ -122,7 +122,7 @@ export async function runChromiumChecks(browserPath, host, { builtService = fals
       awaitPromise: true, returnByValue: true, allowUnsafeEvalBlockedByCSP: false }, sessionId, 100000);
     if (result.exceptionDetails) throw new Error("Browser harness evaluation failed: " + (result.exceptionDetails.exception?.description || result.exceptionDetails.text));
     const report = result.result?.value;
-    if (!report || report.schema !== 1 || !Array.isArray(report.cases) || report.cases.length !== 9) throw new Error("Browser omitted bounded test report");
+    if (!report || report.schema !== 1 || !Array.isArray(report.cases) || report.cases.length !== (builtService ? 9 : 10)) throw new Error("Browser omitted bounded test report");
     stopListening();
     if (interrupted) throw new Error("Browser checks interrupted");
     return { ...report, browser: { product: version.product, revision: version.revision, protocolVersion: version.protocolVersion, jsVersion: version.jsVersion },

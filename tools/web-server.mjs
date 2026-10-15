@@ -33,9 +33,12 @@ export async function harnessResources(servicePath) {
   for (const file of ["harness.js", "checks.js", "resource-loading.js"]) add("/web/" + file, "web/" + file, "text/javascript; charset=utf-8");
   add("/", "web/harness.html", "text/html; charset=utf-8");
   add("/web/harness.css", "web/harness.css", "text/css; charset=utf-8");
-  const recipe = "recipes/nano_rp2040_connect/";
-  for (const path of ["manifest.json", "Recipe/Arduino.h", "Recipe/Entry.cpp", "Recipe/Module.ld", "Sources/ManagedRecipe.js"])
-    add("/" + recipe + path, recipe + path, path.endsWith(".js") ? "text/javascript; charset=utf-8" : "application/octet-stream");
+  for (const directory of ["nano_rp2040_connect", "nano_rp2040_connect_v2"]) {
+    const recipe = `recipes/${directory}/`;
+    for (const path of ["manifest.json", "Recipe/Arduino.h", "Recipe/Entry.cpp", "Recipe/Module.ld", "Sources/ManagedRecipe.js"])
+      add("/" + recipe + path, recipe + path, path.endsWith(".js") ? "text/javascript; charset=utf-8" : "application/octet-stream");
+  }
+  add("/fixture-request-v2.json", "tests/fixtures/stateful-wasm/request.json", "application/json; charset=utf-8");
   add("/fixture-request.json", "tests/fixtures/synthetic-packaging-request.json", "application/json; charset=utf-8");
   add("/fixture-elf.hex", "tests/fixtures/stateless.elf.hex", "text/plain; charset=utf-8", 4096);
   if (servicePath) {

@@ -90,6 +90,16 @@ export async function runWebChecks({ serviceAvailable, onCase = () => {} } = {})
     assert(canonicalJSON(decoded.artifact.receipt) === canonicalJSON(first.receipt), "Serialized receipt changed");
     assert(await sha256(decoded.artifact.bytes) === first.sha256, "Serialized bytes changed");
   }, true);
+  await run("real FMS2 initialized-data/BSS compile and independently validated capsule", async () => {
+    const input = parseBuildRequest(new TextDecoder().decode(await fetchBytes("/fixture-request-v2.json", 16384)));
+    const statefulResources = { ...await loadRecipe("nano-managed-v2"), serviceBytes: resources.serviceBytes };
+    const artifact = await controller.build(input, statefulResources);
+    assert(artifact.sha256 === "e349a77d85958db1c4eba4f5c10f27e23dc9dd2ce03eb675c108d07bbfd93abb", "FMS2 differs from independent firmware-checked WASM fixture");
+    const checked = await validateCapsule(artifact.bytes, input.target.firmwareBuild);
+    assert(checked.codeBytes === 120 && checked.dataBytes === 4 && checked.bssBytes === 4, "FMS2 linked state extents differ");
+    artifacts.push({ buildID: input.buildID, sourceFilename: input.source.filename, capsuleBytes: artifact.bytes.length,
+      capsuleSHA256: artifact.sha256, linkedELFSHA256: artifact.receipt.linkedELFSHA256, memoryBytes: artifact.memoryBytes });
+  }, true);
   await run("real frontend diagnostics and original BOM byte columns, then fresh build", async () => {
     const events = [];
     const error = await rejects(() => controller.build(request("web-frontend", "\ufeffvoid setup() { missingFunction(); }\nvoid loop() {}"), resources,

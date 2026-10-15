@@ -94,3 +94,29 @@ selection. Physical FMS2 installation, state reset/persistence behavior across
 real replacement/reboot, console/GPIO behavior, interruptions and recovery remain
 qualification work on an explicitly selected board. Existing ABI-one hardware
 results cannot establish these outcomes.
+
+## Browser and wrapper follow-through
+
+The final exported source manifest is
+`2324bff2f0db46b5c640998a607df85066a3bb3ddcf90938499a1c858ba81639`;
+consumer `.2` is
+`1bbc0cc19d80490914799fbec5cb4bbc0a942a73fd3bbf6e09fff2c3856e660a`.
+SDK `e0bed36` imports these exact resources. Actual public macOS WebKit legacy
+and offline FMS2 builds and service-free ELF conversion match the same capsule;
+its documentation records the separate native boundary checks and Apple builds.
+
+The first [CI run](https://github.com/AlexGivens/Firmingo-Compiler/actions/runs/38818684347)
+at `1ad0fa6` passed seven jobs but failed the standard browser harness: its explicit
+readonly route list omitted the new recipe's imported JavaScript module. A new
+regression checks every served module's static import closure. Both recipe
+inventories are now explicit routes; this does not expose arbitrary files.
+The harness also has a separate actual FMS2 compile/extent/hash case. Its bounded
+report count is ten for the public harness; the independent maintenance harness
+retains nine. The corrective source export reproduces the unchanged manifest
+above, so SDK assets need no further replacement.
+
+Actual Chrome 154.0.8037.93/macOS checks after correction:
+`test-web EXPLICIT_PINNED_SERVICE` passed all ten (seven actual compiler cases),
+including FMS2; `test-web` passed three with seven explicit compilation skips.
+No external application requests or protocol faults were reported. The initial
+failure is retained as a failed run, not recast as a compiler or hardware pass.

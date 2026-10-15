@@ -1,5 +1,11 @@
 # Minimal web developer harness
 
+The current harness includes ten cases, including actual FMS2 initialized-data/BSS
+compilation when the pinned service is supplied. Without it, three cases pass and
+seven explicitly skip; without a browser, all ten skip. Earlier nine-case records
+below retain their original scope. Both recipes' exact routes and every served
+module's static import closure are tested. See [FMS2 adoption](stateful-adoption.md).
+
 Browser startup now waits for the DevTools readiness event from stdout or stderr
 with a bounded 30-second startup budget, retaining the existing whole-run limit.
 `browser-startup.json` records selected/resolved executable, first output and ready/
