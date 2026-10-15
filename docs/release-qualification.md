@@ -35,6 +35,18 @@ vectors and independently validate for the selected API, with the stale address
 rejected. This adds one iPhone/model/OS combination, without a board operation or
 total-memory/lifecycle qualification.
 
+FirmingoKit's updated build-2 host now also completes 20 baseline and 20 fresh
+post-interruption builds on each physical Apple device. Two explicit whole-app
+SIGKILL tests preserve rejected incomplete journals without replay/overwrite;
+the original six-check mode still passes. The SDK's `docs/compiler-host-reliability.json`
+records exact inputs and measurements. Sampled host footprints reach about
+790 MiB while WASM linear bytes remain 27,983,872; investigate resource loading,
+temporary buffers and native/WebKit transfer ownership before broader host
+qualification. These are self-process samples, not aggregate app/WebKit peaks
+or a leak-free/memory-budget pass. App-scoped profiling could not attach; pressure,
+background/foreground, child-process termination and deadline expiry remain open.
+Compiler/service/recipe/catalogue bytes are unchanged and no board is contacted.
+
 For additional host checks, select an exact app signing/sandbox configuration
 and record entitlements, OS, architecture, Xcode/Swift/WebKit versions, SDK commit,
 source-only runtime manifest, release inventory, service/source/review hashes,
