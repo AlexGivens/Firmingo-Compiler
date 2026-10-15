@@ -181,6 +181,11 @@ two physical iPhone 15 Pro Max launches on iOS 27.0; the SDK records exact repor
 and exported capsule validation in `docs/compiler-host-iphone.json`. These are
 scoped wrapper results; minimum OS, other model/OS combinations, total memory,
 forced deadline and board deployment remain open.
+The SDK's resource-reader fix at `4edc6aa…` now passes two fresh 20-build runs per
+device, with unchanged compiler inputs/capsules and highest sampled host footprints
+of 214 MiB on iPad and 209 MiB on iPhone, down from about 790 MiB. See its
+`docs/compiler-resource-memory.json`. This changes no compiler assets or board
+claims; aggregate app/WebKit memory and real pressure/lifecycle remain open.
 
 The user has authorized this coding agent to work across Firmingo-Compiler,
 FirmingoKit, and Firmingo. Earlier sibling guidance treating Firmingo as read-only

@@ -380,6 +380,7 @@ recorded separately; additional hosts, minimum OS and device deployment remain o
 
 - [x] Exercise the exact prepared SDK/default compiler in a signed minimal physical iPad host: two fresh app launches pass resources, GPIO/console compilation, diagnostics, busy/cancellation and fresh reentry; exported capsules match desktop bytes and independent firmware validation. This does not qualify the demo, other OS/models or deployment.
 - [x] Repeat all six checks in two fresh physical iPhone launches with the identical signed app and existing profile; record measured reports and independently validated exported capsules in the SDK's `docs/compiler-host-iphone.json`. This does not qualify memory/lifecycle, minimum OS or deployment.
+- [x] Investigate high wrapper host-memory observations at the owning SDK layer and repeat physical builds. SDK `4edc6aa…` bounds resource-buffer growth/temporary lifetimes; 80 builds pass across two fresh 20-build runs per device with unchanged compiler/capsule inputs. Highest host samples fall from about 790 MiB to 214 MiB on iPad and 209 MiB on iPhone. The SDK's `docs/compiler-resource-memory.json` records exact measurements. Aggregate app/WebKit memory, real pressure/lifecycle and minimum OS remain open.
 
 - [ ] Select concrete web/wrapper environments and versions to test; create a matrix
   separating portable runtime behavior, wrapper sandbox support, and device behavior.

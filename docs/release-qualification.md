@@ -40,10 +40,15 @@ post-interruption builds on each physical Apple device. Two explicit whole-app
 SIGKILL tests preserve rejected incomplete journals without replay/overwrite;
 the original six-check mode still passes. The SDK's `docs/compiler-host-reliability.json`
 records exact inputs and measurements. Sampled host footprints reach about
-790 MiB while WASM linear bytes remain 27,983,872; investigate resource loading,
-temporary buffers and native/WebKit transfer ownership before broader host
-qualification. These are self-process samples, not aggregate app/WebKit peaks
-or a leak-free/memory-budget pass. App-scoped profiling could not attach; pressure,
+790 MiB while WASM linear bytes remain 27,983,872. A subsequent SDK-only reader
+fix (`4edc6aa…`) reserves the bounded owned snapshot and drains Foundation chunk
+temporaries. Two fresh 20-build runs per device now pass all 80 builds with
+unchanged compiler/capsule identities; highest host samples are 214 MiB on iPad
+and 209 MiB on iPhone. Both original six-check modes also pass. The SDK's
+`docs/compiler-resource-memory.json` records exact source, signing and observations;
+the earlier reliability record remains unchanged. These are self-process samples,
+not aggregate app/WebKit peaks or a leak-free/memory-budget pass.
+App-scoped profiling could not attach; pressure,
 background/foreground, child-process termination and deadline expiry remain open.
 Compiler/service/recipe/catalogue bytes are unchanged and no board is contacted.
 
