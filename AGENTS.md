@@ -219,6 +219,13 @@ launch PID/context, real foreground observation, exact source/signature and
 two bounded stdout capsule exports checked against the known vectors. Sandbox,
 hardened runtime and the existing two entitlements are verified; compiler assets,
 recipes, SDK implementation and timers are unchanged.
+FirmingoKit now also prepares a separate Nano hardware-qualification app and
+fourteen resident-evidence roles from this exact consumer package. Its
+`docs/nano-hardware-preparation.json` records signed macOS offline compilation
+with the same known capsules and complete macOS/iOS Release builds; no board
+connection, flash or upload has occurred. The resident-only UF2 preserves the
+managed slot, so selected ROM/slot/readback setup remains a physical prerequisite.
+Compiler assets, descriptor identities and recipe claims are unchanged.
 
 The user has authorized this coding agent to work across Firmingo-Compiler,
 FirmingoKit, and Firmingo. Earlier sibling guidance treating Firmingo as read-only
