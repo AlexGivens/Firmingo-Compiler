@@ -195,6 +195,14 @@ call is pending. Both physical devices pass with last reported progress `verifyi
 no returned artifact and known fresh console bytes after background/return. See
 its `docs/compiler-host-active-lifecycle.json`. Worker compile/link interruption,
 real pressure and automatic SDK lifecycle policy are not qualified by these passes.
+The SDK's build-7 host separately passes first-source-compilation interruption on
+both devices with a pinned 227,505-byte compile-time fixture and complete measured
+preflights. Attempt 1 cancels on inactivity with exactly one compiling notification,
+19.6/10.2-ms typed cancellation settlement, no artifact and known fresh console
+bytes after real background/return. See its `docs/compiler-host-worker-lifecycle.json`.
+This is explicit test-host policy and callback-phase evidence; entry-wrapper/link
+interruption, OS suspension and real pressure remain open. Compiler assets,
+recipes, catalogue and device claims are unchanged.
 
 The user has authorized this coding agent to work across Firmingo-Compiler,
 FirmingoKit, and Firmingo. Earlier sibling guidance treating Firmingo as read-only

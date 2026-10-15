@@ -73,6 +73,21 @@ inside worker compilation/linking, OS suspension, real pressure and any automati
 SDK lifecycle policy remain unqualified. Compiler inputs and board claims stay
 unchanged.
 
+The SDK's build-7 host separately qualifies cancellation on inactivity during the
+first **source-compilation** interval on both devices. Its pinned 227,505-byte
+compile-time fixture completes a preflight producing the unchanged GPIO capsule,
+with measured source intervals of 10.001 seconds on iPad and 8.830 on iPhone.
+Both manually started attempts cancel after exactly one compiling notification,
+settle with `CancellationError` and no result in 19.6/10.2 ms, then produce the
+known console capsule after actual background/return in the same process.
+The SDK's `docs/compiler-host-worker-lifecycle.json` preserves exact source/signing,
+workload, launch PID/context, reports, events and four checked exported capsules.
+Both devices remain connected over `localNetwork` before/after. This is scoped
+test-host policy and callback-phase evidence, not an instruction-pointer trace or
+OS-suspension/pressure result. Entry-wrapper/link interruption, aggregate memory,
+forced child termination and deadline expiry remain open. Compiler inputs and
+board claims are unchanged.
+
 For additional host checks, select an exact app signing/sandbox configuration
 and record entitlements, OS, architecture, Xcode/Swift/WebKit versions, SDK commit,
 source-only runtime manifest, release inventory, service/source/review hashes,
