@@ -12,7 +12,7 @@ records provisioning separately.
 | --- | --- | --- |
 | Provision exact compiler | Compiler: deterministic transport, independent inventory anchor, all source/notices, fresh extraction and actual wrapper compile | Local transport; no hosted binary release or automatic downloader |
 | Select static resident contract | Firmware: exact build/export hashes, source contract, board/profile/layout and independent capsule validator; Compiler imports only a trusted anchored export | One exact experimental descriptor is packaged; installed-image evidence and broader firmware provenance remain open |
-| Qualify wrapper host | FirmingoKit: actual compiler through the host's private origin/sandbox, integrity failures, cold/warm builds, errors, busy/cancel/deadline cleanup, fresh reentry | Development-signed ARM64 macOS 27.0 and recorded physical iPad/iPhone Release hosts pass six checks; both physical devices additionally pass first-source cancellation/deadline recovery below. Minimum OS, other model/OS combinations, aggregate memory and signed macOS deadline execution remain open |
+| Qualify wrapper host | FirmingoKit: actual compiler through the host's private origin/sandbox, integrity failures, cold/warm builds, errors, busy/cancel/deadline cleanup, fresh reentry | Development-signed ARM64 macOS 27.0 and recorded physical iPad/iPhone Release hosts pass six checks and scoped first-source deadline recovery below; both physical devices also pass inactivity cancellation. Minimum OS, other model/OS combinations and aggregate memory remain open |
 | Qualify device deployment | Firmware and FirmingoKit: selected recoverable board, exact installed resident evidence, capability recheck, two actual sketches, upload reconciliation, startup and measured bytes/GPIO | No device operation or hardware qualification from compiler tests |
 
 The first signed macOS host check now passes with an exact prepared SDK, Apple
@@ -85,7 +85,7 @@ workload, launch PID/context, reports, events and four checked exported capsules
 Both devices remain connected over `localNetwork` before/after. This is scoped
 test-host policy and callback-phase evidence, not an instruction-pointer trace or
 OS-suspension/pressure result. Entry-wrapper/link interruption, aggregate memory,
-forced child termination and signed macOS deadline execution remain open. Compiler inputs and
+forced child termination remain open. Compiler inputs and
 board claims are unchanged.
 
 The SDK's build-8 host now also passes actual **public runtime deadline expiry**
@@ -99,9 +99,24 @@ over `localNetwork`; losing foreground invalidates this particular test.
 The SDK's `docs/compiler-host-deadline.json` preserves source/signing, workload,
 independent launch PID/context, progress/events, report hashes and four checked
 exported capsules. This is first-source deadline/cleanup/reentry evidence;
-which native/portable timer wins, signed macOS deadline execution, entry-wrapper/
+which native/portable timer wins, entry-wrapper/
 link interruption, real pressure and aggregate memory remain separate questions.
 No board operation or compiler/binary publication occurs.
+
+The SDK's signed sandboxed/hardened ARM64 macOS build 9 now passes that same
+public deadline workload on macOS 27.0 (26A428). The public call returns typed
+timeout without artifact after 60.344 seconds, with one source-compiling
+notification and real foreground observation; the same compiler instance then
+produces the known console capsule in 1.018 seconds. Its
+`docs/compiler-host-deadline-macos.json` records exact committed/generated source,
+OS/toolchain/WebKit framework, signature, independent launch PID/context,
+report/events and two bounded stdout capsule exports independently checked
+against the known byte vectors. Existing sandbox/network-client entitlements and
+the development certificate are retained. The identical signed app also passes
+the original six-check regression. No private-container permission, new compiler
+asset, timer change or device operation is introduced. Minimum OS, aggregate
+memory, real pressure, forced child termination and entry-wrapper/link-stage
+interruption remain separate open gates.
 
 For additional host checks, select an exact app signing/sandbox configuration
 and record entitlements, OS, architecture, Xcode/Swift/WebKit versions, SDK commit,

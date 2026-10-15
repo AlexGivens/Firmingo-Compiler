@@ -179,8 +179,8 @@ launches on iPadOS 27.0.1. The SDK owns `docs/compiler-host-qualification.md` an
 independent validation of exported capsules. The identical signed app also passes
 two physical iPhone 15 Pro Max launches on iOS 27.0; the SDK records exact reports
 and exported capsule validation in `docs/compiler-host-iphone.json`. These are
-scoped wrapper results; minimum OS, other model/OS combinations, total memory,
-signed macOS deadline execution and board deployment remain open.
+scoped wrapper results; minimum OS, other model/OS combinations, total memory
+and board deployment remain open.
 The SDK's resource-reader fix at `4edc6aa…` now passes two fresh 20-build runs per
 device, with unchanged compiler inputs/capsules and highest sampled host footprints
 of 214 MiB on iPad and 209 MiB on iPhone, down from about 790 MiB. See its
@@ -209,8 +209,16 @@ seconds, exactly one source-compiling notification, then known same-instance
 fresh console capsules in 0.694/0.681 seconds. Its `docs/compiler-host-deadline.json`
 pins the derived workload, source/signature, launch context, foreground events
 and exported bytes. No timer, SDK implementation or compiler asset is changed.
-Signed macOS deadline execution, entry-wrapper/link interruption, aggregate
-memory, real pressure and child termination remain separate open gates.
+Entry-wrapper/link interruption, aggregate memory, real pressure and child
+termination remain separate open gates.
+The SDK's signed ARM64 macOS build 9 separately passes the same production
+deadline workload on macOS 27.0: typed timeout at 60.344 seconds without artifact,
+first-source progress and known same-instance fresh console bytes in 1.018
+seconds. Its `docs/compiler-host-deadline-macos.json` preserves independent
+launch PID/context, real foreground observation, exact source/signature and
+two bounded stdout capsule exports checked against the known vectors. Sandbox,
+hardened runtime and the existing two entitlements are verified; compiler assets,
+recipes, SDK implementation and timers are unchanged.
 
 The user has authorized this coding agent to work across Firmingo-Compiler,
 FirmingoKit, and Firmingo. Earlier sibling guidance treating Firmingo as read-only
