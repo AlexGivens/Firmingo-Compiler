@@ -52,6 +52,14 @@ and consumer builds must not require sibling checkouts.
 
 ## Current position and next action
 
+Production direction accepted on 2026-10-15: follow the shared
+[Nano-first 1.0 gates](https://github.com/AlexGivens/Firmingo/blob/main/docs/integration/production-v1.md).
+Prioritize a useful bounded mutable-state sketch contract from Firmware, an
+explicit multi-file source bundle and diagnostics, reviewed provisioned delivery,
+and one exact release compatibility matrix. Retain current stateless/ABI-one
+validators, recipes and consumer pins until the new versioned contract and
+independent fixtures exist. Pico and conventional Arduino remain later milestones.
+
 The agreed deliverable is a language-neutral, web-hosted WASM compiler focused on
 Firmingo managed sketches, starting with **Arduino Nano RP2040 Connect**.
 Conventional Arduino builds are secondary. Firmingo-Compiler owns preprocessing,
