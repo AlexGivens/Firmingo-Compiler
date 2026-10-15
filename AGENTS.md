@@ -185,7 +185,11 @@ The SDK's resource-reader fix at `4edc6aa…` now passes two fresh 20-build runs
 device, with unchanged compiler inputs/capsules and highest sampled host footprints
 of 214 MiB on iPad and 209 MiB on iPhone, down from about 790 MiB. See its
 `docs/compiler-resource-memory.json`. This changes no compiler assets or board
-claims; aggregate app/WebKit memory and real pressure/lifecycle remain open.
+claims; aggregate app/WebKit memory and real pressure/active-build lifecycle remain open.
+The SDK's build-4 host also passes one actual manual idle background/return check
+on each physical device, with the same launch PID/context and known exported
+capsules before/after. See its `docs/compiler-host-lifecycle.json`. Scene events
+do not establish OS suspension, active-build interruption or pressure recovery.
 
 The user has authorized this coding agent to work across Firmingo-Compiler,
 FirmingoKit, and Firmingo. Earlier sibling guidance treating Firmingo as read-only

@@ -49,8 +49,18 @@ and 209 MiB on iPhone. Both original six-check modes also pass. The SDK's
 the earlier reliability record remains unchanged. These are self-process samples,
 not aggregate app/WebKit peaks or a leak-free/memory-budget pass.
 App-scoped profiling could not attach; pressure,
-background/foreground, child-process termination and deadline expiry remain open.
+active-build background/foreground, child-process termination and deadline expiry remain open.
 Compiler/service/recipe/catalogue bytes are unchanged and no board is contacted.
+
+The SDK's build-4 host now passes an actual manual **idle** background/return check
+on each recorded physical device. The same launch PID/context persists through
+10.235 seconds between background/active observations on iPad and 20.166 seconds
+on iPhone; known GPIO/console builds and exported bytes pass before/after. Its
+`docs/compiler-host-lifecycle.json` records source/signing, scene events, report
+hashes and capsule bytes. An iPhone snapshot taken during the final build is
+rejected; the completed same-process snapshot passes without relaunch. This does
+not establish OS suspension, background compilation or real memory-pressure
+recovery. No compiler asset or board claim changes.
 
 For additional host checks, select an exact app signing/sandbox configuration
 and record entitlements, OS, architecture, Xcode/Swift/WebKit versions, SDK commit,
