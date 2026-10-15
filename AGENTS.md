@@ -180,7 +180,7 @@ independent validation of exported capsules. The identical signed app also passe
 two physical iPhone 15 Pro Max launches on iOS 27.0; the SDK records exact reports
 and exported capsule validation in `docs/compiler-host-iphone.json`. These are
 scoped wrapper results; minimum OS, other model/OS combinations, total memory,
-forced deadline and board deployment remain open.
+signed macOS deadline execution and board deployment remain open.
 The SDK's resource-reader fix at `4edc6aa…` now passes two fresh 20-build runs per
 device, with unchanged compiler inputs/capsules and highest sampled host footprints
 of 214 MiB on iPad and 209 MiB on iPhone, down from about 790 MiB. See its
@@ -203,6 +203,14 @@ bytes after real background/return. See its `docs/compiler-host-worker-lifecycle
 This is explicit test-host policy and callback-phase evidence; entry-wrapper/link
 interruption, OS suspension and real pressure remain open. Compiler assets,
 recipes, catalogue and device claims are unchanged.
+The SDK's build-8 host separately passes actual public 60-second runtime expiry
+on both physical devices: typed timeout without artifact after 60.201/60.155
+seconds, exactly one source-compiling notification, then known same-instance
+fresh console capsules in 0.694/0.681 seconds. Its `docs/compiler-host-deadline.json`
+pins the derived workload, source/signature, launch context, foreground events
+and exported bytes. No timer, SDK implementation or compiler asset is changed.
+Signed macOS deadline execution, entry-wrapper/link interruption, aggregate
+memory, real pressure and child termination remain separate open gates.
 
 The user has authorized this coding agent to work across Firmingo-Compiler,
 FirmingoKit, and Firmingo. Earlier sibling guidance treating Firmingo as read-only

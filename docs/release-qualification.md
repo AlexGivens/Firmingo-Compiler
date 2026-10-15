@@ -12,7 +12,7 @@ records provisioning separately.
 | --- | --- | --- |
 | Provision exact compiler | Compiler: deterministic transport, independent inventory anchor, all source/notices, fresh extraction and actual wrapper compile | Local transport; no hosted binary release or automatic downloader |
 | Select static resident contract | Firmware: exact build/export hashes, source contract, board/profile/layout and independent capsule validator; Compiler imports only a trusted anchored export | One exact experimental descriptor is packaged; installed-image evidence and broader firmware provenance remain open |
-| Qualify wrapper host | FirmingoKit: actual compiler through the host's private origin/sandbox, integrity failures, cold/warm builds, errors, busy/cancel/deadline cleanup, fresh reentry | Development-signed ARM64 macOS 27.0, physical iPad Pro/iPadOS 27.0.1 and iPhone 15 Pro Max/iOS 27.0 Release hosts pass six checks; minimum OS, other model/OS combinations, total memory and forced deadline remain open |
+| Qualify wrapper host | FirmingoKit: actual compiler through the host's private origin/sandbox, integrity failures, cold/warm builds, errors, busy/cancel/deadline cleanup, fresh reentry | Development-signed ARM64 macOS 27.0 and recorded physical iPad/iPhone Release hosts pass six checks; both physical devices additionally pass first-source cancellation/deadline recovery below. Minimum OS, other model/OS combinations, aggregate memory and signed macOS deadline execution remain open |
 | Qualify device deployment | Firmware and FirmingoKit: selected recoverable board, exact installed resident evidence, capability recheck, two actual sketches, upload reconciliation, startup and measured bytes/GPIO | No device operation or hardware qualification from compiler tests |
 
 The first signed macOS host check now passes with an exact prepared SDK, Apple
@@ -49,7 +49,7 @@ and 209 MiB on iPhone. Both original six-check modes also pass. The SDK's
 the earlier reliability record remains unchanged. These are self-process samples,
 not aggregate app/WebKit peaks or a leak-free/memory-budget pass.
 App-scoped profiling could not attach; pressure,
-active-build background/foreground, child-process termination and deadline expiry remain open.
+remaining active-build lifecycle stages and child-process termination remain open.
 Compiler/service/recipe/catalogue bytes are unchanged and no board is contacted.
 
 The SDK's build-4 host now passes an actual manual **idle** background/return check
@@ -85,8 +85,23 @@ workload, launch PID/context, reports, events and four checked exported capsules
 Both devices remain connected over `localNetwork` before/after. This is scoped
 test-host policy and callback-phase evidence, not an instruction-pointer trace or
 OS-suspension/pressure result. Entry-wrapper/link interruption, aggregate memory,
-forced child termination and deadline expiry remain open. Compiler inputs and
+forced child termination and signed macOS deadline execution remain open. Compiler inputs and
 board claims are unchanged.
+
+The SDK's build-8 host now also passes actual **public runtime deadline expiry**
+on both physical devices. A pinned 227,646-byte derived compile-time workload
+keeps the first source compile pending without changing compiler assets, recipe,
+SDK implementation or its native/portable 60-second timers. The iPad returns
+`ManagedCompilerError.timedOut` after 60.201 seconds and the iPhone after 60.155,
+without artifacts. Known fresh console capsules then build through the same
+compiler instances in 0.694/0.681 seconds. Both remain foreground and connected
+over `localNetwork`; losing foreground invalidates this particular test.
+The SDK's `docs/compiler-host-deadline.json` preserves source/signing, workload,
+independent launch PID/context, progress/events, report hashes and four checked
+exported capsules. This is first-source deadline/cleanup/reentry evidence;
+which native/portable timer wins, signed macOS deadline execution, entry-wrapper/
+link interruption, real pressure and aggregate memory remain separate questions.
+No board operation or compiler/binary publication occurs.
 
 For additional host checks, select an exact app signing/sandbox configuration
 and record entitlements, OS, architecture, Xcode/Swift/WebKit versions, SDK commit,
