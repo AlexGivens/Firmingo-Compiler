@@ -30,6 +30,7 @@ it is not a second policy file or authorization to implement the entire roadmap.
 - [x] Export both recipe resource sets and coordinate SDK native validation/target-two upload handling.
 - [x] Record signed macOS FMS2 compilation and the exact Nano/iPad two-sketch upload, in-boot replacement, state/echo and manual-reboot pass through the SDK. See [scoped evidence](docs/stateful-adoption.md#selected-nanoipad-hardware-result); other host and production gates remain separate.
 - [x] Repeat actual compilation, two same-boot uploads/state/echo checks and manual RESET on iPhone through the identical signed SDK host. [Separate physical record](docs/stateful-adoption.md#iphone-follow-through).
+- [x] Record scoped iPad pre-commit disconnect/power-cycle and real withheld commit reply, query-only recovery after app SIGKILL/relaunch and a fresh ordinary upload through the unchanged compiler package. [Separate interruption evidence](docs/stateful-adoption.md#separate-ipad-interruption-and-recovery-follow-through); iPhone interruptions and flash-write power loss remain open.
 - [ ] Complete remaining minimum-OS, broader host/device, interruption/recovery and production-delivery gates before promoting FMS2 into the default catalogue.
 
 Evidence and exact input/command identities: [FMS2 adoption](docs/stateful-adoption.md).

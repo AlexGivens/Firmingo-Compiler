@@ -91,8 +91,9 @@ receipt tampering and ABI-one compatibility. The bounded parser job now runs
 
 FirmingoKit separately validates FMS2/report bytes and FMGO target-two upload
 selection. Physical qualification uses its own exact-package/resident evidence,
-separate from ABI-one results. Broader host coverage, interruptions and recovery
-remain qualification work on explicitly selected boards.
+separate from ABI-one results. Broader host coverage and interruption/recovery
+scenarios beyond the scoped records below remain qualification work on explicitly
+selected boards.
 
 ## Browser and wrapper follow-through
 
@@ -171,3 +172,32 @@ keeps these exact-candidate hardware results separate from production gates.
 Snapshots observe the selected initialized data/BSS loop counters; native
 validation separately covers the full arena. No compiler asset, recipe,
 catalogue or SDK implementation changes follow from this qualification.
+
+### Separate iPad interruption and recovery follow-through
+
+FirmingoKit's separately identified NanoRecovery build 1 at host source
+`f5fb34f5fb5ce2dce1a30ecd28d5efb05ff8b6a6` uses the same prepared SDK, resident,
+compiler service, catalogue and two fixed capsules. Its
+[pinned iPad evidence](https://github.com/AlexGivens/FirmingoKit/blob/57fb7b05cae1fac5eef7ae04382713b5b0e30f27/docs/nano-fms2-interruption-ipad.json)
+has SHA-256 `85ce5019657115b0053b2358cc3c7dd30c97ce5ffb6eccf91029893165dbf6f0`.
+Pre-commit connection close returns `aborted/disconnected`, untouched slot and
+continuous A state in the same boot. A separate operator USB power cycle after
+RAM verification leaves the saved transaction `unknown(bootChanged)` while A
+survives with valid initialization/progress; explicit RAM-only host retirement
+preserves that unknown device result.
+
+A test-only proxy then forwards one real B commit and withholds its matching
+real `committing` response. The SDK reports uncertainty and saves commit intent.
+After verified SIGKILL and normal relaunch with a new PID, a new app run compiles
+the same exact capsules and restores only query capability. Fresh matching
+`boot_confirmed`, B initialized state/progress and exact 256-byte echo all pass
+without host commit replay. A new explicit ordinary A upload then passes the
+same startup/state/echo checks in that Nano boot; manual D13 changes from on to
+off, and D2 is removed. Newly exported capsules pass Firmware's independent
+production native validator.
+
+These are scoped iPad wrapper/device observations. The compiler gains no device
+I/O, new dependency, asset/pin change or catalogue promotion. iPhone interruption
+checks remain pending. Pre-commit power loss and deliberate reply withholding do
+not establish power-cut behavior during flash erase/program, corruption, rollback
+or complete SDK ROM installation/recovery.
