@@ -178,8 +178,8 @@ catalogue or SDK implementation changes follow from this qualification.
 FirmingoKit's separately identified NanoRecovery build 1 at host source
 `f5fb34f5fb5ce2dce1a30ecd28d5efb05ff8b6a6` uses the same prepared SDK, resident,
 compiler service, catalogue and two fixed capsules. Its
-[pinned iPad evidence](https://github.com/AlexGivens/FirmingoKit/blob/57fb7b05cae1fac5eef7ae04382713b5b0e30f27/docs/nano-fms2-interruption-ipad.json)
-has SHA-256 `85ce5019657115b0053b2358cc3c7dd30c97ce5ffb6eccf91029893165dbf6f0`.
+[pinned iPad evidence](https://github.com/AlexGivens/FirmingoKit/blob/bd772b258a660f6305bd0fa6bb458ab3658c739d/docs/nano-fms2-interruption-ipad.json)
+has SHA-256 `cf02b212ed0eed43c44fe2deb9d48cd9fa62f341be9df08b2db19526f744d687`.
 Pre-commit connection close returns `aborted/disconnected`, untouched slot and
 continuous A state in the same boot. A separate operator USB power cycle after
 RAM verification leaves the saved transaction `unknown(bootChanged)` while A
@@ -197,7 +197,30 @@ off, and D2 is removed. Newly exported capsules pass Firmware's independent
 production native validator.
 
 These are scoped iPad wrapper/device observations. The compiler gains no device
-I/O, new dependency, asset/pin change or catalogue promotion. iPhone interruption
-checks remain pending. Pre-commit power loss and deliberate reply withholding do
+I/O, new dependency, asset/pin change or catalogue promotion. Separate iPhone
+results follow below. Pre-commit power loss and deliberate reply withholding do
 not establish power-cut behavior during flash erase/program, corruption, rollback
 or complete SDK ROM installation/recovery.
+
+### Separate iPhone interruption and recovery follow-through
+
+The identical signed NanoRecovery app and unchanged prepared compiler package
+also pass the scoped sequence on iPhone 15 Pro Max/iOS 27.0. The
+[pinned iPhone evidence](https://github.com/AlexGivens/FirmingoKit/blob/bd772b258a660f6305bd0fa6bb458ab3658c739d/docs/nano-fms2-interruption-iphone.json)
+has SHA-256 `2d8a89e5c5216934c8396c575a42e71c71310f66d26ce4e1b56a7001a711a140`.
+It preserves both actual app runs, all immutable captures and the real withheld
+commit reply. Pre-commit disconnect and USB power-cycle preserve A with the
+respective aborted/disconnected/untouched-slot and unknown-after-boot-change
+outcomes. Real B commit-reply loss produces SDK uncertainty; actual SIGKILL/
+relaunch restores query-only context and passes fresh matching startup/state/
+echo without host commit replay. The fresh ordinary A upload then passes in
+the same Nano boot, with one stage and commit. D13 changes from on to off, and
+D2 is removed. New actual capsule exports keep the fixed hashes and pass the
+independent production native validator.
+
+One prerequisite rejection before successful final association remains in the
+22-event second-run journal. Its triggering action is unidentified and the
+operator does not recall it; the later successful A stage/commit is recorded
+separately. The original 39-event journal remains unchanged. No compiler assets,
+recipe, catalogue or public interface change follows, and the same flash-write
+power-loss, rollback, ROM recovery and broader production gates remain open.

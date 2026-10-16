@@ -16,6 +16,7 @@ Compiler/FirmingoKit evidence for full identities and limitations.
 | Explicit FMS2 Nano / iPadOS 27.0.1 / signed NanoStateful build 1 | Two actual WASM state/echo sketches, target-2 uploads in the same boot, correct initialized data/zero startup BSS/advancing state, two exact echoes and state after manual RESET pass; [exact evidence and limits](stateful-adoption.md#selected-nanoipad-hardware-result) |
 | Explicit FMS2 Nano / iOS 27.0 / identical signed NanoStateful build 1 | Equivalent independent two-sketch same-boot upload/state/echo and manual-reset pass; [separate record and limits](stateful-adoption.md#iphone-follow-through) |
 | Explicit FMS2 Nano / iPadOS 27.0.1 / signed NanoRecovery build 1 | Pre-commit disconnect/power-cycle, real withheld commit reply, query-only recovery after app SIGKILL/relaunch and fresh ordinary upload pass; [scope and limits](stateful-adoption.md#separate-ipad-interruption-and-recovery-follow-through) |
+| Explicit FMS2 Nano / iOS 27.0 / identical signed NanoRecovery build 1 | Same scoped interruption/recovery sequence and fresh upload pass; earlier unidentified prerequisite rejection retained; [separate record and limits](stateful-adoption.md#separate-iphone-interruption-and-recovery-follow-through) |
 | Pico / additional boards / broader libraries / conventional Arduino images | No added recipe or hardware support |
 | Consumer delivery | Explicit anchored local provisioning with paired source/notices; no hosted binary release or automatic downloader |
 
