@@ -54,7 +54,7 @@ export class PreparationController {
             if (settled || received) return;
             received = true;
             try {
-              if (!response || response.interfaceVersion !== 1 || response.buildID !== request.buildID) fail();
+              if (!response || response.interfaceVersion !== request.interfaceVersion || response.buildID !== request.buildID) fail();
               if (response.kind === "failure") {
                 if (!fields(response, ["interfaceVersion", "buildID", "kind", "error", "diagnostics"])) fail();
                 validateDiagnostics(response.diagnostics);
@@ -64,11 +64,17 @@ export class PreparationController {
                     || new TextEncoder().encode(error.message).length > 4096 || error.message.includes("\0")) fail();
                 void finish(new PipelineError(error.code, error.stage, error.message, response.diagnostics));
               } else {
-                if (response.kind !== "prepared" || !fields(response, ["interfaceVersion", "buildID", "kind", "result"])
-                    || !fields(response.result, ["sourceSHA256", "translationUnit", "translationUnitSHA256", "requestSHA256", "sourceLineCount", "sourceBOMBytes"])) fail();
+                if (response.kind !== "prepared" || !fields(response, ["interfaceVersion", "buildID", "kind", "result"])) fail();
                 await stop();
                 const expected = await prepareSketch(request, { signal });
-                for (const [key, value] of Object.entries(expected)) if (key !== "request" && response.result[key] !== value) fail();
+                const { request: _request, files, ...scalars } = expected;
+                const returned = response.result;
+                const scalarKeys = Object.keys(scalars);
+                if (!fields(returned, files ? [...scalarKeys, "files"] : scalarKeys)
+                    || scalarKeys.some(key => returned[key] !== scalars[key])) fail();
+                if (files && (!Array.isArray(returned.files) || returned.files.length !== files.length
+                    || files.some((file, index) => !fields(returned.files[index], Object.keys(file))
+                      || Object.keys(file).some(key => returned.files[index][key] !== file[key])))) fail();
                 void finish(null, expected);
               }
             } catch (error) { void finish(error); }

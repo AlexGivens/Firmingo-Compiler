@@ -1,5 +1,6 @@
 import { validateBuildRequest, staticTarget } from "../src/contract.js";
-import { createNanoJobs, verifyNanoRecipe } from "../src/nano-recipe.js";
+import { nanoJobPhases, verifyNanoRecipe } from "../src/nano-recipe.js";
+import { prepareSketch } from "../src/preprocess.js";
 import { packageELF } from "../src/capsule.js";
 import { parseELF } from "../src/elf.js";
 import { PipelineError, snapshotBytes } from "../src/pipeline-error.js";
@@ -32,8 +33,9 @@ export async function executionProvenance(request) {
 /** Distinct execution receipt; integrity is verified against pins, publisher/hardware trust is not inferred. */
 export async function compilationReceipt(packagingReceipt) {
   const { linkedELFSHA256, capsuleSHA256, capsuleBytes, buildInputSHA256: _packagingInput, ...input } = packagingReceipt;
-  const fields = { ...input, receiptSchema: "firmingo-compiler-build-v1", operation: "wasm_compile_link_package",
-    provenanceStatus: "pinned_assets_executed", interfaceVersion: 1, service: SERVICE, wasiShim: SHIM, toolchainManifest: { schema: 1, service: SERVICE }, recipeAssets: input.profile === "nano-managed-v2" ? STATEFUL_RECIPE_ASSETS : RECIPE_ASSETS };
+  const interfaceVersion = input.receiptSchema === "firmingo-compiler-packaging-v2" ? 2 : 1;
+  const fields = { ...input, receiptSchema: "firmingo-compiler-build-v" + interfaceVersion, operation: "wasm_compile_link_package",
+    provenanceStatus: "pinned_assets_executed", interfaceVersion, service: SERVICE, wasiShim: SHIM, toolchainManifest: { schema: 1, service: SERVICE }, recipeAssets: input.profile === "nano-managed-v2" ? STATEFUL_RECIPE_ASSETS : RECIPE_ASSETS };
   const receipt = { ...fields, buildInputSHA256: await dataIdentity(fields), linkedELFSHA256, capsuleSHA256, capsuleBytes };
   const freeze = value => { if (value && typeof value === "object") { for (const item of Object.values(value)) freeze(item); Object.freeze(value); } return value; };
   return freeze(receipt);
@@ -51,16 +53,21 @@ export async function executeBuild(requestInput, resourcesInput, progress = () =
     const binding = staticTarget(request);
     const module = await compileModule(resources.serviceBytes, SERVICE);
     phase("preprocessing");
-    const { prepared } = await createNanoJobs(request);
+    const prepared = await prepareSketch(request);
     const service = await ManagedService.create(module, new Map(["Arduino.h", "Entry.cpp", "Module.ld"]
       .map(name => [name, recipe.assets["Recipe/" + name]])));
     const result = service.run({ schema: 1, recipe: request.target.recipeIdentifier, board: request.target.board,
       profile: request.target.profile, filename: request.source.filename, translationUnit: prepared.translationUnit,
-      apiAddress: binding.apiAddress, ...(binding.residentABI === 2 ? { stateAddress: binding.stateAddress, stateCapacityBytes: binding.stateCapacityBytes } : {}) }, phase);
+      apiAddress: binding.apiAddress, ...(binding.residentABI === 2 ? { stateAddress: binding.stateAddress, stateCapacityBytes: binding.stateCapacityBytes } : {}) }, phase, prepared.files);
     // Physical generated-file lines are mapped by the service; original #line filenames are already logical.
+    const bundlePaths = new Map((prepared.files ?? []).map(file => ["/workspace/Bundle/" + file.path, file]));
     for (const diagnostic of result.diagnostics) {
-      if (diagnostic.filename === request.source.filename && diagnostic.line === 1 && diagnostic.column !== null)
-        diagnostic.column += prepared.sourceBOMBytes;
+      const file = bundlePaths.get(diagnostic.filename);
+      if (file) diagnostic.filename = file.path;
+      if (diagnostic.line === 1 && diagnostic.column !== null) {
+        if (file) diagnostic.column += file.bomBytes;
+        else if (diagnostic.filename === request.source.filename) diagnostic.column += prepared.sourceBOMBytes;
+      }
     }
     if (!result.succeeded) throw new PipelineError(stage === "linking" ? "link_failed" : "compile_failed", stage,
       "Compiler service rejected the sketch", result.diagnostics);
@@ -83,9 +90,12 @@ export async function verifyBuildResult(value, request) {
   const capsule = snapshotBytes(value.capsuleBytes, 257, 4096, "validating", "invalid_response");
   if (typeof value.reportJSON !== "string" || value.reportJSON.length > 16384 || !Number.isSafeInteger(value.memoryBytes)
       || value.memoryBytes < 1 || value.memoryBytes > SERVICE.maximumMemoryBytes) fail();
-  if (!Array.isArray(value.timings) || value.timings.length !== 3 || value.timings.some((item, index) =>
-    Object.keys(item).sort().join() !== "milliseconds,phase" || item.phase !== ["compiling", "compiling", "linking"][index]
-      || typeof item.milliseconds !== "number" || !Number.isFinite(item.milliseconds) || item.milliseconds < 0 || item.milliseconds > 60000)) fail();
+  const phases = nanoJobPhases(request);
+  if (!Array.isArray(value.timings) || value.timings.length !== phases.length || phases.some((phase, index) => {
+    const item = value.timings[index];
+    return !item || Object.keys(item).sort().join() !== "milliseconds,phase" || item.phase !== phase
+      || typeof item.milliseconds !== "number" || !Number.isFinite(item.milliseconds) || item.milliseconds < 0 || item.milliseconds > 60000;
+  })) fail();
   const artifact = await packageELF(elf, request, await executionProvenance(request));
   const receipt = await compilationReceipt(artifact.receipt);
   const expectedCapsule = artifact.bytes;

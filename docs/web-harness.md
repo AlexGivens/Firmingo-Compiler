@@ -1,8 +1,8 @@
 # Minimal web developer harness
 
-The current harness includes ten cases, including actual FMS2 initialized-data/BSS
-compilation when the pinned service is supplied. Without it, three cases pass and
-seven explicitly skip; without a browser, all ten skip. Earlier nine-case records
+The current harness includes eleven cases, including FMS2 initialized-data/BSS
+and multi-file compilation when the pinned service is supplied. Without it, three
+cases pass and eight explicitly skip. Without a browser, all eleven skip. Earlier records
 below retain their original scope. Both recipes' exact routes and every served
 module's static import closure are tested. See [FMS2 adoption](stateful-adoption.md).
 

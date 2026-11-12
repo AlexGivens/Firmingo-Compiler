@@ -17,8 +17,10 @@ final newline. It returns frozen request/source identities, generated translatio
 unit, request identity, line count and original BOM-byte count. Original source
 bytes and revision remain unchanged; no function prototypes are invented.
 
-Only literal `<Arduino.h>` or `"Arduino.h"` includes are accepted. Other directives,
-macros, source-location overrides, and escaped physical newlines reject explicitly.
+The single-file input accepts only literal `<Arduino.h>` or `"Arduino.h"`
+includes. [FMS2 bundles](interface.md#fms2-source-bundles) also accept supplied
+local headers and `#pragma once` in those headers. Macro directives,
+source-location overrides, and escaped physical newlines reject explicitly.
 Byte-position-preserving masks handle comments, ordinary/character/raw literals and
 numeric digit separators. Rejection emits at most 64 source diagnostics. C++ syntax,
 types, unsupported facade calls, statelessness and cooperative setup/loop return are

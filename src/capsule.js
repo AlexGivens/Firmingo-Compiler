@@ -93,14 +93,18 @@ async function packageValidatedELF(input, request, provenance, signal, declared)
       data_bytes: checked.dataBytes, bss_bytes: checked.bssBytes, payload_sha256: checked.payloadSHA256,
       header_sha256: checked.headerSHA256, compiler_contract_sha256: binding.compilerContractSHA256 } : {}),
     source_sha256: Object.freeze({ [`sketch/${request.source.filename}`]: prepared.sourceSHA256,
+      ...Object.fromEntries((prepared.files ?? []).map(file => ["sketch/" + file.path, file.sha256])),
       "generated/Sketch.cpp": prepared.translationUnitSHA256, "recipe/manifest.json": provenance.recipeSHA256,
       "toolchain/manifest.json": provenance.toolchainSHA256 }),
     compiler: provenance.compiler, recipe_id: provenance.recipeIdentifier, linked_elf_sha256: linkedELFSHA256,
   });
   const receiptInputs = Object.freeze({
-    receiptSchema: declared ? "firmingo-compiler-declared-packaging-v1" : "firmingo-compiler-packaging-v1", operation: "independent_elf_packaging", provenanceStatus: "declared",
+    receiptSchema: declared ? "firmingo-compiler-declared-packaging-v1" : "firmingo-compiler-packaging-v" + request.interfaceVersion,
+    operation: "independent_elf_packaging", provenanceStatus: "declared",
     requestSHA256: prepared.requestSHA256, buildID: request.buildID, sourceRevision: request.source.revision,
     sourceFilename: request.source.filename, sourceSHA256: prepared.sourceSHA256,
+    ...(prepared.files ? { sourceBundleSHA256: prepared.sourceBundleSHA256,
+      sourceFiles: Object.freeze(prepared.files.map(({ path, sha256 }) => Object.freeze({ path, sha256 }))) } : {}),
     translationUnitSHA256: prepared.translationUnitSHA256, ...(request.target.firmwareBuild ? { firmwareBuildID } : { residentBindingID: firmwareBuildID }),
     board: request.target.board, profile: request.target.profile, provenance,
   });

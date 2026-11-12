@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Firmingo Compiler cancellation input \u2014 interface one draft",
+  "title": "Firmingo Compiler cancellation input",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -10,7 +10,10 @@
   ],
   "properties": {
     "interfaceVersion": {
-      "const": 1
+      "enum": [
+        1,
+        2
+      ]
     },
     "kind": {
       "const": "cancel"

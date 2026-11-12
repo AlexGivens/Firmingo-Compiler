@@ -100,13 +100,17 @@ linker diagnostics retain underlying text and their stage. The observed service
 sometimes returns zero after frontend errors, so diagnostics independently prevent
 entry compilation/linking and artifacts. Physical `/workspace/Sketch.cpp` locations
 are mapped once; already logical filenames are preserved. Original first-line
-BOM byte columns include the removed three UTF-8 bytes.
+BOM byte columns include the removed three UTF-8 bytes. A version-two FMS2 bundle
+adds one compiling phase per helper `.cpp`, in path order after the primary and
+before the entry wrapper. Helpers are staged beneath the private workspace bundle
+directory and diagnostics map to their original relative paths.
 
 The parent checks message/version/ID/sequence/shape/bounds and independently reruns
 ELF packaging. It compares capsule bytes, report and complete expected receipt
 against the exact accepted request. Missing phases, stale receipts, corrupt bytes
 or resource substitutions fail. Output `bytes` and `linkedELF` are copied on access;
-receipt data is deeply frozen. Timing observations (three actual calls) and initial/
+receipt data is deeply frozen. Timing observations (three actual calls plus one per
+helper translation unit) and initial/
 final WASM memory are returned, without claiming exhaustive peak process memory.
 
 `firmingo-compiler-build-v1` is distinct from independent packaging and existing SDK

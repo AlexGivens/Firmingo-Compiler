@@ -9,6 +9,38 @@ import { makeJobs } from "../recipes/nano_rp2040_connect/Sources/ManagedRecipe.j
 
 const paths = ["Recipe/Arduino.h", "Recipe/Entry.cpp", "Recipe/Module.ld", "Sources/ManagedRecipe.js"];
 
+export function nanoJobPhases(request) {
+  const helpers = request.source.files?.filter(file => file.path.endsWith(".cpp")).length ?? 0;
+  return [...Array(2 + helpers).fill("compiling"), "linking"];
+}
+
+/** Extends the pinned fixed jobs with validated, isolated bundle translation units. */
+export function makeNanoJobs(input, files) {
+  const jobs = (input.profile === NANO_STATEFUL.profile ? makeStatefulJobs : makeJobs)(input);
+  if (!files) return jobs;
+  const encoder = new TextEncoder(), decoder = new TextDecoder();
+  const args = job => decoder.decode(job.bytes).trimEnd().split("\n");
+  const response = argumentsList => {
+    if (argumentsList.some(value => /[\0\r\n]/.test(value))) throw new Error("Unsafe service response argument");
+    return encoder.encode(argumentsList.join("\n") + "\n");
+  };
+  const [primary, entry, link] = jobs;
+  const primaryArgs = args(primary);
+  const linkArgs = args(link);
+  if (primaryArgs.slice(-4).join() !== "-c,/workspace/Sketch.cpp,-o,/workspace/Sketch.o"
+      || linkArgs.slice(-2).join() !== "-o,/workspace/Sketch.elf") throw new Error("Unexpected pinned job template");
+  const flags = [...primaryArgs.slice(0, -4), "-I/workspace/Bundle"];
+  const objects = [];
+  const helpers = files.filter(file => file.path.endsWith(".cpp")).map((file, index) => {
+    const object = "/workspace/helper-" + index + ".o";
+    objects.push(object);
+    return { phase: "compiling", path: "/workspace/helper-" + index + ".args",
+      bytes: response([...flags, "-c", "/workspace/Bundle/" + file.path, "-o", object]) };
+  });
+  return [{ ...primary, bytes: response([...flags, ...primaryArgs.slice(-4)]) }, ...helpers, entry,
+    { ...link, bytes: response([...linkArgs.slice(0, -2), ...objects, ...linkArgs.slice(-2)]) }];
+}
+
 /** Verifies the unchanged pinned recipe and copies its assets before async hashing. */
 export async function verifyNanoRecipe(manifestInput, assetInput, { signal } = {}) {
   checkCancellation(signal, "verifying");
@@ -43,9 +75,9 @@ export async function createNanoJobs(request, options = {}) {
   const prepared = await prepareSketch(request, options);
   const { board, profile, recipeIdentifier } = prepared.request.target;
   const binding = staticTarget(prepared.request);
-  const jobs = (binding.residentABI === 2 ? makeStatefulJobs : makeJobs)({ schema: 1, recipe: recipeIdentifier, board, profile,
+  const jobs = makeNanoJobs({ schema: 1, recipe: recipeIdentifier, board, profile,
     filename: prepared.request.source.filename, translationUnit: prepared.translationUnit,
-    apiAddress: binding.apiAddress, ...(binding.residentABI === 2 ? { stateAddress: binding.stateAddress, stateCapacityBytes: binding.stateCapacityBytes } : {}) });
+    apiAddress: binding.apiAddress, ...(binding.residentABI === 2 ? { stateAddress: binding.stateAddress, stateCapacityBytes: binding.stateCapacityBytes } : {}) }, prepared.files);
   return Object.freeze({ prepared, jobs: Object.freeze(jobs.map(job => {
     const bytes = Uint8Array.from(job.bytes);
     return Object.freeze({ phase: job.phase, path: job.path, get bytes() { return bytes.slice(); } });

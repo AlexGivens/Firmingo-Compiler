@@ -17,6 +17,7 @@ function checkEvents(events, outcome) {
 export async function runWebChecks({ serviceAvailable, onCase = () => {} } = {}) {
   const cases = [], artifacts = [], controller = new CompilerController();
   const baseline = parseBuildRequest(new TextDecoder("utf-8", { fatal: true }).decode(await fetchBytes("/fixture-request.json", 16384)));
+  const bundle = parseBuildRequest(new TextDecoder("utf-8", { fatal: true }).decode(await fetchBytes("/fixture-source-bundle.json", 16384)));
   const recipe = await loadRecipe();
   const resources = { ...recipe, serviceBytes: serviceAvailable ? await fetchBytes("/development-service.wasm", SERVICE.bytes) : null };
   const request = (id, source = "void setup() {}\nvoid loop() {}", filename = "Sketch.ino") => ({ ...baseline, buildID: id,
@@ -45,6 +46,7 @@ export async function runWebChecks({ serviceAvailable, onCase = () => {} } = {})
     const preparation = new PreparationController();
     const prepared = await preparation.prepare(request("web-prepare"));
     assert(canonicalJSON(prepared) === canonicalJSON(await prepareSketch(request("web-prepare"))), "Worker preparation differs from portable core");
+    assert(canonicalJSON(await preparation.prepare(bundle)) === canonicalJSON(await prepareSketch(bundle)), "Bundle worker preparation differs from portable core");
     assert(prepared.translationUnit.startsWith('#include <Arduino.h>\n#line 1 "Sketch.ino"\n'), "Preparation mismatch");
     await rejects(() => preparation.prepare(request("web-library", "#include <Wire.h>\nvoid setup() {} void loop() {}")), "unsupported_source");
     const cancellation = new AbortController(), pending = preparation.prepare(request("web-prepare-cancel"), { signal: cancellation.signal });
@@ -99,6 +101,23 @@ export async function runWebChecks({ serviceAvailable, onCase = () => {} } = {})
     assert(checked.codeBytes === 120 && checked.dataBytes === 4 && checked.bssBytes === 4, "FMS2 linked state extents differ");
     artifacts.push({ buildID: input.buildID, sourceFilename: input.source.filename, capsuleBytes: artifact.bytes.length,
       capsuleSHA256: artifact.sha256, linkedELFSHA256: artifact.receipt.linkedELFSHA256, memoryBytes: artifact.memoryBytes });
+  }, true);
+  await run("real FMS2 source bundle compile, deterministic order and original helper diagnostics", async () => {
+    const statefulResources = { ...await loadRecipe(bundle.target.profile), serviceBytes: resources.serviceBytes };
+    const events = [];
+    const artifact = await controller.build(bundle, statefulResources, { onEvent: event => events.push(event) });
+    const reversed = { ...bundle, source: { ...bundle.source, files: [...bundle.source.files].reverse() } };
+    const repeat = await controller.build(reversed, statefulResources);
+    assert(artifact.sha256 === repeat.sha256 && canonicalJSON(artifact.receipt) === canonicalJSON(repeat.receipt), "Bundle order changed output");
+    assert(artifact.sha256 === "3ccf8f048464482c799df2beacaa3eeb22b85ff18da0099b442249f746c31862", "Bundle capsule differs from the firmware-checked Node fixture");
+    const checked = await validateCapsule(artifact.bytes, bundle.target.firmwareBuild);
+    assert(checked.dataBytes === 4 && checked.bssBytes === 4, "Bundle state extents differ");
+    checkEvents(events, "succeeded");
+    const terminal = parseRuntimeEvent(serializeRuntimeEvent(events.at(-1)));
+    assert(terminal.interfaceVersion === 2 && terminal.artifact.receipt.sourceFiles.length === 4, "Bundle receipt correlation failed");
+    const files = bundle.source.files.map(file => file.path === "logic/tick.cpp" ? { ...file, text: "void tick() { missing_symbol(); }" } : file);
+    const error = await rejects(() => controller.build({ ...bundle, source: { ...bundle.source, files } }, statefulResources), "compile_failed");
+    assert(error.diagnostics.some(item => item.filename === "logic/tick.cpp" && item.line === 1), "Original helper diagnostic missing");
   }, true);
   await run("real frontend diagnostics and original BOM byte columns, then fresh build", async () => {
     const events = [];

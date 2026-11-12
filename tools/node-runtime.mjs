@@ -3,11 +3,11 @@ import { Worker } from "node:worker_threads";
 import { readFileSync } from "node:fs";
 import { CompilerController } from "../runtime/controller.js";
 import { PackagingController } from "../runtime/packaging-controller.js";
+import { PreparationController } from "../runtime/preparation-controller.js";
 
-/** Local developer adapter; web consumers use the portable controller's module-worker default. */
-export function createNodeCompiler() {
-  return new CompilerController({ workerFactory: () => {
-    const worker = new Worker(new URL("./node-worker.mjs", import.meta.url));
+function workerFactory(path) {
+  return () => {
+    const worker = new Worker(new URL(path, import.meta.url));
     return {
       postMessage: (message, transfers) => worker.postMessage(message, transfers), terminate: () => worker.terminate(),
       listen(message, error, exit) {
@@ -15,19 +15,22 @@ export function createNodeCompiler() {
         return () => { worker.off("message", message); worker.off("error", error); worker.off("messageerror", error); worker.off("exit", exit); };
       },
     };
-  } });
+  };
+}
+
+/** Local developer adapter; web consumers use the portable controller's module-worker default. */
+export function createNodeCompiler() {
+  return new CompilerController({ workerFactory: workerFactory("./node-worker.mjs") });
+}
+
+/** Runs preparation through the same isolated worker used by developer packaging. */
+export function createNodePreparer() {
+  return new PreparationController({ workerFactory: workerFactory("./node-preparation-worker.mjs") });
 }
 
 /** Isolated service-free developer ELF packager; consumer wrappers provide a web worker instead. */
 export function createNodePackager() {
-  return new PackagingController({ workerFactory: () => {
-    const worker = new Worker(new URL("./node-preparation-worker.mjs", import.meta.url));
-    return { postMessage: message => worker.postMessage(message), terminate: () => worker.terminate(),
-      listen(message, error, exit) {
-        worker.on("message", message); worker.on("error", error); worker.on("messageerror", error); worker.on("exit", exit);
-        return () => { worker.off("message", message); worker.off("error", error); worker.off("messageerror", error); worker.off("exit", exit); };
-      } };
-  } });
+  return new PackagingController({ workerFactory: workerFactory("./node-preparation-worker.mjs") });
 }
 
 /** Reads this package's tiny pinned recipe; an explicit bounded service reader is supplied by the CLI/tests. */

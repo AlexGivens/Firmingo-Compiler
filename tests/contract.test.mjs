@@ -57,7 +57,7 @@ for (const [name, mutate, code] of [
   ["missing source", r => delete r.source, "invalid_input"],
   ["unknown library input", r => r.source.libraries = [], "invalid_input"],
   ["unknown option", r => r.options.flags = ["-O3"], "invalid_input"],
-  ["wrong interface version", r => r.interfaceVersion = 2, "unsupported_version"],
+  ["unknown interface version", r => r.interfaceVersion = 3, "unsupported_version"],
   ["boolean interface version", r => r.interfaceVersion = true, "unsupported_version"],
   ["Pico target", r => r.target.board = "raspberry_pi_pico", "unsupported_target"],
   ["recipe digest mismatch", r => r.target.recipeSHA256 = "0".repeat(64), "unsupported_target"],

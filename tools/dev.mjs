@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, mkdirSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { resolve, join } from "node:path";
+import { dirname, resolve, join } from "node:path";
 import { parseBuildRequest, parseDeclaredPackagingRequest, parseContractJSON, requestIdentity, LIMITS, prepareSketch, packageELF } from "../src/index.js";
 import { verifyFixtures } from "./verify-fixtures.mjs";
 import { verifyRecipe } from "./verify-recipe.mjs";
@@ -41,7 +41,11 @@ const decode = bytes => new TextDecoder("utf-8", { fatal: true, ignoreBOM: true 
 /** Creates only an explicit new directory, and marks completion after all bounded files were written. */
 function writeOutput(path, files, summary) {
   mkdirSync(path);
-  for (const [name, bytes] of Object.entries(files)) writeFileSync(join(path, name), bytes, { flag: "wx" });
+  for (const [name, bytes] of Object.entries(files)) {
+    const destination = join(path, name);
+    if (name.includes("/")) mkdirSync(dirname(destination), { recursive: true });
+    writeFileSync(destination, bytes, { flag: "wx" });
+  }
   writeFileSync(join(path, "operation.json"), JSON.stringify(summary, null, 2) + "\n", { flag: "wx" });
   console.log(JSON.stringify(summary));
 }
@@ -141,8 +145,11 @@ async function main() {
     const prepared = await prepareSketch(parseBuildRequest(decode(readBounded(resolve(argumentsList[0])))));
     const summary = { status: "prepared_source_only", buildID: prepared.request.buildID, sourceSHA256: prepared.sourceSHA256,
       translationUnitSHA256: prepared.translationUnitSHA256, requestSHA256: prepared.requestSHA256, sourceLineCount: prepared.sourceLineCount };
+    if (prepared.files) summary.sourceBundleSHA256 = prepared.sourceBundleSHA256;
     writeOutput(resolve(argumentsList[1]), { "Sketch.cpp": prepared.translationUnit,
-      "preparation.json": JSON.stringify({ ...summary, sourceBOMBytes: prepared.sourceBOMBytes }, null, 2) + "\n" }, summary);
+      ...Object.fromEntries((prepared.files ?? []).map(file => ["Bundle/" + file.path, file.text])),
+      "preparation.json": JSON.stringify({ ...summary, sourceBOMBytes: prepared.sourceBOMBytes,
+        ...(prepared.files ? { files: prepared.files.map(({ path, sha256, bomBytes }) => ({ path, sha256, bomBytes })) } : {}) }, null, 2) + "\n" }, summary);
     return;
   }
   if (command === "bound-service") {
@@ -180,7 +187,7 @@ async function main() {
   if (command === "test-runtime") {
     if (argumentsList.length > 1) throw new Error("test-runtime takes at most one explicit service path");
     verifyVendor(); await verifyRecipe();
-    run(["--test", "tests/real-runtime.test.mjs", "tests/stateful.test.mjs"], { timeout: 180000,
+    run(["--test", "tests/real-runtime.test.mjs", "tests/stateful.test.mjs", "tests/source-bundle.test.mjs"], { timeout: 240000,
       env: { ...process.env, FIRMINGO_COMPILER_SERVICE: argumentsList[0] ? resolve(argumentsList[0]) : "" } });
     return;
   }

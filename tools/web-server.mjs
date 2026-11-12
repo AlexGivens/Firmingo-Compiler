@@ -39,6 +39,7 @@ export async function harnessResources(servicePath) {
       add("/" + recipe + path, recipe + path, path.endsWith(".js") ? "text/javascript; charset=utf-8" : "application/octet-stream");
   }
   add("/fixture-request-v2.json", "tests/fixtures/stateful-wasm/request.json", "application/json; charset=utf-8");
+  add("/fixture-source-bundle.json", "tests/fixtures/source-bundle-request.json", "application/json; charset=utf-8");
   add("/fixture-request.json", "tests/fixtures/synthetic-packaging-request.json", "application/json; charset=utf-8");
   add("/fixture-elf.hex", "tests/fixtures/stateless.elf.hex", "text/plain; charset=utf-8", 4096);
   if (servicePath) {

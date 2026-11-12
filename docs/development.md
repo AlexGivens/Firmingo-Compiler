@@ -49,6 +49,21 @@ Use your chosen Node installer/version manager explicitly to obtain the pinned
 release if absent; do not automatically change the system. `--help` works before
 the runtime-version gate.
 
+To exercise the FMS2 source bundle locally, choose a pinned WASM service and
+fresh output directories. The fixture is for offline verification.
+
+```sh
+node tools/dev.mjs prepare-request tests/fixtures/source-bundle-request.json .build/bundle-prepared
+node tools/dev.mjs build tests/fixtures/source-bundle-request.json PINNED_SERVICE.wasm .build/bundle-built
+node tools/dev.mjs test-runtime PINNED_SERVICE.wasm
+node tools/dev.mjs test-web PINNED_SERVICE.wasm
+```
+
+Preparation writes normalized helpers under `Bundle/` and records original-byte
+hashes and removed BOM sizes. Build writes the FMS2 capsule, ELF, receipt, report
+and timing records. The runtime and browser suites exercise ordering and
+diagnostics with the same fixture and explicit service.
+
 `test` verifies eight local fixture hashes, the unchanged Nano recipe and vendored shim
 receipt/licenses, then runs production contract/pipeline/WASI/host-lifecycle/CLI
 regressions. It excludes actual-service tests so ordinary checks stay asset-independent. `check` checks

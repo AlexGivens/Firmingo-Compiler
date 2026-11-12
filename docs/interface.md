@@ -1,4 +1,4 @@
-# Portable interface — version one draft
+# Portable interface draft
 
 Current explicit ABI-two profile and schema-three import: [FMS2 adoption](stateful-adoption.md). ABI-one contracts remain supported.
 
@@ -109,6 +109,34 @@ The schema's `x-maximumUtf8Bytes` and `x-requireUnicodeScalars` are annotations;
 generic JSON Schema character limits do not enforce those byte/scalar policies.
 Production validators also enforce the bounds above and reject accessors.
 
+### FMS2 source bundles
+
+Use `interfaceVersion: 2` with the `nano-managed-v2` profile. The primary
+`source.filename`, `revision`, and `text` have the fields shown above.
+Add a required `source.files` array of one to eight closed `{path, text}`
+objects. The combined source limit is 262144 UTF-8 bytes, including BOMs and
+original line endings. Helpers can be empty. The complete [test request](../tests/fixtures/source-bundle-request.json)
+has two C++ translation units and two headers for offline development.
+
+Helper paths are case-sensitive ASCII with up to three slash-separated
+components and 96 bytes total. Use lowercase `.cpp` and `.h` extensions.
+Absolute paths, traversal, hidden names, platform-reserved names, names that
+collide under ASCII case folding, file/directory collisions, and local
+`Arduino.h` copies are rejected. Use `#include "local/header.h"` for a
+supplied header, looked up in the including file's directory first and then at
+the bundle root. The pinned `Arduino.h` remains available. Headers can use
+`#pragma once`. Macro directives, system and third-party includes, and
+filesystem discovery remain outside the bundle contract. Each `.cpp` is compiled
+separately and includes its own dependencies.
+
+Paths are sorted in ASCII order before hashing and job construction. Changing
+the caller's helper list order preserves request, ELF and capsule identity.
+`sourceBundleSHA256` hashes the canonical list of original-byte SHA-256 records
+with the primary first and helpers in path order. The version-two receipt adds
+this digest and a helper-only `sourceFiles` list of `{path, sha256}`.
+Diagnostics carry the original relative path and one-based byte position.
+Version one continues to accept the single-file shape for either Nano profile.
+
 ## Static descriptor and identities
 
 Keep the existing SDK's 16-field schema-one descriptor: `schema`, `board`, `profile`,
@@ -153,7 +181,7 @@ invalid-resource cases, emits exactly one terminal event. There is no queue/retr
 `compiler.cancel({interfaceVersion:1,kind:"cancel",buildID:"build-4"})` validates
 [the cancel shape](../schemas/cancel-request.schema.json), then returns true only
 when it selects a still-active build for cancellation. Unknown/stale/settled IDs
-return false without affecting another request. An optional native AbortSignal has
+or a mismatched interface version return false without affecting another request. An optional native AbortSignal has
 the same effect. A cancel return does not mean disposal completed: wait for the
 terminal event/promise. Deadline and cancellation terminate synchronous worker work,
 discard artifacts and allow a fresh build after termination. Observer callback
@@ -161,7 +189,8 @@ exceptions are isolated and do not change compiler outcomes.
 
 Events use `interfaceVersion`, `kind`, `buildID` and positive safe-integer `sequence`,
 starting at one and increasing by one for each admitted build. No event follows a
-terminal result. Progress follows verifying, preprocessing, compiling (twice),
+terminal result. Progress follows verifying, preprocessing, compiling (twice,
+plus once per helper translation unit for a bundle),
 linking, validating and packaging; failures may stop a prefix. Diagnostics precede
 the terminal event and carry their actual compiler stage. Each is bounded to 4096
 UTF-8 message bytes, 256 filename bytes, 128 records/build, with explicit nulls for
@@ -194,7 +223,7 @@ or executes microcontroller code in the host. Failed/cancelled/timed-out builds
 return no artifact.
 
 [build-receipt.schema.json](../schemas/build-receipt.schema.json) defines
-`firmingo-compiler-build-v1`, operation `wasm_compile_link_package`, provenance status
+`firmingo-compiler-build-v1` and `firmingo-compiler-build-v2`, operation `wasm_compile_link_package`, provenance status
 `pinned_assets_executed`. It covers original/generated source/revision, exact request
 and firmware descriptor, service/recipe/shim/toolchain assets, ELF and capsule.
 Input hashes exclude only themselves and explicit output hashes/count; timings
@@ -202,7 +231,8 @@ are observations outside the receipt. [Runtime documentation](runtime.md) define
 the complete hash convention and limits. Hash verification establishes asset identity
 and trusted-host execution association, not publisher approval or attestation.
 
-Independent `packageELF` retains its separate `firmingo-compiler-packaging-v1`
+Independent `packageELF` returns the separate `firmingo-compiler-packaging-v1`
+or `firmingo-compiler-packaging-v2`
 receipt with declared provenance. The conservative packaging report remains compatible
 in field vocabulary. Existing SDK legacy/offline receipts and persistence formats
 remain unchanged in schema through the [tested SDK adapter](sdk-adapter.md); neither new receipt

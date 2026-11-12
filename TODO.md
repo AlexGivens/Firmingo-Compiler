@@ -74,6 +74,13 @@ and one exact release compatibility matrix. Retain current stateless/ABI-one
 validators, recipes and consumer pins until the new versioned contract and
 independent fixtures exist. Pico and conventional Arduino remain later milestones.
 
+- [x] Implement FMS2 interface-two [source bundles](docs/interface.md#fms2-source-bundles)
+  through the portable CLI and browser workers, with versioned receipts, exact
+  source identities, independently compiled helper files and original-file diagnostics.
+- [ ] Review the exact Nano FMS2 release-candidate firmware export for an explicit
+  compiler import. Pair it with a reviewed consumer package, then adopt the bundle
+  request and receipt in FirmingoKit and Workbench.
+
 The agreed deliverable is a language-neutral, web-hosted WASM compiler focused on
 Firmingo managed sketches, starting with **Arduino Nano RP2040 Connect**.
 Conventional Arduino builds are secondary. Firmingo-Compiler owns preprocessing,

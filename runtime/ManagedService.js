@@ -1,8 +1,8 @@
 import { sha256 } from "../src/hash.js";
 import { WASI, Fd, wasi } from "../third_party/browser_wasi_shim/dist/index.js";
 import { Workspace, OutputCapture } from "./Workspace.js";
-import { makeJobs as makeStatefulJobs } from "../recipes/nano_rp2040_connect_v2/Sources/ManagedRecipe.js";
-import { contract, makeJobs } from "../recipes/nano_rp2040_connect/Sources/ManagedRecipe.js";
+import { contract } from "../recipes/nano_rp2040_connect/Sources/ManagedRecipe.js";
+import { makeNanoJobs } from "../src/nano-recipe.js";
 import { requireBoundedMemory } from "./ModuleMemory.js";
 
 /** Required stable exports of the pinned ABI-two compiler service, not arbitrary module exports. */
@@ -115,11 +115,12 @@ export class ManagedService {
     this.exports = exports; this.workspace = workspace; this.stdout = stdout; this.stderr = stderr; this.consumed = false;
   }
   /** Compiles and links exactly one prepared revision, with real phase timings and no execution side effect. */
-  run(input, progress = () => {}) {
+  run(input, progress = () => {}, files) {
     if (this.consumed) { throw new Error("Service instance already consumed; create a fresh build workspace"); }
     this.consumed = true;
-    const jobs = (input.profile === "nano-managed-v2" ? makeStatefulJobs : makeJobs)(input); const encoder = new TextEncoder();
+    const jobs = makeNanoJobs(input, files); const encoder = new TextEncoder();
     this.workspace.insert("Sketch.cpp", encoder.encode(input.translationUnit));
+    for (const file of files ?? []) this.workspace.insert("Bundle/" + file.path, encoder.encode(file.text));
     for (const job of jobs) { this.workspace.insert(job.path.slice("/workspace/".length), job.bytes); }
     const timings = []; const messages = []; let canRunAgain = true; let stage = "compiling";
     for (const job of jobs) {

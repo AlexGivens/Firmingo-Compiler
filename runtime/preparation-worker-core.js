@@ -8,7 +8,7 @@ export function installPreparationWorker(listen, send) {
   listen(async message => {
     if (consumed) return;
     consumed = true;
-    const common = { interfaceVersion: 1, buildID: message?.request?.buildID };
+    const common = { interfaceVersion: message?.request?.interfaceVersion, buildID: message?.request?.buildID };
     const packaging = message?.request?.kind === "package_elf";
     try {
       if (packaging) {

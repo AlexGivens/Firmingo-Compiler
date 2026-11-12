@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Firmingo Compiler build input \u2014 interface one draft",
+  "title": "Firmingo Compiler build input",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -13,7 +13,10 @@
   ],
   "properties": {
     "interfaceVersion": {
-      "const": 1
+      "enum": [
+        1,
+        2
+      ]
     },
     "kind": {
       "const": "build"
@@ -55,6 +58,32 @@
           "pattern": "^[^\\u0000]*$",
           "x-maximumUtf8Bytes": 262144,
           "x-requireUnicodeScalars": true
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "text"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 96,
+                "pattern": "^(?:[A-Za-z0-9_][A-Za-z0-9_.-]*/){0,2}[A-Za-z0-9_][A-Za-z0-9_.-]*\\.(?:cpp|h)$"
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 262144,
+                "pattern": "^[^\\u0000]*$",
+                "x-requireUnicodeScalars": true
+              }
+            }
+          }
         }
       }
     },
@@ -503,6 +532,41 @@
         },
         "compilerContractSHA256": {
           "const": "bd57a4db74bcdc5d592d3217957a7975124c6fe84481a5afbd38509c1e20c082"
+        }
+      }
+    }
+  },
+  "if": {
+    "properties": {
+      "interfaceVersion": {
+        "const": 2
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "source": {
+        "required": [
+          "files"
+        ],
+        "x-maximumCombinedSourceUtf8Bytes": 262144
+      },
+      "target": {
+        "properties": {
+          "profile": {
+            "const": "nano-managed-v2"
+          }
+        }
+      }
+    }
+  },
+  "else": {
+    "properties": {
+      "source": {
+        "not": {
+          "required": [
+            "files"
+          ]
         }
       }
     }

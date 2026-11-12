@@ -2,6 +2,7 @@ import { validateBuildRequest, validateCancelRequest } from "../src/contract.js"
 import { PipelineError } from "../src/pipeline-error.js";
 import { snapshotResources, verifyBuildResult } from "./build.js";
 import { validateWorkerMessage } from "./messages.js";
+import { nanoJobPhases } from "../src/nano-recipe.js";
 
 /** Default web adapter; module-worker hosting policy belongs to the embedding application. */
 function browserWorker() {
@@ -30,7 +31,7 @@ export class CompilerController {
   /** Correlated cancellation cannot affect a different or already settled build. */
   cancel(input) {
     const request = validateCancelRequest(input);
-    if (!this.#active || this.#active.buildID !== request.buildID) return false;
+    if (!this.#active || this.#active.buildID !== request.buildID || this.#active.interfaceVersion !== request.interfaceVersion) return false;
     return this.#active.cancel();
   }
 
@@ -40,18 +41,19 @@ export class CompilerController {
     if (this.#active) throw new PipelineError("busy", "verifying", "A build is already active");
     if (signal !== undefined && (typeof AbortSignal !== "function" || !(signal instanceof AbortSignal))) throw new TypeError("Require an AbortSignal");
     if (typeof onEvent !== "function") throw new TypeError("Require an event callback");
-    const active = { buildID: request.buildID, cancel: () => false };
+    const { interfaceVersion, buildID } = request;
+    const active = { buildID, interfaceVersion, cancel: () => false };
     this.#active = active;
     let sequence = 0, stage = "verifying", settled = false;
     // Observer errors are isolated from compiler state and must never lose the terminal promise.
-    const emit = fields => { try { onEvent(Object.freeze({ interfaceVersion: 1, buildID: request.buildID, sequence: ++sequence, ...fields })); } catch {} };
+    const emit = fields => { try { onEvent(Object.freeze({ interfaceVersion, buildID, sequence: ++sequence, ...fields })); } catch {} };
     let worker, stopPromise;
     const stop = () => stopPromise ??= Promise.resolve().then(() => worker?.terminate());
     try {
       return await new Promise((resolve, reject) => {
         let unsubscribe = () => {}, workerSequence = 1, terminalReceived = false;
         let phaseIndex = 0;
-        const phases = ["verifying", "preprocessing", "compiling", "compiling", "linking", "validating", "packaging"];
+        const phases = ["verifying", "preprocessing", ...nanoJobPhases(request), "validating", "packaging"];
         /** Chooses one outcome, suppresses late responses, disposes the worker, then releases ownership. */
         const finish = async (error, result) => {
           if (settled) return;
@@ -83,7 +85,7 @@ export class CompilerController {
           unsubscribe = worker.listen(async response => {
             if (settled || terminalReceived) return;
             try {
-              validateWorkerMessage(response, request.buildID, workerSequence++);
+              validateWorkerMessage(response, buildID, workerSequence++, interfaceVersion);
               if (response.kind === "progress") {
                 if (response.phase !== phases[phaseIndex++]) throw new PipelineError("invalid_response", stage, "Unexpected worker phase order");
                 stage = response.phase; emit({ kind: "progress", phase: stage });

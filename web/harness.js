@@ -43,8 +43,8 @@ async function initialize() {
       const requestBytes = selectedRequest ? await fileBytes(selectedRequest, LIMITS.jsonBytes) : await fetchBytes("/fixture-request.json", LIMITS.jsonBytes);
       const request = parseBuildRequest(decode(requestBytes));
       const serviceBytes = selectedService ? await fileBytes(selectedService, SERVICE.bytes) : await fetchBytes("/development-service.wasm", SERVICE.bytes);
-      const resources = { ...await loadRecipe(), serviceBytes };
-      active = request.buildID; buttons(true);
+      const resources = { ...await loadRecipe(request.target.profile), serviceBytes };
+      active = { interfaceVersion: request.interfaceVersion, buildID: request.buildID }; buttons(true);
       artifact = await controller.build(request, resources, { onEvent: event => {
         if (event.kind === "progress") { element("status").textContent = event.phase; show({ kind: event.kind, phase: event.phase, sequence: event.sequence }); }
         if (event.kind === "diagnostic") show(event.diagnostic);
@@ -59,7 +59,7 @@ async function initialize() {
     } finally { active = null; buttons(false); }
   });
   element("cancel").addEventListener("click", () => {
-    if (active) controller.cancel({ interfaceVersion: 1, kind: "cancel", buildID: active });
+    if (active) controller.cancel({ ...active, kind: "cancel" });
   });
   element("checks").addEventListener("click", async () => {
     artifact = null; terminal = null; lines = []; buttons(true); element("status").textContent = "Running bounded browser checks…";

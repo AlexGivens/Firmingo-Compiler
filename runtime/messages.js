@@ -1,8 +1,10 @@
 import { PipelineError } from "../src/pipeline-error.js";
+import { MAXIMUM_SOURCE_FILES } from "../src/contract.js";
 
 export const PHASES = Object.freeze(["verifying", "preprocessing", "compiling", "linking", "validating", "packaging"]);
 const severities = ["error", "warning", "note"];
 const bounded = (value, maximum) => typeof value === "string" && !/[\u0000\ud800-\udfff]/u.test(value) && new TextEncoder().encode(value).length <= maximum;
+const digest = value => typeof value === "string" && /^[0-9a-f]{64}$/.test(value);
 const fields = (value, names) => value && typeof value === "object" && !Array.isArray(value) && Object.keys(value).sort().join() === names.sort().join();
 const fail = () => { throw new PipelineError("invalid_response", "verifying", "Invalid or uncorrelated worker response"); };
 
@@ -19,11 +21,11 @@ export function validateDiagnostics(value) {
 }
 
 /** The internal worker envelope is closed, correlated, sequenced, bounded and never trusted as success by itself. */
-export function validateWorkerMessage(value, buildID, sequence) {
+export function validateWorkerMessage(value, buildID, sequence, interfaceVersion = 1) {
   const common = ["interfaceVersion", "kind", "buildID", "sequence"];
   const extra = value?.kind === "progress" ? ["phase"] : value?.kind === "success" ? ["result"] : ["error", "diagnostics"];
-  if (!fields(value, [...common, ...extra]) || value.interfaceVersion !== 1 || value.buildID !== buildID || value.sequence !== sequence
-      || !["progress", "success", "failure"].includes(value.kind) || sequence > 16) fail();
+  if (!fields(value, [...common, ...extra]) || value.interfaceVersion !== interfaceVersion || value.buildID !== buildID || value.sequence !== sequence
+      || !["progress", "success", "failure"].includes(value.kind) || sequence > 8 + MAXIMUM_SOURCE_FILES) fail();
   if (value.kind === "progress") { if (!PHASES.includes(value.phase)) fail(); }
   else if (value.kind === "failure") {
     if (!fields(value.error, ["code", "stage", "message"]) || !bounded(value.error.code, 64)
@@ -61,8 +63,9 @@ export function validateReceiptData(value) {
 /** Validates public event shape; ordering is owned by the controller and checked by serialized consumers per build. */
 export function validateRuntimeEvent(value) {
   const common = ["interfaceVersion", "buildID", "sequence", "kind"];
-  if (!value || value.interfaceVersion !== 1 || !bounded(value.buildID, 128) || !/^[A-Za-z0-9][A-Za-z0-9._:-]*$/.test(value.buildID)
-      || !Number.isSafeInteger(value.sequence) || value.sequence < 1 || value.sequence > 136) fail();
+  if (!value || ![1, 2].includes(value.interfaceVersion) || !bounded(value.buildID, 128) || !/^[A-Za-z0-9][A-Za-z0-9._:-]*$/.test(value.buildID)
+      || !Number.isSafeInteger(value.sequence) || value.sequence < 1
+      || value.sequence > 136 + (value.interfaceVersion === 2 ? MAXIMUM_SOURCE_FILES : 0)) fail();
   if (value.kind === "progress") {
     if (!fields(value, [...common, "phase"]) || !PHASES.includes(value.phase)) fail();
   } else if (value.kind === "diagnostic") {
@@ -75,8 +78,18 @@ export function validateRuntimeEvent(value) {
         || artifact.filename.includes("..") || !(artifact.bytes instanceof Uint8Array) || artifact.bytes.length < 260 || artifact.bytes.length > 4096
         || artifact.bytes.length % 4 || !/^[0-9a-f]{64}$/.test(artifact.sha256) || !bounded(artifact.reportJSON, 16384)) fail();
     validateReceiptData(artifact.receipt);
-    if (artifact.receipt.receiptSchema !== "firmingo-compiler-build-v1" || artifact.receipt.buildID !== value.buildID
+    if (artifact.receipt.receiptSchema !== "firmingo-compiler-build-v" + value.interfaceVersion || artifact.receipt.buildID !== value.buildID
         || artifact.receipt.capsuleBytes !== artifact.bytes.length || artifact.receipt.capsuleSHA256 !== artifact.sha256) fail();
+    if (value.interfaceVersion === 2) {
+      const { sourceBundleSHA256, sourceFiles } = artifact.receipt;
+      if (artifact.receipt.interfaceVersion !== 2 || artifact.format !== "nano-managed-v2" || !digest(sourceBundleSHA256)
+          || !Array.isArray(sourceFiles) || sourceFiles.length < 1 || sourceFiles.length > MAXIMUM_SOURCE_FILES) fail();
+      for (let index = 0; index < sourceFiles.length; index++) {
+        const file = sourceFiles[index];
+        if (!fields(file, ["path", "sha256"]) || !bounded(file.path, 96) || !digest(file.sha256)
+            || (index > 0 && sourceFiles[index - 1].path >= file.path)) fail();
+      }
+    }
   } else if (value.kind === "result" && ["failed", "cancelled", "timed_out"].includes(value.outcome)) {
     if (!fields(value, [...common, "outcome", "error"]) || !fields(value.error, ["code", "stage", "message"])
         || !bounded(value.error.code, 64) || !/^[a-z_]+$/.test(value.error.code) || !PHASES.includes(value.error.stage) || !bounded(value.error.message, 4096)) fail();

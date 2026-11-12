@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Serialized runtime events with canonical padded base64 capsule bytes",
+  "title": "Firmingo Compiler serialized runtime event",
   "oneOf": [
     {
       "type": "object",
@@ -14,7 +14,10 @@
       ],
       "properties": {
         "interfaceVersion": {
-          "const": 1
+          "enum": [
+            1,
+            2
+          ]
         },
         "buildID": {
           "type": "string",
@@ -25,7 +28,7 @@
         "sequence": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 136
+          "maximum": 144
         },
         "kind": {
           "const": "progress"
@@ -54,7 +57,10 @@
       ],
       "properties": {
         "interfaceVersion": {
-          "const": 1
+          "enum": [
+            1,
+            2
+          ]
         },
         "buildID": {
           "type": "string",
@@ -65,7 +71,7 @@
         "sequence": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 136
+          "maximum": 144
         },
         "kind": {
           "const": "diagnostic"
@@ -152,7 +158,10 @@
       ],
       "properties": {
         "interfaceVersion": {
-          "const": 1
+          "enum": [
+            1,
+            2
+          ]
         },
         "buildID": {
           "type": "string",
@@ -163,7 +172,7 @@
         "sequence": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 136
+          "maximum": 144
         },
         "kind": {
           "const": "result"
@@ -232,7 +241,10 @@
       ],
       "properties": {
         "interfaceVersion": {
-          "const": 1
+          "enum": [
+            1,
+            2
+          ]
         },
         "buildID": {
           "type": "string",
@@ -243,7 +255,7 @@
         "sequence": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 136
+          "maximum": 144
         },
         "kind": {
           "const": "result"
@@ -298,7 +310,10 @@
       ],
       "properties": {
         "interfaceVersion": {
-          "const": 1
+          "enum": [
+            1,
+            2
+          ]
         },
         "buildID": {
           "type": "string",
@@ -309,7 +324,7 @@
         "sequence": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 136
+          "maximum": 144
         },
         "kind": {
           "const": "result"
@@ -361,7 +376,10 @@
       ],
       "properties": {
         "interfaceVersion": {
-          "const": 1
+          "enum": [
+            1,
+            2
+          ]
         },
         "buildID": {
           "type": "string",
@@ -372,7 +390,7 @@
         "sequence": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 136
+          "maximum": 144
         },
         "kind": {
           "const": "result"
@@ -411,5 +429,48 @@
         }
       }
     }
-  ]
+  ],
+  "if": {
+    "properties": {
+      "interfaceVersion": {
+        "const": 2
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "artifact": {
+        "properties": {
+          "format": {
+            "const": "nano-managed-v2"
+          },
+          "receipt": {
+            "properties": {
+              "interfaceVersion": {
+                "const": 2
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "else": {
+    "properties": {
+      "sequence": {
+        "maximum": 136
+      },
+      "artifact": {
+        "properties": {
+          "receipt": {
+            "properties": {
+              "interfaceVersion": {
+                "const": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

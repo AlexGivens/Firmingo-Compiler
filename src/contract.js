@@ -101,37 +101,88 @@ function recipeDeclaration(value, path, declared) {
   }
 }
 
-function sourceSnapshot(source) {
-  object(source, ["filename", "revision", "text"], "$.source");
-  text(source.filename, LIMITS.filenameBytes, "$.source.filename", /^[A-Za-z0-9_][A-Za-z0-9_. -]*\.ino$/);
-  if (source.filename.includes("..")) reject("invalid_input", "$.source.filename", "Unsafe source leaf name");
-  text(source.revision, LIMITS.identifierBytes, "$.source.revision", /^[A-Za-z0-9][A-Za-z0-9._:-]*$/);
-  text(source.text, LIMITS.sourceBytes, "$.source.text");
-  return Object.freeze({ filename: source.filename, revision: source.revision, text: source.text });
+export const MAXIMUM_SOURCE_FILES = 8;
+const portableComponent = "[A-Za-z0-9_][A-Za-z0-9_.-]*";
+const helperPath = new RegExp(`^(?:${portableComponent}/){0,2}${portableComponent}\\.(?:cpp|h)$`);
+const reservedPathComponent = component => /^(?:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i.test(component.split(".")[0].trimEnd());
+
+function sourceFiles(files, primary) {
+  const path = "$.source.files";
+  if (!Array.isArray(files) || Object.getPrototypeOf(files) !== Array.prototype
+      || files.length < 1 || files.length > MAXIMUM_SOURCE_FILES || Reflect.ownKeys(files).length !== files.length + 1) {
+    reject("invalid_input", path, "Expected a bounded list of source files");
+  }
+  const names = new Map([[primary.filename.toLowerCase(), primary.filename]]);
+  const directories = new Map();
+  const encoder = new TextEncoder();
+  let bytes = encoder.encode(primary.text).length;
+  const snapshots = [];
+  for (let index = 0; index < files.length; index++) {
+    const location = `${path}[${index}]`;
+    const field = Object.getOwnPropertyDescriptor(files, index);
+    if (!field?.enumerable || !Object.hasOwn(field, "value")) reject("invalid_input", location, "Expected a source file data entry");
+    const file = field.value;
+    object(file, ["path", "text"], location);
+    text(file.path, LIMITS.filenameBytes, `${location}.path`, helperPath);
+    const components = file.path.split("/");
+    const key = file.path.toLowerCase();
+    if (components.some(component => component.endsWith(".") || reservedPathComponent(component))
+        || components.at(-1).toLowerCase() === "arduino.h"
+        || names.has(key) || directories.has(key)) {
+      reject("invalid_input", `${location}.path`, "Duplicate, conflicting or reserved source path");
+    }
+    for (let depth = 1; depth < components.length; depth++) {
+      const directory = components.slice(0, depth).join("/");
+      const folded = directory.toLowerCase();
+      if (names.has(folded) || (directories.has(folded) && directories.get(folded) !== directory)) {
+        reject("invalid_input", `${location}.path`, "Conflicting source directory");
+      }
+      directories.set(folded, directory);
+    }
+    names.set(key, file.path);
+    if (file.text !== "") text(file.text, LIMITS.sourceBytes, `${location}.text`);
+    bytes += encoder.encode(file.text).length;
+    if (bytes > LIMITS.sourceBytes) reject("invalid_input", path, "Combined source bytes exceed the bundle limit");
+    snapshots.push(Object.freeze({ path: file.path, text: file.text }));
+  }
+  return Object.freeze(snapshots.sort((a, b) => a.path < b.path ? -1 : 1));
 }
 
-function envelope(value, kind, fields) {
+function sourceSnapshot(source, bundled = false) {
+  object(source, bundled ? ["filename", "revision", "text", "files"] : ["filename", "revision", "text"], "$.source");
+  text(source.filename, LIMITS.filenameBytes, "$.source.filename", /^[A-Za-z0-9_][A-Za-z0-9_. -]*\.ino$/);
+  if (source.filename.includes("..") || (bundled && reservedPathComponent(source.filename))) {
+    reject("invalid_input", "$.source.filename", "Unsafe source leaf name");
+  }
+  text(source.revision, LIMITS.identifierBytes, "$.source.revision", /^[A-Za-z0-9][A-Za-z0-9._:-]*$/);
+  text(source.text, LIMITS.sourceBytes, "$.source.text");
+  return Object.freeze({ filename: source.filename, revision: source.revision, text: source.text,
+    ...(bundled ? { files: sourceFiles(source.files, source) } : {}) });
+}
+
+function envelope(value, kind, fields, allowsBundle = false) {
   object(value, fields, "$");
-  equal(value.interfaceVersion, 1, "$.interfaceVersion", "unsupported_version");
+  if (!allowsBundle || value.interfaceVersion !== 2) equal(value.interfaceVersion, 1, "$.interfaceVersion", "unsupported_version");
   equal(value.kind, kind, "$.kind");
   text(value.buildID, LIMITS.identifierBytes, "$.buildID", /^[A-Za-z0-9][A-Za-z0-9._:-]*$/);
 }
 
-/** Snapshots and validates one unprepared single-file build request; it does not compile or deploy. */
+/** Snapshots and validates one unprepared build request; it does not compile or deploy. */
 export function validateBuildRequest(value) {
-  envelope(value, "build", ["interfaceVersion", "kind", "buildID", "source", "target", "options"]);
-  const source = sourceSnapshot(value.source);
+  envelope(value, "build", ["interfaceVersion", "kind", "buildID", "source", "target", "options"], true);
+  const bundled = value.interfaceVersion === 2;
+  const source = sourceSnapshot(value.source, bundled);
   const bindingKey = value.target && typeof value.target === "object" && Object.hasOwn(value.target, "residentBinding") ? "residentBinding" : "firmwareBuild";
   object(value.target, ["board", "profile", "recipeIdentifier", "recipeSHA256", bindingKey], "$.target");
   const baseline = nanoBaseline(value.target.profile);
+  if (bundled) equal(baseline.residentABI, 2, "$.target.profile", "unsupported_target");
   for (const key of ["board", "profile", "recipeIdentifier", "recipeSHA256"]) {
     equal(value.target[key], baseline[key], `$.target.${key}`, "unsupported_target");
   }
   const binding = bindingKey === "firmwareBuild" ? validateFirmwareBuildDescriptor(value.target.firmwareBuild) : validateResidentBinding(value.target.residentBinding);
   object(value.options, ["deadlineMilliseconds"], "$.options");
   integer(value.options.deadlineMilliseconds, 1, LIMITS.deadlineMilliseconds, "$.options.deadlineMilliseconds");
-  return Object.freeze({ interfaceVersion: 1, kind: "build", buildID: value.buildID,
-    source: Object.freeze({ filename: source.filename, revision: source.revision, text: source.text }),
+  return Object.freeze({ interfaceVersion: value.interfaceVersion, kind: "build", buildID: value.buildID, source,
     target: Object.freeze({ ...nanoTarget(baseline), [bindingKey]: binding }),
     options: Object.freeze({ deadlineMilliseconds: value.options.deadlineMilliseconds }) });
 }
@@ -175,8 +226,8 @@ export function parseBuildRequest(json) { return validateBuildRequest(parseContr
 
 /** Validates cancellation correlation only; runtime cancellation is a later implementation stage. */
 export function validateCancelRequest(value) {
-  envelope(value, "cancel", ["interfaceVersion", "kind", "buildID"]);
-  return Object.freeze({ interfaceVersion: 1, kind: "cancel", buildID: value.buildID });
+  envelope(value, "cancel", ["interfaceVersion", "kind", "buildID"], true);
+  return Object.freeze({ interfaceVersion: value.interfaceVersion, kind: "cancel", buildID: value.buildID });
 }
 
 /** Identifies exact validated request data, including revision/correlation/deadline; never artifact provenance. */
