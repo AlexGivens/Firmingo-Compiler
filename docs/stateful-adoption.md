@@ -6,6 +6,32 @@ previous resident catalogue remain separate. The selected Nano/iPad and iPhone
 combinations now have the scoped hardware evidence recorded below. Firmware owns
 initialization, validation and upload semantics; the compiler performs no device I/O.
 
+## Nano release candidate
+
+The reviewed `1.0.0-rc.1` export from firmware commit
+`7f9bb169436621aceea533fcab4231a1a8e14bc3` is a separate accepted input.
+The manifest is anchored at
+`44489d5d035dd8a11eef8b05ffc2c9e628fb958b92d74f8450dfcba9434f4bb1`.
+All 39 roles and the 61 resident source hashes were checked against the export
+and selected commit. The contract differs from the historical FMS2 contract only
+by the embedded commit. Import independently compared 153,984 initialized
+ELF/UF2 bytes and checked both readonly descriptors and the owned state arena.
+The recipe and service are unchanged. The new descriptor ID is
+`33a0e866c2873b20aaf9303dc10c7af4d6920e99bb1ba2eee6b0c009034523b5`.
+
+```sh
+node tools/dev.mjs consumer-package build-rc DELIVERY ABI_ONE_EXPORT FMS2_RC_EXPORT NEW_OUTPUT
+node tools/dev.mjs consumer-package verify PACKAGE TRUSTED_MANIFEST_SHA256
+```
+
+The local candidate package retains the historical ABI-one catalogue entry
+alongside the RC descriptor. It pairs the revised portable web runtime with the
+same reviewed service, corresponding source, and notices. Its manifest SHA-256 is
+`d02bb505fb41cc54620aa7dec42bf1914f8eced06cacfc58583a0dece4fbc3e0`.
+The three exact-candidate CLI outputs (State A, State B, and the multi-file
+counter fixture) passed Firmingo's native capsule validation. Firmware execution
+and physical qualification are separate.
+
 ## Reviewed inputs and versions
 
 - Firmware commit: `97be7bbbe29ef1d18ec886ae6eea1a2d41905869`.

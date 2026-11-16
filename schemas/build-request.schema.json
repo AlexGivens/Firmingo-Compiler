@@ -313,7 +313,10 @@
                   "multipleOf": 4
                 },
                 "compilerContractSHA256": {
-                  "const": "bd57a4db74bcdc5d592d3217957a7975124c6fe84481a5afbd38509c1e20c082"
+                  "enum": [
+                    "bd57a4db74bcdc5d592d3217957a7975124c6fe84481a5afbd38509c1e20c082",
+                    "e99938ce51b83a742bf2d1e7dd7269d6d5814b7cba3cb5699008aeda9db86350"
+                  ]
                 }
               }
             }
@@ -531,7 +534,10 @@
           "multipleOf": 4
         },
         "compilerContractSHA256": {
-          "const": "bd57a4db74bcdc5d592d3217957a7975124c6fe84481a5afbd38509c1e20c082"
+          "enum": [
+            "bd57a4db74bcdc5d592d3217957a7975124c6fe84481a5afbd38509c1e20c082",
+            "e99938ce51b83a742bf2d1e7dd7269d6d5814b7cba3cb5699008aeda9db86350"
+          ]
         }
       }
     }

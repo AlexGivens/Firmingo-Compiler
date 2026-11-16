@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "version": "1.0.0-rc.1-nano-fms2",
+  "webManifestSHA256": "22de77c1b68c5d6edb4ae6bb87a6a6b775b7c3cff3283b674f985e7274fc7c7b",
+  "deliveryManifestSHA256": "261dcdfd80b39c11d522289d8ac411b0882cdc36ec91f370b0f92f11f2957d39",
+  "firmwareManifestSHA256": "44489d5d035dd8a11eef8b05ffc2c9e628fb958b92d74f8450dfcba9434f4bb1",
+  "firmwareCommit": "7f9bb169436621aceea533fcab4231a1a8e14bc3",
+  "firmwareBuildID": "33a0e866c2873b20aaf9303dc10c7af4d6920e99bb1ba2eee6b0c009034523b5",
+  "qualification": "experimental-unqualified",
+  "firmwareProvenance": "Exact resident/profile inputs checked against the committed blobs; independent ELF/UF2, FAPI, managed-target and state-arena validation",
+  "scope": "Offline Nano release-candidate pairing; legacy ABI-one catalogue entry retained; no installed-image attestation or hardware qualification"
+}

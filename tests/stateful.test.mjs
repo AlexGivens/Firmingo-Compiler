@@ -12,6 +12,16 @@ const elf = () => hex("stateful-wasm/counter.elf.hex"), capsule = () => hex("sta
 const request = json("request.json"), descriptor = json("descriptor.json"), receipt = json("receipt.json");
 const word = (bytes, offset, value) => new DataView(bytes.buffer).setUint32(offset, value, true);
 
+test("the FMS2 candidate contract is bound to its exact firmware version and commit", () => {
+  const candidate = { ...descriptor, firmwareVersion: "1.0.0-rc.1",
+    firmwareCommit: "7f9bb169436621aceea533fcab4231a1a8e14bc3",
+    compilerContractSHA256: "e99938ce51b83a742bf2d1e7dd7269d6d5814b7cba3cb5699008aeda9db86350" };
+  assert.deepEqual(validateFirmwareBuildDescriptor(candidate), candidate);
+  for (const key of ["firmwareVersion", "firmwareCommit", "compilerContractSHA256"]) {
+    assert.throws(() => validateFirmwareBuildDescriptor({ ...candidate, [key]: descriptor[key] }), { code: "unsupported_target" });
+  }
+});
+
 test("explicit schema-two descriptors bind state and recipe while rejecting ABI-one mixtures", async () => {
   assert.deepEqual(validateBuildRequest(request), request);
   assert.equal(await dataIdentity(validateFirmwareBuildDescriptor(descriptor)), receipt.firmwareBuildID);

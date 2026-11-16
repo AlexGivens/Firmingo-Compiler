@@ -76,6 +76,7 @@ async function main() {
       + "  test-service-package (paired-delivery rejection fixtures)\n"
       + "  service-release build|verify|extract ... (deterministic local transport; no publication)\n"
       + "  consumer-package build DELIVERY RESIDENT_EXPORT NEW_OUTPUT | verify PACKAGE TRUSTED_MANIFEST_SHA256\n"
+      + "  consumer-package build-rc DELIVERY ABI_ONE_EXPORT FMS2_RC_EXPORT NEW_OUTPUT\n"
       + "  test-service-release (transport integrity and extraction boundaries)\n"
       + "  test-source-package (owned source/archive boundary fixtures)\n"
       + "  test-runtime-build (bounded source archives and runtime receipt checks)\n"
@@ -91,8 +92,9 @@ async function main() {
   if (command === "consumer-package") {
     const [mode, ...args] = argumentsList;
     if (mode === "build" && args.length === 3) console.log(JSON.stringify(await buildConsumerPackage(...args)));
+    else if (mode === "build-rc" && args.length === 4) console.log(JSON.stringify(await buildConsumerPackage(args[0], args[1], args[3], args[2])));
     else if (mode === "verify" && args.length === 2) console.log(JSON.stringify(await verifyConsumerPackage(...args)));
-    else throw new Error("Use consumer-package build DELIVERY RESIDENT_EXPORT NEW_OUTPUT or verify PACKAGE TRUSTED_MANIFEST_SHA256");
+    else throw new Error("Use consumer-package build, build-rc, or verify with the explicit paths shown in --help");
     return;
   }
   if (command === "verify-service-notices") {

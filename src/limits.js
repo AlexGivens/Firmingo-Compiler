@@ -28,3 +28,9 @@ export const NANO_STATEFUL = Object.freeze({
   residentABI: 2, targetID: 2, maximumCapsuleBytes: 4096,
   compilerContractSHA256: "bd57a4db74bcdc5d592d3217957a7975124c6fe84481a5afbd38509c1e20c082",
 });
+
+export const NANO_STATEFUL_RC = Object.freeze({
+  firmwareVersion: "1.0.0-rc.1",
+  firmwareCommit: "7f9bb169436621aceea533fcab4231a1a8e14bc3",
+  compilerContractSHA256: "e99938ce51b83a742bf2d1e7dd7269d6d5814b7cba3cb5699008aeda9db86350",
+});

@@ -1,5 +1,5 @@
 import { ContractError } from "./errors.js";
-import { LIMITS, NANO_BASELINE, NANO_STATEFUL } from "./limits.js";
+import { LIMITS, NANO_BASELINE, NANO_STATEFUL, NANO_STATEFUL_RC } from "./limits.js";
 import { parseContractJSON } from "./json.js";
 import { dataIdentity } from "./hash.js";
 
@@ -23,11 +23,17 @@ function dataProfile(value, path) {
 }
 
 const stateFields = ["stateAddress", "stateCapacityBytes", "compilerContractSHA256"];
-function stateBinding(value, path) {
+function stateBinding(value, path, descriptor = false) {
   integer(value.stateCapacityBytes, 4, 4096, `${path}.stateCapacityBytes`);
   integer(value.stateAddress, 0x20000000, 0x20042000 - value.stateCapacityBytes, `${path}.stateAddress`);
   if (value.stateAddress % 4 || value.stateCapacityBytes % 4) reject("invalid_input", path, "Unaligned resident state arena");
-  equal(value.compilerContractSHA256, NANO_STATEFUL.compilerContractSHA256, `${path}.compilerContractSHA256`, "unsupported_target");
+  const candidate = value.compilerContractSHA256 === NANO_STATEFUL_RC.compilerContractSHA256;
+  if (descriptor && (candidate || value.firmwareVersion === NANO_STATEFUL_RC.firmwareVersion
+      || value.firmwareCommit === NANO_STATEFUL_RC.firmwareCommit)) {
+    for (const [key, expected] of Object.entries(NANO_STATEFUL_RC)) equal(value[key], expected, `${path}.${key}`, "unsupported_target");
+  } else if (!candidate) {
+    equal(value.compilerContractSHA256, NANO_STATEFUL.compilerContractSHA256, `${path}.compilerContractSHA256`, "unsupported_target");
+  }
 }
 
 function reject(code, path, message) { throw new ContractError(code, path, message); }
@@ -79,7 +85,7 @@ function firmwareDescriptor(value, declared) {
     equal(value[key], baseline[key], `${path}.${key}`, "unsupported_target");
   }
   recipeDeclaration(value, path, declared);
-  if (baseline.residentABI === 2) stateBinding(value, path);
+  if (baseline.residentABI === 2) stateBinding(value, path, true);
   equal(value.backend, "application", `${path}.backend`, "unsupported_target");
   equal(value.qualification, "experimental", `${path}.qualification`, "unsupported_target");
   text(value.firmwareVersion, 64, `${path}.firmwareVersion`, /^[A-Za-z0-9._-]+$/);

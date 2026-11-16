@@ -1,6 +1,5 @@
-import { lstatSync, readdirSync, mkdirSync, mkdtempSync, rmSync, writeFileSync, openSync, closeSync, readSync, writeSync, fstatSync, constants } from "node:fs";
+import { lstatSync, readdirSync, mkdirSync, rmSync, writeFileSync, openSync, closeSync, readSync, writeSync, fstatSync, constants } from "node:fs";
 import { join, resolve, dirname } from "node:path";
-import { tmpdir } from "node:os";
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -13,6 +12,7 @@ import { SERVICE } from "../runtime/pins.js";
 
 const repo = fileURLToPath(new URL("../", import.meta.url));
 export const CONSUMER_REVIEW = Object.freeze(parseContractJSON(new TextDecoder().decode(readBounded(join(repo, "consumer/review.json"), 16384))));
+const CANDIDATE_REVIEW = Object.freeze(parseContractJSON(new TextDecoder().decode(readBounded(join(repo, "consumer/review-rc1.json"), 16384))));
 const MAXIMUM = 400 * 1024 * 1024;
 const hash = bytes => createHash("sha256").update(bytes).digest("hex");
 const json = value => Buffer.from(JSON.stringify(value, null, 2) + "\n");
@@ -63,7 +63,7 @@ export function consumerFiles(root, localReceipt = false) {
         if (!entry.isFile()) throw new Error("Unsafe consumer metadata");
         continue;
       }
-      if (records.length >= 64) throw new Error("Excessive consumer roles");
+      if (records.length >= 80) throw new Error("Excessive consumer roles");
       const identity = consumerFile(absolute); total += identity.bytes;
       if (total > MAXIMUM) throw new Error("Excessive consumer payload");
       records.push({ path, ...identity });
@@ -83,24 +83,29 @@ function delivery(root) {
 }
 
 /** Recreates the portable runtime and recipe from this pinned source; no service is instantiated. */
-async function webMatches(root) {
-  const scratch = mkdtempSync(join(tmpdir(), "firmingo-consumer-web-"));
-  try {
-    const expected = join(scratch, "web"); await exportWeb(expected);
-    if (consumerFile(join(expected, "manifest.json")).sha256 !== CONSUMER_REVIEW.webManifestSHA256
-        || !same(consumerFiles(root), consumerFiles(expected))) throw new Error("Consumer web runtime differs from reviewed export");
-  } finally { rmSync(scratch, { recursive: true }); }
+function webMatches(root, review) {
+  const path = join(root, "manifest.json"), record = consumerFile(path);
+  if (record.sha256 !== review.webManifestSHA256) throw new Error("Consumer web runtime differs from reviewed export");
+  const expected = [...parse(path).files, { path: "manifest.json", ...record }].sort((a, b) => a.path < b.path ? -1 : 1);
+  if (!same(consumerFiles(root), expected)) throw new Error("Consumer web runtime differs from reviewed export");
 }
 
 /** Checks the reviewed firmware anchor and source contract, never inferring installed-device evidence. */
-async function firmware(root) {
-  const value = await importResident(root, CONSUMER_REVIEW.firmwareManifestSHA256);
-  if (!value.contract || !value.receipt.contractVerified || value.receipt.firmwareBuildID !== CONSUMER_REVIEW.firmwareBuildID
-      || value.descriptor.firmwareCommit !== CONSUMER_REVIEW.firmwareCommit) throw new Error("Consumer requires the selected schema-two experimental resident");
+async function firmware(root, review) {
+  const value = await importResident(root, review.firmwareManifestSHA256);
+  if (!value.contract || !value.receipt.contractVerified || value.receipt.firmwareBuildID !== review.firmwareBuildID
+      || value.descriptor.firmwareCommit !== review.firmwareCommit) throw new Error("Consumer requires the exact reviewed resident");
   const expected = [...value.receipt.files, { path: "manifest.json", ...consumerFile(join(root, "manifest.json")) }]
     .sort((a, b) => a.path < b.path ? -1 : 1);
   if (!same(consumerFiles(root), expected)) throw new Error("Unlisted firmware export content");
   return value;
+}
+
+function packageInputs(resident, candidate) {
+  return candidate ? {
+    catalogue: { schema: 1, firmwareBuilds: [resident.descriptor, candidate.descriptor] },
+    receipt: { schema: 2, imports: [resident.receipt, candidate.receipt] },
+  } : resident;
 }
 
 /** Verifies a complete versioned package against an independently supplied inventory anchor and exact review. */
@@ -108,35 +113,45 @@ export async function verifyConsumerPackage(input, expected) {
   const root = resolve(input);
   if (!hex(expected) || consumerFile(join(root, "manifest.json")).sha256 !== expected) throw new Error("Consumer manifest anchor mismatch");
   const manifest = parse(join(root, "manifest.json"));
-  const fixed = { schema: 1, package: "firmingo-compiler-consumer", version: CONSUMER_REVIEW.version,
-    interfaceVersion: 1, serviceABI: 2, qualification: "experimental-unqualified", service: SERVICE, review: CONSUMER_REVIEW };
+  const candidate = manifest.version === CANDIDATE_REVIEW.version;
+  const review = candidate ? CANDIDATE_REVIEW : CONSUMER_REVIEW;
+  const fixed = { schema: 1, package: "firmingo-compiler-consumer", version: review.version,
+    interfaceVersion: 1, serviceABI: 2, qualification: "experimental-unqualified", service: SERVICE, review };
   const { files, catalogueSHA256, ...metadata } = manifest;
-  if (!same(metadata, fixed) || !hex(catalogueSHA256) || !Array.isArray(files) || files.length !== 33
-      || files.some(file => !/^(?:service\/|firmware\/|web\/)/.test(file.path) && !["catalogue.json", "resident-import.json"].includes(file.path)))
+  if (!same(metadata, fixed) || !hex(catalogueSHA256) || !Array.isArray(files) || files.length !== (candidate ? 73 : 33)
+      || files.some(file => !["service", "firmware", "web", ...(candidate ? ["firmware-rc"] : [])].includes(file.path.split("/")[0])
+        && !["catalogue.json", "resident-import.json"].includes(file.path)))
     throw new Error("Incompatible consumer manifest");
   const observed = consumerFiles(root, true);
   if (!same(observed, files)) throw new Error("Missing, corrupt, extra or unsafe consumer role");
-  await webMatches(join(root, "web"));
-  const resident = await firmware(join(root, "firmware"));
-  const catalogue = json(resident.catalogue), receipt = json(resident.receipt);
+  webMatches(join(root, "web"), review);
+  const resident = await firmware(join(root, "firmware"), CONSUMER_REVIEW);
+  const candidateResident = candidate ? await firmware(join(root, "firmware-rc"), review) : null;
+  const inputs = packageInputs(resident, candidateResident);
+  const catalogue = json(inputs.catalogue), receipt = json(inputs.receipt);
   if (hash(catalogue) !== catalogueSHA256 || !same(consumerFile(join(root, "catalogue.json")), { bytes: catalogue.length, sha256: hash(catalogue) })
       || !same(consumerFile(join(root, "resident-import.json")), { bytes: receipt.length, sha256: hash(receipt) })) throw new Error("Catalogue differs from verified resident facts");
   delivery(join(root, "service"));
   if (!same(consumerFiles(root, true), observed) || consumerFile(join(root, "manifest.json")).sha256 !== expected)
     throw new Error("Consumer package changed during source verification");
   return { schema: 1, status: "verified_experimental_consumer_package", version: manifest.version, manifestSHA256: expected,
-    firmwareBuildID: resident.receipt.firmwareBuildID, catalogueSHA256, serviceSHA256: SERVICE.sha256, files: files.length,
+    firmwareBuildID: (candidateResident ?? resident).receipt.firmwareBuildID, catalogueSHA256, serviceSHA256: SERVICE.sha256, files: files.length,
     hardwareQualified: false, published: false };
 }
 
 /** Stages paired service/source, exact web assets and firmware evidence in a new offline consumer package. */
-export async function buildConsumerPackage(deliveryRoot, firmwareRoot, output) {
+export async function buildConsumerPackage(deliveryRoot, firmwareRoot, output, candidateRoot) {
   deliveryRoot = resolve(deliveryRoot); firmwareRoot = resolve(firmwareRoot); output = resolve(output);
   // Validate before reserving output; never modify either input or an existing destination.
-  const resident = await firmware(firmwareRoot); delivery(deliveryRoot);
+  const resident = await firmware(firmwareRoot, CONSUMER_REVIEW); delivery(deliveryRoot);
+  const candidate = candidateRoot ? await firmware(resolve(candidateRoot), CANDIDATE_REVIEW) : null;
+  const review = candidate ? CANDIDATE_REVIEW : CONSUMER_REVIEW;
+  const inputs = packageInputs(resident, candidate);
   mkdirSync(output);
   try {
-    for (const [name, source] of [["service", deliveryRoot], ["firmware", firmwareRoot]]) {
+    const sources = [["service", deliveryRoot], ["firmware", firmwareRoot]];
+    if (candidate) sources.push(["firmware-rc", resolve(candidateRoot)]);
+    for (const [name, source] of sources) {
       mkdirSync(join(output, name));
       for (const file of consumerFiles(source).filter(file => file.path !== "operation.json")) {
         const destination = join(output, name, file.path); mkdirSync(dirname(destination), { recursive: true });
@@ -145,12 +160,12 @@ export async function buildConsumerPackage(deliveryRoot, firmwareRoot, output) {
       }
     }
     await exportWeb(join(output, "web"));
-    writeFileSync(join(output, "catalogue.json"), json(resident.catalogue), { flag: "wx" });
-    writeFileSync(join(output, "resident-import.json"), json(resident.receipt), { flag: "wx" });
+    writeFileSync(join(output, "catalogue.json"), json(inputs.catalogue), { flag: "wx" });
+    writeFileSync(join(output, "resident-import.json"), json(inputs.receipt), { flag: "wx" });
     const files = consumerFiles(output);
-    const manifest = { schema: 1, package: "firmingo-compiler-consumer", version: CONSUMER_REVIEW.version,
-      interfaceVersion: 1, serviceABI: 2, qualification: "experimental-unqualified", service: SERVICE, review: CONSUMER_REVIEW,
-      files, catalogueSHA256: hash(json(resident.catalogue)) };
+    const manifest = { schema: 1, package: "firmingo-compiler-consumer", version: review.version,
+      interfaceVersion: 1, serviceABI: 2, qualification: "experimental-unqualified", service: SERVICE, review,
+      files, catalogueSHA256: hash(json(inputs.catalogue)) };
     const data = json(manifest); writeFileSync(join(output, "manifest.json"), data, { flag: "wx" });
     const result = await verifyConsumerPackage(output, hash(data));
     writeFileSync(join(output, "operation.json"), json(result), { flag: "wx" });

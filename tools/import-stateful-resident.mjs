@@ -5,14 +5,18 @@ import { readBounded } from "./bounded-file.mjs";
 import { parseContractJSON } from "../src/json.js";
 import { canonicalJSON } from "../src/hash.js";
 import { validateFirmwareBuildDescriptor, firmwareBuildIdentity } from "../src/contract.js";
-import { NANO_STATEFUL } from "../src/limits.js";
+import { NANO_STATEFUL, NANO_STATEFUL_RC } from "../src/limits.js";
 
-const review = JSON.parse(readFileSync(new URL("../recipes/nano_rp2040_connect_v2/firmware-export.json", import.meta.url)));
+const reviews = ["firmware-export.json", "firmware-export-rc1.json"].map(name =>
+  JSON.parse(readFileSync(new URL("../recipes/nano_rp2040_connect_v2/" + name, import.meta.url))));
 const hash = bytes => createHash("sha256").update(bytes).digest("hex");
 const parse = bytes => parseContractJSON(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
 
-/** Initial schema-three import is deliberately pinned to the reviewed export, including every resource. */
+/** Schema-three imports are pinned to a reviewed export, including every resource. */
 export async function importStatefulResident(directory, anchor, manifest) {
+  const index = reviews.findIndex(review => review.exportManifestSHA256 === anchor);
+  if (index < 0) throw new Error("FMS2 export requires explicit compiler recipe review");
+  const review = reviews[index];
   const { exportManifestSHA256, review: _review, ...expected } = review;
   if (anchor !== exportManifestSHA256 || canonicalJSON(manifest) !== canonicalJSON(expected)) throw new Error("FMS2 export requires explicit compiler recipe review");
   const files = {};
@@ -30,7 +34,8 @@ export async function importStatefulResident(directory, anchor, manifest) {
   const facts = parse(files["resident-facts.json"]), contract = parse(files["contract.json"]);
   if (facts.residentELFSHA256 !== hash(files["resident.elf"]) || facts.residentUF2SHA256 !== hash(files["resident.uf2"])
       || facts.buildReportSHA256 !== hash(files["build-report.json"]) || facts.compilerContractSHA256 !== hash(files["contract.json"])
-      || facts.compilerContractSHA256 !== NANO_STATEFUL.compilerContractSHA256 || facts.residentABI !== 2
+      || facts.compilerContractSHA256 !== (index === 0 ? NANO_STATEFUL : NANO_STATEFUL_RC).compilerContractSHA256 || facts.residentABI !== 2
+      || facts.firmwareCommit !== manifest.firmwareCommit || contract.firmwareCommit !== manifest.firmwareCommit
       || !facts.runtimeEnabled || !facts.fms2NetworkUploadsEnabled || facts.hardwareTested !== false) throw new Error("Inconsistent FMS2 resident facts");
   const elf = files["resident.elf"], ev = new DataView(elf.buffer, elf.byteOffset, elf.byteLength);
   const ew = offset => ev.getUint32(offset, true), eh = offset => ev.getUint16(offset, true);
