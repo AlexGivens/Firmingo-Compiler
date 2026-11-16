@@ -80,7 +80,10 @@ independent fixtures exist. Pico and conventional Arduino remain later milestone
 - [x] [Review and import the Nano FMS2 release candidate](docs/stateful-adoption.md#nano-release-candidate)
   and pair it with an exact local consumer package. Verify single-file and
   multi-file outputs with Firmingo's native capsule validator.
-- [ ] Adopt the multi-file request and receipt through Swift SDK and Workbench APIs.
+- [x] Adopt the multi-file request and receipt through Swift SDK and Workbench APIs.
+  The actual Swift/WebKit build matches the pinned FMS2 bundle capsule and
+  preserves a deliberate helper diagnostic. Physical mobile bundle qualification
+  is tracked in FirmingoKit.
 
 The agreed deliverable is a language-neutral, web-hosted WASM compiler focused on
 Firmingo managed sketches, starting with **Arduino Nano RP2040 Connect**.
